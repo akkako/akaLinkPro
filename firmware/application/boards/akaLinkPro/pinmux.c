@@ -17,25 +17,33 @@
 #include "hpm_trgm_drv.h"
 
 
-/* Set PY00-PY05 default function to PGPIO */
+/**
+ * @brief Set PY00-PY05 default function to PGPIO
+ * @param None
+ */
 void init_py_pins_as_pgpio(void)
 {
     HPM_PIOC->PAD[IOC_PAD_PY00].FUNC_CTL = PIOC_PY00_FUNC_CTL_PGPIO_Y_00;
-
     HPM_PIOC->PAD[IOC_PAD_PY01].FUNC_CTL = PIOC_PY01_FUNC_CTL_PGPIO_Y_01;
 }
 
+/**
+ * @brief Init UART0 Console print pin
+ * @param None
+ */
 void init_uart0_pins(void)
 {
     HPM_IOC->PAD[IOC_PAD_PA00].FUNC_CTL = IOC_PA00_FUNC_CTL_UART0_TXD;
-
     HPM_IOC->PAD[IOC_PAD_PA01].FUNC_CTL = IOC_PA01_FUNC_CTL_UART0_RXD;
 }
 
-void init_uart3_pins(void)
+/**
+ * @brief Init UART3 as VCOM port
+ * @param None
+ */
+void init_uart3_pins_as_uart(void)
 {
     HPM_IOC->PAD[IOC_PAD_PB15].FUNC_CTL = IOC_PB15_FUNC_CTL_UART3_TXD;
-
     HPM_IOC->PAD[IOC_PAD_PB14].FUNC_CTL = IOC_PB14_FUNC_CTL_UART3_RXD;
 }
 
@@ -43,7 +51,7 @@ void init_uart3_pins(void)
  * for uart_lin case, need to configure pin as gpio to sent break signal
  * pull-up
  */
-void init_uart3_pin_as_gpio(void)
+void init_uart3_pin_as_gpio_low(void)
 {
     HPM_IOC->PAD[IOC_PAD_PB15].FUNC_CTL = IOC_PB15_FUNC_CTL_GPIO_B_15;
     HPM_IOC->PAD[IOC_PAD_PB15].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(1);
@@ -60,7 +68,6 @@ void init_gpio_pins(void)
     /* Button */
     HPM_IOC->PAD[IOC_PAD_PA03].FUNC_CTL = IOC_PA03_FUNC_CTL_GPIO_A_03;
     HPM_IOC->PAD[IOC_PAD_PA03].PAD_CTL = IOC_PAD_PAD_CTL_HYS_SET(1) | IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
-
 }
 
 void init_usb0_pins(void)

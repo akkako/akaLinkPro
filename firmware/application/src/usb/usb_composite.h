@@ -5,7 +5,8 @@
 #include "usbd_cdc.h"
 #include "usbd_msc.h"
 #include "usbd_hid.h"
-
+#include "chry_ringbuffer.h"
+#include "cdc_interface.h"
 
 #define DAP_IN_EP  0x81
 #define DAP_OUT_EP 0x02
@@ -28,6 +29,7 @@
 #ifdef CONFIG_USB_HS
 #ifndef DAP_PACKET_SIZE
 #define DAP_PACKET_SIZE 512
+#define DAP_PACKET_COUNT 4
 #endif
 #if DAP_PACKET_SIZE != 512
 #error "DAP_PACKET_SIZE must be 512 in hs"
@@ -75,10 +77,9 @@ extern char serial_number_dynamic[33];
 
 extern struct usbd_interface hid_intf;
 
-#if CONFIG_CHERRYDAP_DAP_CMD_ENABLE
 extern chry_ringbuffer_t g_uartrx;
 extern chry_ringbuffer_t g_usbrx;
-#endif
+
 
 void chry_dap_init(uint8_t busid, uint32_t reg_base);
 

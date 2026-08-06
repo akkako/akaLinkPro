@@ -10,9 +10,11 @@ set(BOARD_SEARCH_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../boards)
 # Prevent SDK from forcing -u _printf_float/-u _scanf_float (saves ~31KB)
 set(HPM_SDK_LD_NO_NANO_SPECS 1)
 
-# Enable CherryUSB device stack. CDC ACM + HID classes are needed for the
-# CMSIS-DAP composite enumeration (CDC and custom-HID interfaces).
+# Enable CherryUSB device stack. CDC ACM + HID + MSC classes are needed for the
+# CMSIS-DAP composite enumeration (CDC and custom-HID + MSC interfaces).
 set(CONFIG_HPM_SPI 1)
+set(CONFIG_DMA_MGR 1)
+set(CONFIG_CHERRYRB 1)
 set(CONFIG_CHERRYUSB 1)
 set(CONFIG_CHERRYUSB_DEVICE 1)
 set(CONFIG_USB_DEVICE 1)
@@ -40,11 +42,15 @@ sdk_linker_global_symbols("_dfu_bl_length=0x20000")
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dfu)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/usb)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/led)
+sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap)
 
 sdk_app_src(src/main.c)
-sdk_app_src(src/dfu/hpm_dfu_trigger.c)
-sdk_app_src(src/usb/dap_main.c)
 sdk_app_src(src/led/ws2812.c)
+sdk_app_src(src/dfu/hpm_dfu_trigger.c)
+sdk_app_src(src/usb/usb_composite.c)
+sdk_app_src(src/usb/hid_interface.c)
+sdk_app_src(src/usb/cdc_interface.c)
+sdk_app_src(src/usb/msc_interface.c)
 
 
 # generate_ide_projects()

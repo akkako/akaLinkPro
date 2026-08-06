@@ -298,15 +298,3 @@ static hpm_stat_t board_uart_dma_config(void)
     }
     return status_success;
 }
-
-void usbd_cdc_acm_set_dtr(uint8_t busid, uint8_t intf, bool dtr)
-{
-    (void)busid;
-    (void)intf;
-}
-
-void usbd_cdc_acm_set_rts(uint8_t busid, uint8_t intf, bool rts)
-{
-    (void)busid;
-    (void)intf;
-}

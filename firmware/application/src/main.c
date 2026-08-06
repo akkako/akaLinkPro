@@ -36,13 +36,12 @@ int main(void)
 
     while (1)
     {
-        ewdg_refresh(HPM_EWDG0);
         /* Key detection: check every 100ms, 5 consecutive presses -> boot */
 #ifdef BOARD_APP_GPIO_CTRL
         uint8_t key = gpio_read_pin(BOARD_APP_GPIO_CTRL,
                                     BOARD_APP_GPIO_INDEX,
                                     BOARD_APP_GPIO_PIN);
-        if (key == BOARD_BTN_PRESSED_VALUE)
+        if (key == BOARD_BUTTON_PRESSED_VALUE)
         {
             key_press_count++;
             if (key_press_count >= 30)
@@ -50,7 +49,7 @@ int main(void)
                 printf("\n[KEY] Held 3000ms, entering bootloader...\n");
                 while (gpio_read_pin(BOARD_APP_GPIO_CTRL,
                                      BOARD_APP_GPIO_INDEX,
-                                     BOARD_APP_GPIO_PIN) == BOARD_BTN_PRESSED_VALUE)
+                                     BOARD_APP_GPIO_PIN) == BOARD_BUTTON_PRESSED_VALUE)
                 {
                     board_delay_ms(10);
                     WS2812_ShowRainbow();

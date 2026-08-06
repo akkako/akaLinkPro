@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.13)
 
 set(APP_NAME akaLinkPro_App)
 
-set(BOARD_SEARCH_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../boards)
+set(BOARD_SEARCH_PATH ${CMAKE_CURRENT_SOURCE_DIR}/boards)
 
 # Prevent SDK from forcing -u _printf_float/-u _scanf_float (saves ~31KB)
 set(HPM_SDK_LD_NO_NANO_SPECS 1)
@@ -43,6 +43,7 @@ sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dfu)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/usb)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/led)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap)
+sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/api)
 
 sdk_app_src(src/main.c)
 sdk_app_src(src/led/ws2812.c)
@@ -51,6 +52,7 @@ sdk_app_src(src/usb/usb_composite.c)
 sdk_app_src(src/usb/hid_interface.c)
 sdk_app_src(src/usb/cdc_interface.c)
 sdk_app_src(src/usb/msc_interface.c)
+sdk_app_src(src/api/api_param.c)
 
 
 # generate_ide_projects()

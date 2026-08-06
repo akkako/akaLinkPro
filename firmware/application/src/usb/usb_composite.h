@@ -57,7 +57,7 @@
 #endif
 
 #ifndef CONFIG_CHERRYDAP_USE_MSC
-#define CONFIG_CHERRYDAP_USE_MSC 1
+#define CONFIG_CHERRYDAP_USE_MSC 0
 #endif
 
 /* DAP command processing (DAP_Setup + USB<->UART ringbuffers) is not wired up
@@ -74,12 +74,10 @@ extern "C"
 #endif
 
 extern char serial_number_dynamic[33];
-
 extern struct usbd_interface hid_intf;
 
 extern chry_ringbuffer_t g_uartrx;
 extern chry_ringbuffer_t g_usbrx;
-
 
 void chry_dap_init(uint8_t busid, uint32_t reg_base);
 

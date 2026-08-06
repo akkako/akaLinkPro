@@ -6,7 +6,7 @@
 
 #include "board.h"
 
-#define CONFIG_USB_PRINTF(...) //printf(__VA_ARGS__)
+#define CONFIG_USB_PRINTF(...) printf(__VA_ARGS__)
 #define CONFIG_USB_DBG_LEVEL USB_DBG_INFO
 
 #define CONFIG_USB_HS

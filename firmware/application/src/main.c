@@ -15,11 +15,13 @@
 #include "usb_config.h"
 #include "hpm_dfu_trigger.h"
 #include "ws2812.h"
+#include "api_param.h"
 
 int main(void)
 {
     board_init();
     WS2812_Init();
+    api_param_load();
 
     /* USB composite device: CMSIS-DAP (enumeration) + DFU runtime interface.
      * dfu-util -e targets the DFU runtime interface and reboots to bootloader. */
@@ -31,8 +33,6 @@ int main(void)
     int key_press_count = 0;
 
     WS2812_SetColor(0xFF / 8);
-
-    printf("hello world\r\n");
 
     while (1)
     {

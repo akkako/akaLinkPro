@@ -6,6 +6,8 @@
 #define HPM_DFU_TRIGGER_H
 
 #include <stdbool.h>
+#include <stdint.h>
+#include "usbd_core.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,6 +19,9 @@ bool hpm_dfu_check_and_clear_trigger(void);
 
 /* Write DFU trigger magic and reset — call from APP to enter DFU mode. */
 void hpm_dfu_reboot_to_dfu(void) __attribute__((noreturn));
+
+int dfu_runtime_handler(uint8_t busid, struct usb_setup_packet *setup,
+                               uint8_t **data, uint32_t *len);
 
 #ifdef __cplusplus
 }

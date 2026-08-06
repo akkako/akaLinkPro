@@ -22,6 +22,61 @@
 #define DFU_TRIGGER_MAGIC      (0x55464455UL)
 #define DFU_TRIGGER_BGPR_INDEX (0U)
 
+
+/* ---------- DFU runtime class handler ----------
+ * Implements the minimal DFU runtime subset (DFU 1.1) so that dfu-util can
+ * enumerate the interface and trigger a reboot into the DFU bootloader via
+ * DFU_DETACH. The actual firmware transfer happens in the bootloader, not here.
+ */
+enum
+{
+    DFU_DETACH = 0,
+    DFU_DNLOAD = 1,
+    DFU_UPLOAD = 2,
+    DFU_GETSTATUS = 3,
+    DFU_CLRSTATUS = 4,
+    DFU_GETSTATE = 5,
+    DFU_ABORT = 6,
+};
+
+int dfu_runtime_handler(uint8_t busid, struct usb_setup_packet *setup,
+                               uint8_t **data, uint32_t *len)
+{
+    (void)busid;
+    switch (setup->bRequest)
+    {
+    case DFU_DETACH:
+        /* bitWillDetach is set: reboot to DFU bootloader immediately.
+         * hpm_dfu_reboot_to_dfu() never returns. */
+        hpm_dfu_reboot_to_dfu();
+        return 0;
+    case DFU_GETSTATUS:
+    {
+        static uint8_t status[6] = {0, 0, 0, 0, 0, 0}; /* bStatus=OK, bwPollTimeout=0, bState=appIDLE, iString=0 */
+        *data = status;
+        *len = sizeof(status);
+        return 0;
+    }
+    case DFU_GETSTATE:
+    {
+        static uint8_t state = 0; /* appIDLE */
+        *data = &state;
+        *len = 1;
+        return 0;
+    }
+    case DFU_CLRSTATUS:
+    case DFU_ABORT:
+    case DFU_DNLOAD:
+    case DFU_UPLOAD:
+        /* Runtime mode: no operation. Acknowledge and stay in appIDLE. */
+        *len = 0;
+        return 0;
+    default:
+        return -1;
+    }
+}
+
+
 bool hpm_dfu_check_and_clear_trigger(void)
 {
     bool triggered = false;

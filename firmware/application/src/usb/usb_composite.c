@@ -48,8 +48,8 @@
                          CONFIG_CHERRYDAP_USE_MSC * MSC_DESCRIPTOR_LEN)
 
 #define INTF_NUM (1 + 2 + CONFIG_CHERRYDAP_USE_CUSTOM_HID + USBD_WEBUSB_ENABLE + USBD_DFU_RUNTIME_ENABLE + CONFIG_CHERRYDAP_USE_MSC)
-
-#define MSC_INTF_NUM (3 + CONFIG_CHERRYDAP_USE_CUSTOM_HID)
+#define HID_INTF_NUM (2 + CONFIG_CHERRYDAP_USE_CUSTOM_HID)
+#define MSC_INTF_NUM (HID_INTF_NUM + CONFIG_CHERRYDAP_USE_CUSTOM_HID)
 #define WEBUSB_INTF_NUM (MSC_INTF_NUM + CONFIG_CHERRYDAP_USE_MSC)
 #define DFU_INTF_NUM (WEBUSB_INTF_NUM + 1)
 
@@ -59,8 +59,10 @@
 #define CDC_INTF_STRING_INDEX 0x00
 
 #define WEBUSB_URL_STRINGS \
-    'c', 'h', 'e', 'r', 'r', 'y', 'd', 'a', 'p', '.', 'c', 'h', 'e', 'r', 'r', 'y', '-', 'e', 'm', 'b', 'e', 'd', 'd', 'e', 'd', '.', 'o', 'r', 'g',
+    'a', 'k', 'k', 'a', 'k', 'o', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/', 'a', 'k', 'a', 'L', 'i', 'n', 'k', 'C', 'o', 'm', 'p', 'a', 'c', 't',
+// https://akkako.github.io/akaLinkCompact/
 
+// clang-format off
 __ALIGN_BEGIN const uint8_t USBD_WinUSBDescriptorSetDescriptor[] = {
     WBVAL(WINUSB_DESCRIPTOR_SET_HEADER_SIZE), /* wLength */
     WBVAL(WINUSB_SET_HEADER_DESCRIPTOR_TYPE), /* wDescriptorType */
@@ -147,7 +149,9 @@ __ALIGN_BEGIN const uint8_t USBD_WinUSBDescriptorSetDescriptor[] = {
     '}', 0, 0, 0, 0, 0
 #endif
 };
+// clang-format on
 
+// clang-format off
 __ALIGN_BEGIN const uint8_t USBD_BinaryObjectStoreDescriptor[] = {
     0x05,                         /* bLength */
     0x0f,                         /* bDescriptorType */
@@ -158,60 +162,31 @@ __ALIGN_BEGIN const uint8_t USBD_BinaryObjectStoreDescriptor[] = {
     0x10,                           /* bDescriptorType */
     USB_DEVICE_CAPABILITY_PLATFORM, /* bDevCapabilityType */
     0x00,                           /* bReserved */
-    0x38,
-    0xB6,
-    0x08,
-    0x34, /* PlatformCapabilityUUID */
-    0xA9,
-    0x09,
-    0xA0,
-    0x47,
-    0x8B,
-    0xFD,
-    0xA0,
-    0x76,
-    0x88,
-    0x15,
-    0xB6,
-    0x65,
-    WBVAL(0x0100),
-    /* 1.00 */               /* bcdVersion */
-    USBD_WEBUSB_VENDOR_CODE, /* bVendorCode */
-    1,                       /* iLandingPage */
+    0x38, 0xB6, 0x08, 0x34,         /* PlatformCapabilityUUID */
+    0xA9, 0x09, 0xA0, 0x47,
+    0x8B, 0xFD, 0xA0, 0x76,
+    0x88, 0x15, 0xB6, 0x65,
+    WBVAL(0x0100), /* 1.00 */ /* bcdVersion */
+    USBD_WEBUSB_VENDOR_CODE,  /* bVendorCode */
+    1,                        /* iLandingPage */
 #endif
 #if (USBD_WINUSB_ENABLE)
     USBD_WINUSB_DESC_LEN,           /* bLength */
     0x10,                           /* bDescriptorType */
     USB_DEVICE_CAPABILITY_PLATFORM, /* bDevCapabilityType */
     0x00,                           /* bReserved */
-    0xDF,
-    0x60,
-    0xDD,
-    0xD8, /* PlatformCapabilityUUID */
-    0x89,
-    0x45,
-    0xC7,
-    0x4C,
-    0x9C,
-    0xD2,
-    0x65,
-    0x9D,
-    0x9E,
-    0x64,
-    0x8A,
-    0x9F,
-    0x00,
-    0x00,
-    0x03,
-    0x06,
-    /* >= Win 8.1 */                 /* dwWindowsVersion*/
-    WBVAL(USBD_WINUSB_DESC_SET_LEN), /* wDescriptorSetTotalLength */
-    USBD_WINUSB_VENDOR_CODE,         /* bVendorCode */
-    0,                               /* bAltEnumCode */
+    0xDF, 0x60, 0xDD, 0xD8,         /* PlatformCapabilityUUID */
+    0x89, 0x45, 0xC7, 0x4C,
+    0x9C, 0xD2, 0x65, 0x9D,
+    0x9E, 0x64, 0x8A, 0x9F,
+    0x00, 0x00, 0x03, 0x06, /* >= Win 8.1 */ /* dwWindowsVersion*/
+    WBVAL(USBD_WINUSB_DESC_SET_LEN),         /* wDescriptorSetTotalLength */
+    USBD_WINUSB_VENDOR_CODE,                 /* bVendorCode */
+    0,                                       /* bAltEnumCode */
 #endif
 };
-
-#define URL_DESCRIPTOR_LENGTH (3 + 29)
+// clang-format on
+#define URL_DESCRIPTOR_LENGTH (3 + 31)
 
 const uint8_t USBD_WebUSBURLDescriptor[URL_DESCRIPTOR_LENGTH] = {
     URL_DESCRIPTOR_LENGTH,
@@ -219,12 +194,13 @@ const uint8_t USBD_WebUSBURLDescriptor[URL_DESCRIPTOR_LENGTH] = {
     WEBUSB_URL_SCHEME_HTTPS,
     WEBUSB_URL_STRINGS};
 
+#if CONFIG_CHERRYDAP_USE_CUSTOM_HID
 // clang-format off
 #define HID_DESC()                                                                                                                   \
     /************** Descriptor of Custom interface *****************/                                                                \
     0x09,                                           /* bLength: Interface Descriptor size */                                         \
     USB_DESCRIPTOR_TYPE_INTERFACE,                  /* bDescriptorType: Interface descriptor type */                                 \
-    0X03,                                           /* bInterfaceNumber: Number of Interface */                                      \
+    HID_INTF_NUM,                                   /* bInterfaceNumber: Number of Interface */                                      \
     0x00,                                           /* bAlternateSetting: Alternate setting */                                       \
     0x02,                                           /* bNumEndpoints */                                                              \
     0x03,                                           /* bInterfaceClass: HID */                                                       \
@@ -253,13 +229,9 @@ const uint8_t USBD_WebUSBURLDescriptor[URL_DESCRIPTOR_LENGTH] = {
     WBVAL(HID_PACKET_SIZE),                            /* wMaxPacketSize: 4 Byte max */                                              \
     HIDRAW_INTERVAL                                    /* bInterval: Polling Interval */
 // clang-format on
+#endif
 
 static const uint8_t device_descriptor[] = {
-    /* bcdDevice bumped 0x0100 -> 0x0102: Windows includes REV_xxxx (bcdDevice)
-     * in the hardware ID, so changing it forces a brand-new device instance and
-     * a fresh MS OS 2.0 descriptor fetch. Needed so Windows picks up the new
-     * WinUSB function subset for the DFU runtime interface (intf 5) instead of
-     * reusing the cached descriptor set that only covered intf 0 and 4. */
     USB_DEVICE_DESCRIPTOR_INIT(USB_2_1, 0xEF, 0x02, 0x01, USBD_VID, USBD_PID, 0x0100, 0x01),
 };
 
@@ -331,6 +303,8 @@ static const uint8_t other_speed_config_descriptor[] = {
 #endif
 };
 
+#if CONFIG_CHERRYDAP_USE_CUSTOM_HID
+// clang-format off
 /*!< custom hid report descriptor */
 const uint8_t hid_custom_report_desc[HID_CUSTOM_REPORT_DESC_SIZE] = {
     /* USER CODE BEGIN 0 */
@@ -364,6 +338,8 @@ const uint8_t hid_custom_report_desc[HID_CUSTOM_REPORT_DESC_SIZE] = {
     /* USER CODE END 0 */
     0xC0 /*     END_COLLECTION	             */
 };
+// clang-format on
+#endif
 
 char serial_number_dynamic[33] = {0}; // Dynamic serial number
 
@@ -473,10 +449,8 @@ void usbd_event_handler(uint8_t busid, uint8_t event)
     case USBD_EVENT_CONFIGURED:
         /* setup first out ep read transfer */
         USB_RequestIdle = 0U;
-
         usbd_ep_start_read(0, DAP_OUT_EP, USB_Request[0], DAP_PACKET_SIZE);
         usbd_ep_start_read(0, CDC_OUT_EP, usb_tmpbuffer, DAP_PACKET_SIZE);
-
         break;
     case USBD_EVENT_SET_REMOTE_WAKEUP:
         break;
@@ -529,9 +503,12 @@ void usbd_cdc_acm_bulk_out(uint8_t busid, uint8_t ep, uint32_t nbytes)
 {
     (void)busid;
     chry_ringbuffer_write(&g_usbrx, usb_tmpbuffer, nbytes);
-    if (chry_ringbuffer_get_free(&g_usbrx) >= DAP_PACKET_SIZE) {
+    if (chry_ringbuffer_get_free(&g_usbrx) >= DAP_PACKET_SIZE)
+    {
         usbd_ep_start_read(0, CDC_OUT_EP, usb_tmpbuffer, DAP_PACKET_SIZE);
-    } else {
+    }
+    else
+    {
         usbrx_idle_flag = 1;
     }
 }
@@ -543,14 +520,20 @@ void usbd_cdc_acm_bulk_in(uint8_t busid, uint8_t ep, uint32_t nbytes)
     uint8_t *buffer;
 
     chry_ringbuffer_linear_read_done(&g_uartrx, nbytes);
-    if ((nbytes % DAP_PACKET_SIZE) == 0 && nbytes) {
+    if ((nbytes % DAP_PACKET_SIZE) == 0 && nbytes)
+    {
         /* send zlp */
         usbd_ep_start_write(0, CDC_IN_EP, NULL, 0);
-    } else {
-        if (chry_ringbuffer_get_used(&g_uartrx)) {
+    }
+    else
+    {
+        if (chry_ringbuffer_get_used(&g_uartrx))
+        {
             buffer = chry_ringbuffer_linear_read_setup(&g_uartrx, &size);
             usbd_ep_start_write(0, CDC_IN_EP, buffer, size);
-        } else {
+        }
+        else
+        {
             usbtx_idle_flag = 1;
         }
     }
@@ -621,61 +604,6 @@ const struct usb_descriptor cmsisdap_descriptor = {
     .bos_descriptor = &bos_desc,
     .msosv2_descriptor = &msosv2_desc,
     .webusb_url_descriptor = &webusb_url_desc};
-
-#if USBD_DFU_RUNTIME_ENABLE
-/* ---------- DFU runtime class handler ----------
- * Implements the minimal DFU runtime subset (DFU 1.1) so that dfu-util can
- * enumerate the interface and trigger a reboot into the DFU bootloader via
- * DFU_DETACH. The actual firmware transfer happens in the bootloader, not here.
- */
-enum
-{
-    DFU_DETACH = 0,
-    DFU_DNLOAD = 1,
-    DFU_UPLOAD = 2,
-    DFU_GETSTATUS = 3,
-    DFU_CLRSTATUS = 4,
-    DFU_GETSTATE = 5,
-    DFU_ABORT = 6,
-};
-
-static int dfu_runtime_handler(uint8_t busid, struct usb_setup_packet *setup,
-                               uint8_t **data, uint32_t *len)
-{
-    (void)busid;
-    switch (setup->bRequest)
-    {
-    case DFU_DETACH:
-        /* bitWillDetach is set: reboot to DFU bootloader immediately.
-         * hpm_dfu_reboot_to_dfu() never returns. */
-        hpm_dfu_reboot_to_dfu();
-        return 0;
-    case DFU_GETSTATUS:
-    {
-        static uint8_t status[6] = {0, 0, 0, 0, 0, 0}; /* bStatus=OK, bwPollTimeout=0, bState=appIDLE, iString=0 */
-        *data = status;
-        *len = sizeof(status);
-        return 0;
-    }
-    case DFU_GETSTATE:
-    {
-        static uint8_t state = 0; /* appIDLE */
-        *data = &state;
-        *len = 1;
-        return 0;
-    }
-    case DFU_CLRSTATUS:
-    case DFU_ABORT:
-    case DFU_DNLOAD:
-    case DFU_UPLOAD:
-        /* Runtime mode: no operation. Acknowledge and stay in appIDLE. */
-        *len = 0;
-        return 0;
-    default:
-        return -1;
-    }
-}
-#endif
 
 static void get_device_serial_number(void)
 {
@@ -813,7 +741,8 @@ void chry_dap_handle(void)
 void usbd_cdc_acm_set_line_coding(uint8_t busid, uint8_t intf, struct cdc_line_coding *line_coding)
 {
     (void)busid;
-    if (memcmp(line_coding, (uint8_t *)&g_cdc_lincoding, sizeof(struct cdc_line_coding)) != 0) {
+    if (memcmp(line_coding, (uint8_t *)&g_cdc_lincoding, sizeof(struct cdc_line_coding)) != 0)
+    {
         memcpy((uint8_t *)&g_cdc_lincoding, line_coding, sizeof(struct cdc_line_coding));
         config_uart = 1;
         config_uart_transfer = 0;
@@ -831,7 +760,8 @@ void chry_dap_usb2uart_handle(void)
     uint32_t size;
     uint8_t *buffer;
 
-    if (config_uart) {
+    if (config_uart)
+    {
         /* disable irq here */
         config_uart = 0;
         /* config uart here */
@@ -839,22 +769,25 @@ void chry_dap_usb2uart_handle(void)
         usbtx_idle_flag = 1;
         uarttx_idle_flag = 1;
         config_uart_transfer = 1;
-        //chry_ringbuffer_reset_read(&g_uartrx);
+        // chry_ringbuffer_reset_read(&g_uartrx);
         /* enable irq here */
     }
 
-    if (config_uart_transfer == 0) {
+    if (config_uart_transfer == 0)
+    {
         return;
     }
 
     /* why we use chry_ringbuffer_linear_read_setup?
      * becase we use dma and we do not want to use temp buffer to memcpy from ringbuffer
      *
-    */
+     */
 
     /* uartrx to usb tx */
-    if (usbtx_idle_flag) {
-        if (chry_ringbuffer_get_used(&g_uartrx)) {
+    if (usbtx_idle_flag)
+    {
+        if (chry_ringbuffer_get_used(&g_uartrx))
+        {
             usbtx_idle_flag = 0;
             /* start first transfer */
             buffer = chry_ringbuffer_linear_read_setup(&g_uartrx, &size);
@@ -863,8 +796,10 @@ void chry_dap_usb2uart_handle(void)
     }
 
     /* usbrx to uart tx */
-    if (uarttx_idle_flag) {
-        if (chry_ringbuffer_get_used(&g_usbrx)) {
+    if (uarttx_idle_flag)
+    {
+        if (chry_ringbuffer_get_used(&g_usbrx))
+        {
             uarttx_idle_flag = 0;
             /* start first transfer */
             buffer = chry_ringbuffer_linear_read_setup(&g_usbrx, &size);
@@ -873,8 +808,10 @@ void chry_dap_usb2uart_handle(void)
     }
 
     /* check whether usb rx ringbuffer have space to store */
-    if (usbrx_idle_flag) {
-        if (chry_ringbuffer_get_free(&g_usbrx) >= DAP_PACKET_SIZE) {
+    if (usbrx_idle_flag)
+    {
+        if (chry_ringbuffer_get_free(&g_usbrx) >= DAP_PACKET_SIZE)
+        {
             usbrx_idle_flag = 0;
             usbd_ep_start_read(0, CDC_OUT_EP, usb_tmpbuffer, DAP_PACKET_SIZE);
         }
@@ -889,11 +826,13 @@ void chry_dap_usb2uart_uart_send_complete(uint32_t size)
 
     chry_ringbuffer_linear_read_done(&g_usbrx, size);
 
-    if (chry_ringbuffer_get_used(&g_usbrx)) {
+    if (chry_ringbuffer_get_used(&g_usbrx))
+    {
         buffer = chry_ringbuffer_linear_read_setup(&g_usbrx, &size);
         chry_dap_usb2uart_uart_send_bydma(buffer, size);
-    } else {
+    }
+    else
+    {
         uarttx_idle_flag = 1;
     }
 }
-

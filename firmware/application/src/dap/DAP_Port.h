@@ -2,11 +2,7 @@
 #define __DAP_PORT_H__
 
 #include "DAP_config.h"
-
-#include "ch32v30x_gpio.h"
-#include "ch32v30x_rcc.h"
-#include "drv_spi.h"
-#include "drv_usb2uart.h"
+#include "board.h"
 
 /**
  * @brief DAP 获取厂商字符串
@@ -295,7 +291,6 @@ __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void)
     GPIO_ResetBits(SWD_GPIO, SWDO_PIN);
 }
 
-#include "drv_spi.h"
 
 __STATIC_FORCEINLINE void PIN_SWDIR_OUTPUT(void)
 {

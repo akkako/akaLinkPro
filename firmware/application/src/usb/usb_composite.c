@@ -409,8 +409,8 @@ static volatile uint16_t USB_ResponseCountO = 0; // Response Count Out
 static volatile uint8_t USB_ResponseIdle = 1;    // Response Idle  Flag
 
 static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t USB_Request[DAP_PACKET_COUNT][DAP_PACKET_SIZE];  // Request  Buffer
-static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t USB_Response[DAP_PACKET_COUNT][DAP_PACKET_SIZE]; // Response Buffer
-static uint16_t USB_RespSize[DAP_PACKET_COUNT];                                                        // Response Size
+// static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t USB_Response[DAP_PACKET_COUNT][DAP_PACKET_SIZE]; // Response Buffer
+// static uint16_t USB_RespSize[DAP_PACKET_COUNT];                                                        // Response Size
 
 volatile struct cdc_line_coding g_cdc_lincoding;
 volatile uint8_t config_uart = 0;

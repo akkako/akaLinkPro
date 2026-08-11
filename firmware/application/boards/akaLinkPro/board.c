@@ -237,37 +237,6 @@ void board_delay_ms(uint32_t ms)
     clock_cpu_delay_ms(ms);
 }
 
-#if !defined(NO_BOARD_TIMER_SUPPORT) || !NO_BOARD_TIMER_SUPPORT
-static board_timer_cb timer_cb;
-SDK_DECLARE_EXT_ISR_M(BOARD_CALLBACK_TIMER_IRQ, board_timer_isr)
-void board_timer_isr(void)
-{
-    if (gptmr_check_status(BOARD_CALLBACK_TIMER, GPTMR_CH_RLD_STAT_MASK(BOARD_CALLBACK_TIMER_CH))) {
-        gptmr_clear_status(BOARD_CALLBACK_TIMER, GPTMR_CH_RLD_STAT_MASK(BOARD_CALLBACK_TIMER_CH));
-        timer_cb();
-    }
-}
-
-void board_timer_create(uint32_t ms, board_timer_cb cb)
-{
-    uint32_t gptmr_freq;
-    gptmr_channel_config_t config;
-
-    timer_cb = cb;
-    gptmr_channel_get_default_config(BOARD_CALLBACK_TIMER, &config);
-
-    init_gptmr1_clock();
-    gptmr_freq = clock_get_frequency(BOARD_CALLBACK_TIMER_CLK_NAME);
-
-    config.reload = gptmr_freq / 1000 * ms;
-    gptmr_channel_config(BOARD_CALLBACK_TIMER, BOARD_CALLBACK_TIMER_CH, &config, false);
-    gptmr_enable_irq(BOARD_CALLBACK_TIMER, GPTMR_CH_RLD_IRQ_MASK(BOARD_CALLBACK_TIMER_CH));
-    intc_m_enable_irq_with_priority(BOARD_CALLBACK_TIMER_IRQ, 1);
-
-    gptmr_start_counter(BOARD_CALLBACK_TIMER, BOARD_CALLBACK_TIMER_CH);
-}
-#endif
-
 void board_init_gpio_pins(void)
 {
     init_gpio_pins();
@@ -325,7 +294,7 @@ void init_uart_pins(UART_Type *ptr)
     if (ptr == HPM_UART0) {
         init_uart0_pins();
     } else if (ptr == HPM_UART3) {
-        init_uart3_pins();
+        init_uart3_pins_as_uart();
     } else {
         ;
     }
@@ -335,7 +304,7 @@ void init_uart_pins(UART_Type *ptr)
 void init_uart_pin_as_gpio(UART_Type *ptr)
 {
     if (ptr == HPM_UART3) {
-        init_uart3_pin_as_gpio();
+        init_uart3_pin_as_gpio_low();
     }
 }
 void init_usb_pins(USB_Type *ptr)

@@ -2,7 +2,6 @@
 #include <string.h>
 #include "DAP_Port.h"
 #include "DAP.h"
-#include "app_param.h"
 
 // 检查 DAP_PACKET_SIZE 是否合规
 #if (DAP_PACKET_SIZE < 64U)

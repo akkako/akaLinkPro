@@ -44,6 +44,7 @@ sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/usb)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/led)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/api)
+sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap)
 
 sdk_app_src(src/main.c)
 sdk_app_src(src/led/ws2812.c)

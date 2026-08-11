@@ -54,6 +54,9 @@ sdk_app_src(src/usb/hid_interface.c)
 sdk_app_src(src/usb/cdc_interface.c)
 sdk_app_src(src/usb/msc_interface.c)
 sdk_app_src(src/api/api_param.c)
-
+sdk_app_src(src/dap/DAP.c)
+sdk_app_src(src/dap/SW_DP/SW_DP.c)
+sdk_app_src(src/dap/SW_DP/SW_DP_GPIO.c)
+sdk_app_src(src/dap/JTAG_DP/JTAG_DP.c)
 
 # generate_ide_projects()

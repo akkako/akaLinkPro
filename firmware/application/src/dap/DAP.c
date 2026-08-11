@@ -1850,11 +1850,6 @@ uint32_t DAP_ExecuteCommand(const uint8_t *request, uint8_t *response)
 void DAP_Setup(uint8_t support_jtag)
 {
     // Default settings
-    if (g_param.swd_sim_mode == 0)
-    {
-        DAP_Data.swd_spi_sim = 1;
-    }
-    else
     {
         DAP_Data.swd_spi_sim = 0;
     }

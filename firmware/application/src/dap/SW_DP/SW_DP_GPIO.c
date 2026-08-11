@@ -1,6 +1,5 @@
 #include "DAP_Port.h"
 #include "DAP.h"
-#include "drv_spi.h"
 
 static uint32_t dummy = 0xFFFFFFFF;
 
@@ -20,7 +19,7 @@ static inline void SW_CLOCK_CYCLE()
     PIN_SWCLK_TCK_CLR();
     PIN_DELAY();
     PIN_SWCLK_TCK_SET();
-    // PIN_DELAY();
+    PIN_DELAY();
 }
 
 static inline void SW_WRITE_BIT(uint32_t bit)
@@ -29,7 +28,7 @@ static inline void SW_WRITE_BIT(uint32_t bit)
     PIN_SWCLK_TCK_CLR();
     PIN_DELAY();
     PIN_SWCLK_TCK_SET();
-    // PIN_DELAY();
+    PIN_DELAY();
 }
 
 static inline uint32_t SW_READ_BIT()
@@ -39,7 +38,7 @@ static inline uint32_t SW_READ_BIT()
     PIN_DELAY();
     bit = PIN_SWDIO_IN();
     PIN_SWCLK_TCK_SET();
-    // PIN_DELAY();
+    PIN_DELAY();
     return bit;
 }
 
@@ -49,7 +48,7 @@ static inline uint32_t SW_READ_BIT_OPT()
     PIN_SWCLK_TCK_CLR();
     bit = PIN_SWDIO_IN();
     PIN_SWCLK_TCK_SET();
-    // PIN_DELAY();
+    PIN_DELAY();
     return bit;
 }
 
@@ -265,7 +264,6 @@ uint8_t SWD_Read_GPIO(uint8_t header, uint32_t *data)
 
 uint8_t SWD_Write_GPIO(uint8_t header, uint32_t *data)
 {
-#if 0
     register uint32_t ack;
     register uint32_t ack1;
     register uint32_t ack2;
@@ -361,7 +359,5 @@ uint8_t SWD_Write_GPIO(uint8_t header, uint32_t *data)
         PIN_SWDIR_OUTPUT();
         return ((uint8_t)ack);
     }
-#else
     return 0;
-#endif
 }

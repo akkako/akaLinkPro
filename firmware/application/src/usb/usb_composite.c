@@ -1,6 +1,7 @@
 #include "usb_composite.h"
 #include "hpm_dfu_trigger.h"
 #include "hpm_otp_drv.h"
+#include "DAP.h"
 
 #define CMSIS_DAP_INTERFACE_SIZE (9 + 7 + 7)
 #define CUSTOM_HID_LEN (9 + 9 + 7 + 7)
@@ -409,8 +410,8 @@ static volatile uint16_t USB_ResponseCountO = 0; // Response Count Out
 static volatile uint8_t USB_ResponseIdle = 1;    // Response Idle  Flag
 
 static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t USB_Request[DAP_PACKET_COUNT][DAP_PACKET_SIZE];  // Request  Buffer
-// static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t USB_Response[DAP_PACKET_COUNT][DAP_PACKET_SIZE]; // Response Buffer
-// static uint16_t USB_RespSize[DAP_PACKET_COUNT];                                                        // Response Size
+static USB_NOCACHE_RAM_SECTION USB_MEM_ALIGNX uint8_t USB_Response[DAP_PACKET_COUNT][DAP_PACKET_SIZE]; // Response Buffer
+static uint16_t USB_RespSize[DAP_PACKET_COUNT];                                                        // Response Size
 
 volatile struct cdc_line_coding g_cdc_lincoding;
 volatile uint8_t config_uart = 0;
@@ -464,39 +465,39 @@ void usbd_event_handler(uint8_t busid, uint8_t event)
 
 void dap_out_callback(uint8_t busid, uint8_t ep, uint32_t nbytes)
 {
-    // (void)busid;
-    // if (USB_Request[USB_RequestIndexI][0] == ID_DAP_TransferAbort) {
-    //     DAP_TransferAbort = 1U;
-    // } else {
-    //     USB_RequestIndexI++;
-    //     if (USB_RequestIndexI == DAP_PACKET_COUNT) {
-    //         USB_RequestIndexI = 0U;
-    //     }
-    //     USB_RequestCountI++;
-    // }
+    (void)busid;
+    if (USB_Request[USB_RequestIndexI][0] == ID_DAP_TransferAbort) {
+        DAP_Data.transfer_abort = 1U;
+    } else {
+        USB_RequestIndexI++;
+        if (USB_RequestIndexI == DAP_PACKET_COUNT) {
+            USB_RequestIndexI = 0U;
+        }
+        USB_RequestCountI++;
+    }
 
-    // // Start reception of next request packet
-    // if ((uint16_t)(USB_RequestCountI - USB_RequestCountO) != DAP_PACKET_COUNT) {
-    //     usbd_ep_start_read(0, DAP_OUT_EP, USB_Request[USB_RequestIndexI], DAP_PACKET_SIZE);
-    // } else {
-    //     USB_RequestIdle = 1U;
-    // }
+    // Start reception of next request packet
+    if ((uint16_t)(USB_RequestCountI - USB_RequestCountO) != DAP_PACKET_COUNT) {
+        usbd_ep_start_read(0, DAP_OUT_EP, USB_Request[USB_RequestIndexI], DAP_PACKET_SIZE);
+    } else {
+        USB_RequestIdle = 1U;
+    }
 }
 
 void dap_in_callback(uint8_t busid, uint8_t ep, uint32_t nbytes)
 {
-    // (void)busid;
-    // if (USB_ResponseCountI != USB_ResponseCountO) {
-    //     // Load data from response buffer to be sent back
-    //     usbd_ep_start_write(0, DAP_IN_EP, USB_Response[USB_ResponseIndexO], USB_RespSize[USB_ResponseIndexO]);
-    //     USB_ResponseIndexO++;
-    //     if (USB_ResponseIndexO == DAP_PACKET_COUNT) {
-    //         USB_ResponseIndexO = 0U;
-    //     }
-    //     USB_ResponseCountO++;
-    // } else {
-    //     USB_ResponseIdle = 1U;
-    // }
+    (void)busid;
+    if (USB_ResponseCountI != USB_ResponseCountO) {
+        // Load data from response buffer to be sent back
+        usbd_ep_start_write(0, DAP_IN_EP, USB_Response[USB_ResponseIndexO], USB_RespSize[USB_ResponseIndexO]);
+        USB_ResponseIndexO++;
+        if (USB_ResponseIndexO == DAP_PACKET_COUNT) {
+            USB_ResponseIndexO = 0U;
+        }
+        USB_ResponseCountO++;
+    } else {
+        USB_ResponseIdle = 1U;
+    }
 }
 
 void usbd_cdc_acm_bulk_out(uint8_t busid, uint8_t ep, uint32_t nbytes)
@@ -675,7 +676,7 @@ void chry_dap_init(uint8_t busid, uint32_t reg_base)
     usbd_initialize(busid, reg_base, usbd_event_handler);
 }
 
-#if 0
+#if 1
 void chry_dap_handle(void)
 {
     uint32_t n;

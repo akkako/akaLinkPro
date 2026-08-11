@@ -7,6 +7,9 @@
 #include "usbd_hid.h"
 #include "chry_ringbuffer.h"
 #include "cdc_interface.h"
+#include "DAP_config.h"
+#include "DAP_Port.h"
+#include "DAP.h"
 
 #define DAP_IN_EP  0x81
 #define DAP_OUT_EP 0x02

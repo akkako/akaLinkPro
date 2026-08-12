@@ -63,11 +63,6 @@
 #define ID_DAP_SWO_Status               0x1BU
 #define ID_DAP_SWO_ExtendedStatus       0x1EU
 #define ID_DAP_SWO_Data                 0x1CU
-#define ID_DAP_UART_Transport           0x1FU
-#define ID_DAP_UART_Configure           0x20U
-#define ID_DAP_UART_Control             0x22U
-#define ID_DAP_UART_Status              0x23U
-#define ID_DAP_UART_Transfer            0x21U
 
 #define ID_DAP_QueueCommands            0x7EU
 #define ID_DAP_ExecuteCommands          0x7FU
@@ -145,31 +140,6 @@
 #define DAP_SWO_STREAM_ERROR            (1U<<6)
 #define DAP_SWO_BUFFER_OVERRUN          (1U<<7)
 
-// DAP UART Transport
-#define DAP_UART_TRANSPORT_NONE         0U
-#define DAP_UART_TRANSPORT_USB_COM_PORT 1U
-#define DAP_UART_TRANSPORT_DAP_COMMAND  2U
-
-// DAP UART Control
-#define DAP_UART_CONTROL_RX_ENABLE      (1U<<0)
-#define DAP_UART_CONTROL_RX_DISABLE     (1U<<1)
-#define DAP_UART_CONTROL_RX_BUF_FLUSH   (1U<<2)
-#define DAP_UART_CONTROL_TX_ENABLE      (1U<<4)
-#define DAP_UART_CONTROL_TX_DISABLE     (1U<<5)
-#define DAP_UART_CONTROL_TX_BUF_FLUSH   (1U<<6)
-
-// DAP UART Status
-#define DAP_UART_STATUS_RX_ENABLED      (1U<<0)
-#define DAP_UART_STATUS_RX_DATA_LOST    (1U<<1)
-#define DAP_UART_STATUS_FRAMING_ERROR   (1U<<2)
-#define DAP_UART_STATUS_PARITY_ERROR    (1U<<3)
-#define DAP_UART_STATUS_TX_ENABLED      (1U<<4)
-
-// DAP UART Configure Error
-#define DAP_UART_CFG_ERROR_DATA_BITS    (1U<<0)
-#define DAP_UART_CFG_ERROR_PARITY       (1U<<1)
-#define DAP_UART_CFG_ERROR_STOP_BITS    (1U<<2)
-
 // Debug Port Register Addresses
 #define DP_IDCODE                       0x00U   // IDCODE Register (SW Read only)
 #define DP_ABORT                        0x00U   // Abort Register (SW Write only)
@@ -233,9 +203,7 @@ typedef struct {
 #endif
 } DAP_Data_t;
 
-extern          DAP_Data_t DAP_Data;            // DAP Data
-extern volatile uint8_t    DAP_TransferAbort;   // Transfer Abort Flag
-
+extern DAP_Data_t DAP_Data;            // DAP Data
 
 #ifdef  __cplusplus
 extern "C"

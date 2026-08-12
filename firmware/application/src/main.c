@@ -16,6 +16,7 @@
 #include "hpm_dfu_trigger.h"
 #include "ws2812.h"
 #include "api_param.h"
+#include "usb_composite.h"
 
 int main(void)
 {
@@ -23,21 +24,16 @@ int main(void)
     WS2812_Init();
     api_param_load();
 
-    /* USB composite device: CMSIS-DAP (enumeration) + DFU runtime interface.
-     * dfu-util -e targets the DFU runtime interface and reboots to bootloader. */
-    extern void chry_dap_init(uint8_t busid, uint32_t reg_base);
     board_init_usb((USB_Type *)CONFIG_HPM_USBD_BASE);
     intc_set_irq_priority(CONFIG_HPM_USBD_IRQn, 2);
     chry_dap_init(0, CONFIG_HPM_USBD_BASE);
-
-    int key_press_count = 0;
 
     WS2812_SetColor(0xFF / 8);
 
     while (1)
     {
         /* Key detection: check every 100ms, 5 consecutive presses -> boot */
-#ifdef BOARD_APP_GPIO_CTRL
+#if 0
         uint8_t key = gpio_read_pin(BOARD_APP_GPIO_CTRL,
                                     BOARD_APP_GPIO_INDEX,
                                     BOARD_APP_GPIO_PIN);
@@ -64,7 +60,8 @@ int main(void)
             key_press_count = 0;
         }
 #endif
-        board_delay_ms(100);
+        chry_dap_handle();
+        chry_dap_usb2uart_handle();
     }
     return 0;
 }

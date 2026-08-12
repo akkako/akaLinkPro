@@ -94,7 +94,7 @@
 /// 命令和响应数据的最大包缓冲区数量。
 /// 此配置设置用于优化与调试器的通信性能，并取决于 USB 外设。对于 RAM 或 USB 缓冲区有限的设备，可以
 /// 减小此设置（有效范围为 1 .. 255）。
-#define DAP_PACKET_COUNT        8U              ///< 指定缓冲的包数量。
+#define DAP_PACKET_COUNT        4U              ///< 指定缓冲的包数量。
 
 /// 指示是否支持 UART 串行线输出 (SWO) 跟踪。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
@@ -119,41 +119,10 @@
 /// 测试域定时器的时钟频率。定时器值通过 \ref TIMESTAMP_GET 返回。
 #define TIMESTAMP_CLOCK         100000000U      ///< 时间戳时钟（单位：Hz，0 = 不支持时间戳）。
 
-/// 指示是否支持 UART 通信端口。
-/// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
-#define DAP_UART                0               ///< DAP UART：1 = 可用，0 = 不可用。
-
-/// UART 通信端口的 USART 驱动实例编号。
-#define DAP_UART_DRIVER         1               ///< USART 驱动实例编号 (Driver_USART#)。
-
-/// UART 接收缓冲区大小。
-#define DAP_UART_RX_BUFFER_SIZE 1024U           ///< UART 接收缓冲区大小（单位：字节，必须为 2^n）。
-
-/// UART 发送缓冲区大小。
-#define DAP_UART_TX_BUFFER_SIZE 1024U           ///< UART 发送缓冲区大小（单位：字节，必须为 2^n）。
-
 /// 指示是否支持通过 USB COM 端口进行 UART 通信。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
 #define DAP_UART_USB_COM_PORT   1               ///< USB COM 端口：1 = 可用，0 = 不可用。
 
-/// 调试探针单元连接到固定的目标设备。
-/// 调试探针单元可能是评估板的一部分，并始终连接到一个固定的
-/// 已知设备。在这种情况下，将存储设备供应商、设备名称、板卡供应商和板卡名称字符串，
-/// 调试器或 IDE 可使用这些字符串来配置设备参数。
-#define TARGET_FIXED            0               ///< 目标：1 = 已知，0 = 未知；
-
-#define TARGET_DEVICE_VENDOR    "Arm"           ///< 指示芯片供应商的字符串
-#define TARGET_DEVICE_NAME      "Cortex-M"      ///< 指示目标设备的字符串
-#define TARGET_BOARD_VENDOR     "Arm"           ///< 指示板卡供应商的字符串
-#define TARGET_BOARD_NAME       "Arm board"     ///< 指示板卡名称的字符串
-
-#if TARGET_FIXED != 0
-#include <string.h>
-static const char TargetDeviceVendor [] = TARGET_DEVICE_VENDOR;
-static const char TargetDeviceName   [] = TARGET_DEVICE_NAME;
-static const char TargetBoardVendor  [] = TARGET_BOARD_VENDOR;
-static const char TargetBoardName    [] = TARGET_BOARD_NAME;
-#endif
 
 /** 获取供应商名称字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
@@ -187,16 +156,8 @@ __STATIC_INLINE uint8_t DAP_GetSerNumString (char *str) {
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
 __STATIC_INLINE uint8_t DAP_GetTargetDeviceVendorString (char *str) {
-#if TARGET_FIXED != 0
-  uint8_t len;
-
-  strcpy(str, TargetDeviceVendor);
-  len = (uint8_t)(strlen(TargetDeviceVendor) + 1U);
-  return (len);
-#else
   (void)str;
   return (0U);
-#endif
 }
 
 /** 获取目标设备名称字符串。
@@ -204,16 +165,8 @@ __STATIC_INLINE uint8_t DAP_GetTargetDeviceVendorString (char *str) {
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
 __STATIC_INLINE uint8_t DAP_GetTargetDeviceNameString (char *str) {
-#if TARGET_FIXED != 0
-  uint8_t len;
-
-  strcpy(str, TargetDeviceName);
-  len = (uint8_t)(strlen(TargetDeviceName) + 1U);
-  return (len);
-#else
   (void)str;
   return (0U);
-#endif
 }
 
 /** 获取目标板卡供应商字符串。
@@ -221,16 +174,8 @@ __STATIC_INLINE uint8_t DAP_GetTargetDeviceNameString (char *str) {
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
 __STATIC_INLINE uint8_t DAP_GetTargetBoardVendorString (char *str) {
-#if TARGET_FIXED != 0
-  uint8_t len;
-
-  strcpy(str, TargetBoardVendor);
-  len = (uint8_t)(strlen(TargetBoardVendor) + 1U);
-  return (len);
-#else
   (void)str;
   return (0U);
-#endif
 }
 
 /** 获取目标板卡名称字符串。
@@ -238,16 +183,8 @@ __STATIC_INLINE uint8_t DAP_GetTargetBoardVendorString (char *str) {
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
 __STATIC_INLINE uint8_t DAP_GetTargetBoardNameString (char *str) {
-#if TARGET_FIXED != 0
-  uint8_t len;
-
-  strcpy(str, TargetBoardName);
-  len = (uint8_t)(strlen(TargetBoardName) + 1U);
-  return (len);
-#else
   (void)str;
   return (0U);
-#endif
 }
 
 /** 获取产品固件版本字符串。

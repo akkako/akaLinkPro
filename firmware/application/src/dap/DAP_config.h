@@ -28,6 +28,9 @@
 #ifndef __DAP_CONFIG_H__
 #define __DAP_CONFIG_H__
 
+#include "hpm_common.h"
+#include "pinmux.h"
+#include "board.h"
 
 //**************************************************************************************************
 /**
@@ -54,16 +57,17 @@
 #define __STATIC_FORCEINLINE static inline
 #endif
 
+// clang-format off
 
 /// 调试探针单元中使用的 Cortex-M MCU 的处理器时钟。
 /// 该值用于计算 SWD/JTAG 时钟速度。
-#define CPU_CLOCK               100000000U      ///< 指定 CPU 时钟（单位：Hz）。
+#define CPU_CLOCK               360000000U      ///< 指定 CPU 时钟（单位：Hz）。
 
 /// I/O 端口写操作所需的处理器周期数。
 /// 该值用于计算在调试探针单元中由 Cortex-M MCU 通过 I/O 端口写操作生成的 SWD/JTAG 时钟速度。大多数 Cortex-M 处理器
 /// 执行一次 I/O 端口写操作需要 2 个处理器周期。如果调试探针单元使用
 /// 仅具有高速外设 I/O 的 Cortex-M0+ 处理器，则可能只需 1 个处理器周期。
-#define IO_PORT_WRITE_CYCLES    2U              ///< I/O 周期：2=默认，1=Cortex-M0+ 快速 I/O。
+#define IO_PORT_WRITE_CYCLES    3U              ///< I/O 周期：2=默认，1=Cortex-M0+ 快速 I/O。
 
 /// 指示在调试访问端口上是否支持串行线调试 (SWD) 通信模式。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
@@ -71,7 +75,7 @@
 
 /// 指示在调试端口上是否支持 JTAG 通信模式。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
-#define DAP_JTAG                1               ///< JTAG 模式：1 = 可用，0 = 不可用。
+#define DAP_JTAG                0               ///< JTAG 模式：1 = 可用，0 = 不可用。
 
 /// 配置连接到调试访问端口的扫描链上 JTAG 设备的最大数量。
 /// 此设置影响调试探针单元的 RAM 需求。有效范围为 1 .. 255。
@@ -117,87 +121,110 @@
 #define SWO_STREAM              0               ///< SWO 流式跟踪：1 = 可用，0 = 不可用。
 
 /// 测试域定时器的时钟频率。定时器值通过 \ref TIMESTAMP_GET 返回。
-#define TIMESTAMP_CLOCK         100000000U      ///< 时间戳时钟（单位：Hz，0 = 不支持时间戳）。
+#define TIMESTAMP_CLOCK         0U      ///< 时间戳时钟（单位：Hz，0 = 不支持时间戳）。
 
 /// 指示是否支持通过 USB COM 端口进行 UART 通信。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
 #define DAP_UART_USB_COM_PORT   1               ///< USB COM 端口：1 = 可用，0 = 不可用。
 
+// clang-format on
 
 /** 获取供应商名称字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetVendorString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetVendorString(char *str)
+{
+    (void)str;
+    return (0U);
 }
 
 /** 获取产品名称字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetProductString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetProductString(char *str)
+{
+    (void)str;
+    return (0U);
 }
 
 /** 获取序列号字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetSerNumString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetSerNumString(char *str)
+{
+    (void)str;
+    return (0U);
 }
 
 /** 获取目标设备供应商字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetTargetDeviceVendorString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetTargetDeviceVendorString(char *str)
+{
+    (void)str;
+    return (0U);
 }
 
 /** 获取目标设备名称字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetTargetDeviceNameString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetTargetDeviceNameString(char *str)
+{
+    (void)str;
+    return (0U);
 }
 
 /** 获取目标板卡供应商字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetTargetBoardVendorString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetTargetBoardVendorString(char *str)
+{
+    (void)str;
+    return (0U);
 }
 
 /** 获取目标板卡名称字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetTargetBoardNameString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetTargetBoardNameString(char *str)
+{
+    (void)str;
+    return (0U);
 }
 
 /** 获取产品固件版本字符串。
 \param str 指向用于存储字符串的缓冲区指针（最多 60 个字符）。
 \return 字符串长度（包括终止的 NULL 字符）或 0（无字符串）。
 */
-__STATIC_INLINE uint8_t DAP_GetProductFirmwareVersionString (char *str) {
-  (void)str;
-  return (0U);
+__STATIC_INLINE uint8_t DAP_GetProductFirmwareVersionString(char *str)
+{
+    (void)str;
+    return (0U);
+}
+
+#include "hpm_gpio_drv.h"
+#include "hpm_gpiom_drv.h"
+
+__STATIC_INLINE void gpiom_config_pin_to_fgpio(uint16_t gpio_index)
+{
+    gpiom_set_pin_controller(PIN_GPIOM_BASE,
+                             GPIO_GET_PORT_INDEX(gpio_index),
+                             GPIO_GET_PIN_INDEX(gpio_index),
+                             PIN_GPIOM);
+    gpiom_enable_pin_visibility(PIN_GPIOM_BASE,
+                                GPIO_GET_PORT_INDEX(gpio_index),
+                                GPIO_GET_PIN_INDEX(gpio_index),
+                                PIN_GPIOM);
 }
 
 ///@}
-
 
 //**************************************************************************************************
 /**
@@ -234,7 +261,6 @@ DAP 硬件 I/O 引脚访问函数
  - \ref PIN_SWDIO_OUT 以尽可能高的速度向 SWDIO I/O 引脚写入。
 */
 
-
 // 配置 DAP I/O 引脚 ------------------------------
 
 /** 设置 JTAG I/O 引脚：TCK、TMS、TDI、TDO、nTRST 和 nRESET。
@@ -242,8 +268,9 @@ DAP 硬件 I/O 引脚访问函数
  - TCK、TMS、TDI、nTRST、nRESET 设置为输出模式并置为高电平。
  - TDO 设置为输入模式。
 */
-__STATIC_INLINE void PORT_JTAG_SETUP (void) {
-  ;
+__STATIC_INLINE void PORT_JTAG_SETUP(void)
+{
+    ;
 }
 
 /** 设置 SWD I/O 引脚：SWCLK、SWDIO 和 nRESET。
@@ -251,131 +278,164 @@ __STATIC_INLINE void PORT_JTAG_SETUP (void) {
  - SWCLK、SWDIO、nRESET 设置为输出模式并置为默认高电平。
  - TDI、nTRST 设置为高阻模式（在 SWD 模式下未使用这些引脚）。
 */
-__STATIC_INLINE void PORT_SWD_SETUP (void) {
-  ;
+__STATIC_INLINE void PORT_SWD_SETUP(void)
+{
+    // 设置 IO 由 FGPIO 驱动
+    gpiom_config_pin_to_fgpio(BOARD_PIN_JTCK);
+    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_IN);
+    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
+    gpiom_config_pin_to_fgpio(BOARD_PIN_JMS_DIR);
+    gpiom_config_pin_to_fgpio(BOARD_PIN_nRESET);
+
+    // 设置输入输出模式
+    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
+    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
+    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JMS_DIR));
+    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
+    gpio_set_pin_input(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN));
+
+    // 设置默认输出电平
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JMS_DIR), 1);
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
 }
 
 /** 禁用 JTAG/SWD I/O 引脚。
 禁用 DAP 硬件 I/O 引脚，配置如下：
  - TCK/SWCLK、TMS/SWDIO、TDI、TDO、nTRST、nRESET 设置为高阻模式。
 */
-__STATIC_INLINE void PORT_OFF (void) {
-  ;
+__STATIC_INLINE void PORT_OFF(void)
+{
+    // 设置默认输出电平
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JMS_DIR), 1);
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
 }
-
 
 // SWCLK/TCK I/O 引脚 -------------------------------------
 
 /** SWCLK/TCK I/O 引脚：获取输入。
 \return SWCLK/TCK DAP 硬件 I/O 引脚的当前状态。
 */
-__STATIC_FORCEINLINE uint32_t PIN_SWCLK_TCK_IN  (void) {
-  return (0U);
+__STATIC_FORCEINLINE uint32_t PIN_SWCLK_TCK_IN(void)
+{
+    return (gpio_get_pin_output_status(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK)));
 }
 
 /** SWCLK/TCK I/O 引脚：设置输出为高电平。
 将 SWCLK/TCK DAP 硬件 I/O 引脚设置为高电平。
 */
-__STATIC_FORCEINLINE void     PIN_SWCLK_TCK_SET (void) {
-  ;
+__STATIC_FORCEINLINE void PIN_SWCLK_TCK_SET(void)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
 }
 
 /** SWCLK/TCK I/O 引脚：设置输出为低电平。
 将 SWCLK/TCK DAP 硬件 I/O 引脚设置为低电平。
 */
-__STATIC_FORCEINLINE void     PIN_SWCLK_TCK_CLR (void) {
-  ;
+__STATIC_FORCEINLINE void PIN_SWCLK_TCK_CLR(void)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 0);
 }
-
 
 // SWDIO/TMS 引脚 I/O --------------------------------------
 
 /** SWDIO/TMS I/O 引脚：获取输入。
 \return SWDIO/TMS DAP 硬件 I/O 引脚的当前状态。
 */
-__STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN  (void) {
-  return (0U);
+__STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void)
+{
+    return (gpio_read_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
 }
 
 /** SWDIO/TMS I/O 引脚：设置输出为高电平。
 将 SWDIO/TMS DAP 硬件 I/O 引脚设置为高电平。
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_TMS_SET (void) {
-  ;
+__STATIC_FORCEINLINE void PIN_SWDIO_TMS_SET(void)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
 }
 
 /** SWDIO/TMS I/O 引脚：设置输出为低电平。
 将 SWDIO/TMS DAP 硬件 I/O 引脚设置为低电平。
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_TMS_CLR (void) {
-  ;
+__STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 0);
 }
 
 /** SWDIO I/O 引脚：获取输入（仅在 SWD 模式下使用）。
 \return SWDIO DAP 硬件 I/O 引脚的当前状态。
 */
-__STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN      (void) {
-  return (0U);
+__STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
+{
+    return (gpio_read_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
 }
 
 /** SWDIO I/O 引脚：设置输出（仅在 SWD 模式下使用）。
 \param bit SWDIO DAP 硬件 I/O 引脚的输出值。
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_OUT     (uint32_t bit) {
-  ;
+__STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), bit & 0x01);
 }
 
 /** SWDIO I/O 引脚：切换到输出模式（仅在 SWD 模式下使用）。
 配置 SWDIO DAP 硬件 I/O 引脚为输出模式。此函数在
 调用 \ref PIN_SWDIO_OUT 函数之前被调用。
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_OUT_ENABLE  (void) {
-  ;
+__STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JMS_DIR), 1);
 }
 
 /** SWDIO I/O 引脚：切换到输入模式（仅在 SWD 模式下使用）。
 配置 SWDIO DAP 硬件 I/O 引脚为输入模式。此函数在
 调用 \ref PIN_SWDIO_IN 函数之前被调用。
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_OUT_DISABLE (void) {
-  ;
+__STATIC_FORCEINLINE void PIN_SWDIO_OUT_DISABLE(void)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JMS_DIR), 0);
 }
-
 
 // TDI 引脚 I/O ---------------------------------------------
 
 /** TDI I/O 引脚：获取输入。
 \return TDI DAP 硬件 I/O 引脚的当前状态。
 */
-__STATIC_FORCEINLINE uint32_t PIN_TDI_IN  (void) {
-  return (0U);
+__STATIC_FORCEINLINE uint32_t PIN_TDI_IN(void)
+{
+    return (0U);
 }
 
 /** TDI I/O 引脚：设置输出。
 \param bit TDI DAP 硬件 I/O 引脚的输出值。
 */
-__STATIC_FORCEINLINE void     PIN_TDI_OUT (uint32_t bit) {
-  ;
+__STATIC_FORCEINLINE void PIN_TDI_OUT(uint32_t bit)
+{
+    ;
 }
-
 
 // TDO 引脚 I/O ---------------------------------------------
 
 /** TDO I/O 引脚：获取输入。
 \return TDO DAP 硬件 I/O 引脚的当前状态。
 */
-__STATIC_FORCEINLINE uint32_t PIN_TDO_IN  (void) {
-  return (0U);
+__STATIC_FORCEINLINE uint32_t PIN_TDO_IN(void)
+{
+    return (0U);
 }
-
 
 // nTRST 引脚 I/O -------------------------------------------
 
 /** nTRST I/O 引脚：获取输入。
 \return nTRST DAP 硬件 I/O 引脚的当前状态。
 */
-__STATIC_FORCEINLINE uint32_t PIN_nTRST_IN   (void) {
-  return (0U);
+__STATIC_FORCEINLINE uint32_t PIN_nTRST_IN(void)
+{
+    return (0U);
 }
 
 /** nTRST I/O 引脚：设置输出。
@@ -383,8 +443,9 @@ __STATIC_FORCEINLINE uint32_t PIN_nTRST_IN   (void) {
            - 0：发起 JTAG TRST 测试复位。
            - 1：释放 JTAG TRST 测试复位。
 */
-__STATIC_FORCEINLINE void     PIN_nTRST_OUT  (uint32_t bit) {
-  ;
+__STATIC_FORCEINLINE void PIN_nTRST_OUT(uint32_t bit)
+{
+    ;
 }
 
 // nRESET 引脚 I/O ------------------------------------------
@@ -392,8 +453,9 @@ __STATIC_FORCEINLINE void     PIN_nTRST_OUT  (uint32_t bit) {
 /** nRESET I/O 引脚：获取输入。
 \return nRESET DAP 硬件 I/O 引脚的当前状态。
 */
-__STATIC_FORCEINLINE uint32_t PIN_nRESET_IN  (void) {
-  return (0U);
+__STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
+{
+    return (!gpio_get_pin_output_status(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET)));
 }
 
 /** nRESET I/O 引脚：设置输出。
@@ -401,12 +463,12 @@ __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN  (void) {
            - 0：发起设备硬件复位。
            - 1：释放设备硬件复位。
 */
-__STATIC_FORCEINLINE void     PIN_nRESET_OUT (uint32_t bit) {
-  ;
+__STATIC_FORCEINLINE void PIN_nRESET_OUT(uint32_t bit)
+{
+    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), !bit);
 }
 
 ///@}
-
 
 //**************************************************************************************************
 /**
@@ -426,17 +488,16 @@ CMSIS-DAP 硬件可提供指示 CMSIS-DAP 调试探针单元状态的 LED。
            - 1：连接 LED 亮：调试器已连接到 CMSIS-DAP 调试探针单元。
            - 0：连接 LED 灭：调试器未连接到 CMSIS-DAP 调试探针单元。
 */
-__STATIC_INLINE void LED_CONNECTED_OUT (uint32_t bit) {}
+__STATIC_INLINE void LED_CONNECTED_OUT(uint32_t bit) {}
 
 /** 调试探针单元：设置目标运行 LED 的状态。
 \param bit 目标运行 LED 的状态。
            - 1：目标运行 LED 亮：目标中的程序执行已启动。
            - 0：目标运行 LED 灭：目标中的程序执行已停止。
 */
-__STATIC_INLINE void LED_RUNNING_OUT (uint32_t bit) {}
+__STATIC_INLINE void LED_RUNNING_OUT(uint32_t bit) {}
 
 ///@}
-
 
 //**************************************************************************************************
 /**
@@ -453,13 +514,13 @@ __STATIC_INLINE void LED_RUNNING_OUT (uint32_t bit) {}
 /** 获取测试域定时器的时间戳。
 \return 当前时间戳值。
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
-  // return (DWT->CYCCNT);
-  return (0U);
+__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
+{
+    // return (DWT->CYCCNT);
+    return (0U);
 }
 
 ///@}
-
 
 //**************************************************************************************************
 /**
@@ -478,8 +539,66 @@ CMSIS-DAP 硬件 I/O 和 LED 引脚通过函数 \ref DAP_SETUP 进行初始化�
  - 对于 nTRST、nRESET，使能弱上拉（如果可用）。
  - 使能 LED 输出引脚并关闭 LED。
 */
-__STATIC_INLINE void DAP_SETUP (void) {
-  ;
+__STATIC_INLINE void DAP_SETUP(void)
+{
+    // 配置 IOC->PAD[FUNC_CTL] 为 GPIO
+    HPM_IOC->PAD[BOARD_PIN_JTCK].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0) | IOC_PAD_FUNC_CTL_LOOP_BACK_MASK;
+    HPM_IOC->PAD[BOARD_PIN_JTMS_IN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[BOARD_PIN_JTMS_OUT].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[BOARD_PIN_JMS_DIR].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[BOARD_PIN_nRESET].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+
+    // 配置 IOC->PAD[PAD_CTL]
+    HPM_IOC->PAD[BOARD_PIN_JTCK].PAD_CTL =
+        IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
+        IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
+        IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
+        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+        IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
+        IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
+        IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
+        IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
+        IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
+    HPM_IOC->PAD[BOARD_PIN_JTMS_IN].PAD_CTL =
+        IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
+        IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
+        IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
+        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+        IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
+        IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
+        IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
+        IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
+        IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
+    HPM_IOC->PAD[BOARD_PIN_JTMS_OUT].PAD_CTL =
+        IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
+        IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
+        IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
+        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+        IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
+        IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
+        IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
+        IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
+        IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
+    HPM_IOC->PAD[BOARD_PIN_JMS_DIR].PAD_CTL =
+        IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
+        IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
+        IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
+        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+        IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
+        IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
+        IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
+        IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
+        IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
+    HPM_IOC->PAD[BOARD_PIN_nRESET].PAD_CTL =
+        IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
+        IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
+        IOC_PAD_PAD_CTL_PS_SET(0) |  // 下拉
+        IOC_PAD_PAD_CTL_PE_SET(1) |  // 下拉使能
+        IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
+        IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
+        IOC_PAD_PAD_CTL_SR_SET(0) |  // 压摆率 慢速
+        IOC_PAD_PAD_CTL_SPD_SET(1) | // 较慢压摆率
+        IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
 }
 
 /** 使用自定义特定的 I/O 引脚或命令序列复位目标设备。
@@ -489,11 +608,11 @@ __STATIC_INLINE void DAP_SETUP (void) {
 \return 0 = 未实现设备特定的复位序列。\n
         1 = 已实现设备特定的复位序列。
 */
-__STATIC_INLINE uint8_t RESET_TARGET (void) {
-  return (0U);             // 当实现了设备复位序列时改为 '1'
+__STATIC_INLINE uint8_t RESET_TARGET(void)
+{
+    return (0U); // 当实现了设备复位序列时改为 '1'
 }
 
 ///@}
-
 
 #endif /* __DAP_CONFIG_H__ */

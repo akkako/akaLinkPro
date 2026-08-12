@@ -146,6 +146,7 @@ void board_print_clock_freq(void)
 void board_init(void)
 {
     init_py_pins_as_pgpio();
+    board_init_gpio_pins();
     board_init_usb_dp_dm_pins();
 
     board_init_clock();
@@ -239,10 +240,11 @@ void board_delay_ms(uint32_t ms)
 
 void board_init_gpio_pins(void)
 {
-    init_gpio_pins();
+    init_button_pins();
+    init_unused_pin_as_input();
+    init_uart3_pin_as_gpio_low();
     gpio_set_pin_input(BOARD_APP_GPIO_CTRL, BOARD_APP_GPIO_INDEX, BOARD_APP_GPIO_PIN);
 }
-
 
 void board_init_usb(USB_Type *ptr)
 {
@@ -300,13 +302,7 @@ void init_uart_pins(UART_Type *ptr)
     }
 }
 
-/* for uart_lin case, need to configure pin as gpio to sent break signal */
-void init_uart_pin_as_gpio(UART_Type *ptr)
-{
-    if (ptr == HPM_UART3) {
-        init_uart3_pin_as_gpio_low();
-    }
-}
+
 void init_usb_pins(USB_Type *ptr)
 {
     if (ptr == HPM_USB0) {

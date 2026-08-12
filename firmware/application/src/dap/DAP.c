@@ -164,14 +164,6 @@ static uint8_t DAP_Info(uint8_t id, uint8_t *info)
 	return (length);
 }
 
-// Delay for specified time
-//    delay:  delay time in ms
-void Delayms(uint32_t delay)
-{
-	delay *= ((CPU_CLOCK / 1000U) + (DELAY_SLOW_CYCLES - 1U)) / DELAY_SLOW_CYCLES;
-	PIN_DELAY_SLOW(delay);
-}
-
 // Process Delay command and prepare response
 //   request:  pointer to request data
 //   response: pointer to response data

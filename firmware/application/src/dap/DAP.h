@@ -220,8 +220,6 @@ extern void     JTAG_WriteAbort (uint32_t data);
 extern uint8_t  JTAG_Transfer   (uint32_t request, uint32_t *data);
 extern uint8_t  SWD_Transfer    (uint32_t request, uint32_t *data);
 
-extern void     Delayms         (uint32_t delay);
-
 extern uint32_t SWO_Transport      (const uint8_t *request, uint8_t *response);
 extern uint32_t SWO_Mode           (const uint8_t *request, uint8_t *response);
 extern uint32_t SWO_Baudrate       (const uint8_t *request, uint8_t *response);
@@ -246,14 +244,6 @@ extern uint32_t SWO_Control_Manchester  (uint32_t active);
 extern void     SWO_Capture_Manchester  (uint8_t *buf, uint32_t num);
 extern uint32_t SWO_GetCount_Manchester (void);
 
-extern uint32_t UART_Transport (const uint8_t *request, uint8_t *response);
-extern uint32_t UART_Configure (const uint8_t *request, uint8_t *response);
-extern uint32_t UART_Control   (const uint8_t *request, uint8_t *response);
-extern uint32_t UART_Status                            (uint8_t *response);
-extern uint32_t UART_Transfer  (const uint8_t *request, uint8_t *response);
-
-extern uint8_t  USB_COM_PORT_Activate (uint32_t cmd);
-
 extern uint32_t DAP_ProcessVendorCommand (const uint8_t *request, uint8_t *response);
 extern uint32_t DAP_ProcessCommand       (const uint8_t *request, uint8_t *response);
 extern uint32_t DAP_ExecuteCommand       (const uint8_t *request, uint8_t *response);
@@ -261,39 +251,28 @@ extern uint32_t DAP_ExecuteCommand       (const uint8_t *request, uint8_t *respo
 extern void     DAP_Setup (void);
 
 // Configurable delay for clock generation
-#ifndef DELAY_SLOW_CYCLES
 #define DELAY_SLOW_CYCLES       3U      // Number of cycles for one iteration
-#endif
-#if defined(__CC_ARM)
+
 __STATIC_FORCEINLINE void PIN_DELAY_SLOW (uint32_t delay) {
   uint32_t count = delay;
-  while (--count);
+  while (--count)
+  {
+    NOP();
+  }
 }
-#else
-__STATIC_FORCEINLINE void PIN_DELAY_SLOW (uint32_t delay) {
-  // __ASM volatile (
-  // ".syntax unified\n"
-  // "0:\n\t"
-  //   "subs %0,%0,#1\n\t"
-  //   "bne  0b\n"
-  // : "+l" (delay) : : "cc"
-  // );
-}
-#endif
 
 // Fixed delay for fast clock generation
-#ifndef DELAY_FAST_CYCLES
-#define DELAY_FAST_CYCLES       0U      // Number of cycles: 0..3
-#endif
+#define DELAY_FAST_CYCLES       3U      // Number of cycles: 0..3
+
 __STATIC_FORCEINLINE void PIN_DELAY_FAST (void) {
 #if (DELAY_FAST_CYCLES >= 1U)
-  __NOP();
+  NOP();
 #endif
 #if (DELAY_FAST_CYCLES >= 2U)
-  __NOP();
+  NOP();
 #endif
 #if (DELAY_FAST_CYCLES >= 3U)
-  __NOP();
+  NOP();
 #endif
 }
 

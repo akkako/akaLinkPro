@@ -28,6 +28,12 @@ set(CONFIG_USB_DEVICE_MSC 1)
 find_package(hpm-sdk REQUIRED HINTS $ENV{HPM_SDK_BASE})
 project(akaLinkPro_App)
 
+# compile opt
+sdk_compile_options(-O2)
+
+# linker opt
+# sdk_ld_options(-flto)
+
 # Use nano libc (saves ~31KB)
 sdk_ld_options("--specs=nano.specs")
 

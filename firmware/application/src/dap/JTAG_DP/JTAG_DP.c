@@ -51,6 +51,7 @@
 #define JTAG_CYCLE_TDO(tdo) \
     PIN_TCK_CLR();          \
     PIN_DELAY();            \
+    PIN_DELAY();            \
     tdo = PIN_TDO_IN();     \
     PIN_TCK_SET();          \
     PIN_DELAY()
@@ -58,6 +59,7 @@
 #define JTAG_CYCLE_TDIO(tdi, tdo) \
     PIN_TDI_OUT(tdi);             \
     PIN_TCK_CLR();                \
+    PIN_DELAY();                  \
     PIN_DELAY();                  \
     tdo = PIN_TDO_IN();           \
     PIN_TCK_SET();                \

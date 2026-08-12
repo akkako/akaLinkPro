@@ -218,7 +218,8 @@ extern void     JTAG_IR         (uint32_t ir);
 extern uint32_t JTAG_ReadIDCode (void);
 extern void     JTAG_WriteAbort (uint32_t data);
 extern uint8_t  JTAG_Transfer   (uint32_t request, uint32_t *data);
-extern uint8_t  SWD_Transfer    (uint32_t request, uint32_t *data);
+extern uint8_t  SWD_Write       (uint32_t request, uint32_t *data);
+extern uint8_t  SWD_Read        (uint32_t request, uint32_t *data);
 
 extern uint32_t SWO_Transport      (const uint8_t *request, uint8_t *response);
 extern uint32_t SWO_Mode           (const uint8_t *request, uint8_t *response);

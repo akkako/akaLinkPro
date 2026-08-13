@@ -274,7 +274,7 @@ SWD_Write_GPIO_ASM_36M:
 .global SWD_Read_GPIO_ASM_36M
 .type   SWD_Read_GPIO_ASM_36M, @function
 
-// uint8_t SWD_Write_GPIO_ASM_36M(uint8_t header, uint32_t *data);
+// uint8_t SWD_Read_GPIO_ASM_36M(uint8_t header, uint32_t *data);
 
 SWD_Read_GPIO_ASM_36M:
     # 加载预设值和地址
@@ -516,14 +516,17 @@ SWD_Read_GPIO_ASM_36M:
     srli    a6, a5, 8
     xor     a5, a5, a6      # 16 -- 8 
 
-    #---------------- bit 34 (virtual) ----------------
-    srli    a6, a5, 4 //sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
+    #---------------- bit 34 (virtual/trn) ----------------
+    sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     lw      t4, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 t4 (parity)
     srli    t4, t4, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
     andi    t4, t4, 1                   # 提取 BIT0
+    srli    a6, a5, 4 
+    
+    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     xor     a5, a5, a6      # 8 -- 4 
-
-    srli    a6, a5, 2 //sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    srli    a6, a5, 2
     xor     a5, a5, a6      # 4 -- 2
     srli    a6, a5, 1
     xor     a5, a5, a6      # 2 -- 1
@@ -536,6 +539,12 @@ SWD_Read_GPIO_ASM_36M:
 
 .L_r_parity_check_ok:
     sw      t6, 0(a1)       # save data in memory
+
+    csrrsi  zero, mstatus, 8
+    #=========== SWDIO high ===========
+    li      t3, SWDO_OFFSET
+    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
+    ret
 
     // srli    a6, a5, 16
     // xor     a5, a5, a6      # 32 -- 16

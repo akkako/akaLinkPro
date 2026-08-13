@@ -29,7 +29,7 @@ find_package(hpm-sdk REQUIRED HINTS $ENV{HPM_SDK_BASE})
 project(akaLinkPro_App)
 
 # compile opt
-sdk_compile_options(-O2)
+sdk_compile_options(-Ofast )
 
 # linker opt
 # sdk_ld_options(-flto)
@@ -50,7 +50,8 @@ sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/usb)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/led)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap)
 sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/api)
-sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap)
+sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap/SW_DP)
+sdk_inc(${CMAKE_CURRENT_SOURCE_DIR}/src/dap/JTAG_DP)
 
 sdk_app_src(src/main.c)
 sdk_app_src(src/led/ws2812.c)
@@ -60,9 +61,15 @@ sdk_app_src(src/usb/hid_interface.c)
 sdk_app_src(src/usb/cdc_interface.c)
 sdk_app_src(src/usb/msc_interface.c)
 sdk_app_src(src/api/api_param.c)
+
 sdk_app_src(src/dap/DAP.c)
 sdk_app_src(src/dap/SWO.c)
 sdk_app_src(src/dap/SW_DP/SW_DP.c)
+sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_Slow.c)
+# sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_Fast.c)
+sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_ASM_30M.S)
+sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_ASM_36M.S)
+sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_ASM_60M.S)
 sdk_app_src(src/dap/JTAG_DP/JTAG_DP.c)
 
 # generate_ide_projects()

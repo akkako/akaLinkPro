@@ -28,6 +28,7 @@
 #include <string.h>
 #include "DAP_config.h"
 #include "DAP.h"
+#include "hpm_common.h"
 
 #if (DAP_PACKET_SIZE < 64U)
 #error "Minimum Packet Size is 64!"
@@ -438,7 +439,7 @@ static uint32_t DAP_SWJ_Clock(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_SWJ_Sequence(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_SWJ_Sequence(const uint8_t *request, uint8_t *response)
 {
 	uint32_t count;
 
@@ -487,7 +488,7 @@ static uint32_t DAP_SWD_Configure(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_SWD_Sequence(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_SWD_Sequence(const uint8_t *request, uint8_t *response)
 {
 	uint32_t sequence_info;
 	uint32_t sequence_count;
@@ -551,7 +552,7 @@ static uint32_t DAP_SWD_Sequence(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_JTAG_Sequence(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_JTAG_Sequence(const uint8_t *request, uint8_t *response)
 {
 	uint32_t sequence_info;
 	uint32_t sequence_count;
@@ -638,7 +639,7 @@ static uint32_t DAP_JTAG_Configure(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_JTAG_IDCode(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_JTAG_IDCode(const uint8_t *request, uint8_t *response)
 {
 #if (DAP_JTAG != 0)
 	uint32_t data;
@@ -700,7 +701,7 @@ static uint32_t DAP_TransferConfigure(const uint8_t *request, uint8_t *response)
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
 #if (DAP_SWD != 0)
-static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *response)
 {
 	const uint8_t *request_head;
 	uint32_t request_count;
@@ -1026,7 +1027,7 @@ end:
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
 #if (DAP_JTAG != 0)
-static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *response)
 {
 	const uint8_t *request_head;
 	uint32_t request_count;
@@ -1400,7 +1401,7 @@ static uint32_t DAP_Dummy_Transfer(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_Transfer(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_Transfer(const uint8_t *request, uint8_t *response)
 {
 	uint32_t num;
 
@@ -1429,7 +1430,7 @@ static uint32_t DAP_Transfer(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response
 #if (DAP_SWD != 0)
-static uint32_t DAP_SWD_TransferBlock(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_SWD_TransferBlock(const uint8_t *request, uint8_t *response)
 {
 	uint32_t request_count;
 	uint32_t request_value;
@@ -1543,7 +1544,7 @@ end:
 //   response: pointer to response data
 //   return:   number of bytes in response
 #if (DAP_JTAG != 0)
-static uint32_t DAP_JTAG_TransferBlock(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_JTAG_TransferBlock(const uint8_t *request, uint8_t *response)
 {
 	uint32_t request_count;
 	uint32_t request_value;
@@ -1815,7 +1816,7 @@ uint32_t DAP_ProcessVendorCommand(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-uint32_t DAP_ProcessCommand(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC uint32_t DAP_ProcessCommand(const uint8_t *request, uint8_t *response)
 {
 	uint32_t num;
 

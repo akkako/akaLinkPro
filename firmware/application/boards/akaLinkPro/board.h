@@ -91,7 +91,7 @@
     JTCK        PA27            init as high    FGPIO
     JTMS_IN     PA28            init as input   FGPIO
     JTMS_OUT    PA29            init as high    FGPIO
-    JTMS_DIR    PA30            init as low     FGPIO
+    JTMS_DIR    PA30            init as high    FGPIO
     JTDO        PB12            init as input   FGPIO
     JTDI        PB13            init as high    FGPIO
     JTRST       PB14            init as high    FGPIO

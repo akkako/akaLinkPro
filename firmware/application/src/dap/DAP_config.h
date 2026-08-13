@@ -214,14 +214,26 @@ __STATIC_INLINE uint8_t DAP_GetProductFirmwareVersionString(char *str)
 
 __STATIC_INLINE void gpiom_config_pin_to_fgpio(uint16_t gpio_index)
 {
-    gpiom_set_pin_controller(PIN_GPIOM_BASE,
+    gpiom_set_pin_controller(HPM_GPIOM,
                              GPIO_GET_PORT_INDEX(gpio_index),
                              GPIO_GET_PIN_INDEX(gpio_index),
-                             PIN_GPIOM);
-    gpiom_enable_pin_visibility(PIN_GPIOM_BASE,
+                             gpiom_core0_fast);
+    gpiom_enable_pin_visibility(HPM_GPIOM,
                                 GPIO_GET_PORT_INDEX(gpio_index),
                                 GPIO_GET_PIN_INDEX(gpio_index),
-                                PIN_GPIOM);
+                                gpiom_core0_fast);
+}
+
+__STATIC_INLINE void gpiom_config_pin_to_gpio0(uint16_t gpio_index)
+{
+    gpiom_set_pin_controller(HPM_GPIOM,
+                             GPIO_GET_PORT_INDEX(gpio_index),
+                             GPIO_GET_PIN_INDEX(gpio_index),
+                             gpiom_soc_gpio0);
+    gpiom_enable_pin_visibility(HPM_GPIOM,
+                                GPIO_GET_PORT_INDEX(gpio_index),
+                                GPIO_GET_PIN_INDEX(gpio_index),
+                                gpiom_soc_gpio0);
 }
 
 ///@}
@@ -274,29 +286,32 @@ __STATIC_INLINE void PORT_JTAG_SETUP(void)
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTCK);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_IN);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_DIR);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_nRESET);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTRST);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTDO);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTDI);
 
+    gpiom_config_pin_to_gpio0(BOARD_PIN_nRESET);
+    gpiom_config_pin_to_gpio0(BOARD_PIN_JTMS_DIR);
+    gpiom_config_pin_to_gpio0(BOARD_PIN_JTRST);
+
     // 设置输入输出模式
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
-    gpio_set_pin_input(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
-    gpio_set_pin_input(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
+    gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN));
+    gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
+
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR));
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
 
     // 设置默认输出电平
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1); // output
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1); // output
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
 }
 
 /** 设置 SWD I/O 引脚：SWCLK、SWDIO 和 nRESET。
@@ -311,28 +326,31 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_IN);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_DIR);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_nRESET);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTRST);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTDO);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTDI);
+    
+    gpiom_config_pin_to_gpio0(BOARD_PIN_nRESET);
+    gpiom_config_pin_to_gpio0(BOARD_PIN_JTRST);
+    gpiom_config_pin_to_gpio0(BOARD_PIN_JTDO);
+    gpiom_config_pin_to_gpio0(BOARD_PIN_JTDI);
 
     // 设置输入输出模式
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
-    gpio_set_pin_input(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
-    gpio_set_pin_input(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
-    gpio_set_pin_output(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR));
+    gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN));
+
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
+    gpio_set_pin_input(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
 
     // 设置默认输出电平
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
 }
 
 /** 禁用 JTAG/SWD I/O 引脚。
@@ -342,12 +360,14 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
 __STATIC_INLINE void PORT_OFF(void)
 {
     // 设置默认输出电平
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+    // gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
+    // gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
+    // gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
+
+    // gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
 }
 
 // SWCLK/TCK I/O 引脚 -------------------------------------
@@ -357,7 +377,7 @@ __STATIC_INLINE void PORT_OFF(void)
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWCLK_TCK_IN(void)
 {
-    return (gpio_get_pin_output_status(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK)));
+    return (gpio_get_pin_output_status(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK)));
 }
 
 /** SWCLK/TCK I/O 引脚：设置输出为高电平。
@@ -365,7 +385,7 @@ __STATIC_FORCEINLINE uint32_t PIN_SWCLK_TCK_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_SWCLK_TCK_SET(void)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
 }
 
 /** SWCLK/TCK I/O 引脚：设置输出为低电平。
@@ -373,7 +393,7 @@ __STATIC_FORCEINLINE void PIN_SWCLK_TCK_SET(void)
 */
 __STATIC_FORCEINLINE void PIN_SWCLK_TCK_CLR(void)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 0);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 0);
 }
 
 // SWDIO/TMS 引脚 I/O --------------------------------------
@@ -383,7 +403,7 @@ __STATIC_FORCEINLINE void PIN_SWCLK_TCK_CLR(void)
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void)
 {
-    return (gpio_read_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
+    return (gpio_read_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
 }
 
 /** SWDIO/TMS I/O 引脚：设置输出为高电平。
@@ -391,7 +411,7 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_SET(void)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
 }
 
 /** SWDIO/TMS I/O 引脚：设置输出为低电平。
@@ -399,7 +419,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_TMS_SET(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 0);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 0);
 }
 
 /** SWDIO I/O 引脚：获取输入（仅在 SWD 模式下使用）。
@@ -407,7 +427,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void)
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 {
-    return (gpio_read_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
+    return (gpio_read_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
 }
 
 /** SWDIO I/O 引脚：设置输出（仅在 SWD 模式下使用）。
@@ -415,7 +435,7 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), bit & 0x01);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), bit & 0x01);
 }
 
 /** SWDIO I/O 引脚：切换到输出模式（仅在 SWD 模式下使用）。
@@ -424,7 +444,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
 }
 
 /** SWDIO I/O 引脚：切换到输入模式（仅在 SWD 模式下使用）。
@@ -433,7 +453,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_DISABLE(void)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 0);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 0);
 }
 
 // TDI 引脚 I/O ---------------------------------------------
@@ -443,7 +463,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_OUT_DISABLE(void)
 */
 __STATIC_FORCEINLINE uint32_t PIN_TDI_IN(void)
 {
-    return (gpio_get_pin_output_status(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI)));
+    return (gpio_get_pin_output_status(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI)));
 }
 
 /** TDI I/O 引脚：设置输出。
@@ -451,7 +471,7 @@ __STATIC_FORCEINLINE uint32_t PIN_TDI_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_TDI_OUT(uint32_t bit)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), bit & 0x01);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), bit & 0x01);
 }
 
 // TDO 引脚 I/O ---------------------------------------------
@@ -461,7 +481,7 @@ __STATIC_FORCEINLINE void PIN_TDI_OUT(uint32_t bit)
 */
 __STATIC_FORCEINLINE uint32_t PIN_TDO_IN(void)
 {
-    return (gpio_read_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO)));
+    return (gpio_read_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO)));
 }
 
 // nTRST 引脚 I/O -------------------------------------------
@@ -471,7 +491,7 @@ __STATIC_FORCEINLINE uint32_t PIN_TDO_IN(void)
 */
 __STATIC_FORCEINLINE uint32_t PIN_nTRST_IN(void)
 {
-    return (gpio_get_pin_output_status(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST)));
+    return (gpio_get_pin_output_status(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST)));
 }
 
 /** nTRST I/O 引脚：设置输出。
@@ -481,7 +501,7 @@ __STATIC_FORCEINLINE uint32_t PIN_nTRST_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_nTRST_OUT(uint32_t bit)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), (bit & 0x01));
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), (bit & 0x01));
 }
 
 // nRESET 引脚 I/O ------------------------------------------
@@ -491,7 +511,7 @@ __STATIC_FORCEINLINE void PIN_nTRST_OUT(uint32_t bit)
 */
 __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
 {
-    return (!gpio_get_pin_output_status(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET)));
+    return (!gpio_get_pin_output_status(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET)));
 }
 
 /** nRESET I/O 引脚：设置输出。
@@ -501,7 +521,7 @@ __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_nRESET_OUT(uint32_t bit)
 {
-    gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), !bit);
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), !bit);
 }
 
 ///@}

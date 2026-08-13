@@ -383,10 +383,11 @@ SWD_Read_GPIO_ASM_36M:
     andi    a6, a6, 2                   # 提取 BIT1
     or      a0, a0, a6                  # 合并 BIT1 到 a0
 
-    nop // sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    nop
-    nop
-    nop
+    // nop // sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
+    li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
+    li      t5, ACK_FAULT_MASK          # ACK_FAULT (预加载比较值)
+    li      t6, 0x80000000              # 0x80000000 (预加载筛选值)
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
     
     #---------------- bit 4 (virtual) ----------------
@@ -397,10 +398,10 @@ SWD_Read_GPIO_ASM_36M:
     or      a0, a0, a6                  # 合并 BIT2 到 a0
 
     // sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
-    li      t5, ACK_FAULT_MASK          # ACK_FAULT (预加载比较值)
-    li      t6, 0x80000000              # 0x80000000 (预加载筛选值)
+    // li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
+    // li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
+    // li      t5, ACK_FAULT_MASK          # ACK_FAULT (预加载比较值)
+    // li      t6, 0x80000000              # 0x80000000 (预加载筛选值)
 
     #=========== check ack and branch ===========
     beq     a0, t3, .lable_r_ack_ok     # ACK_OK

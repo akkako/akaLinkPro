@@ -96,15 +96,10 @@ SWD_Write_GPIO_ASM_60M:
     sw      t1, FGPIO_DO_CLR_OFFSET(t0) # SWDIR 拉低，SWDIO 切换为输入状态
     srli    a6, a5, 16
     xor     a5, a5, a6      # 32 -- 16
-    srli    a6, a5, 8
-    xor     a5, a5, a6      # 16 -- 8
-
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    srli    a6, a5, 4
-    xor     a5, a5, a6      # 8 -- 4
-    srli    a6, a5, 2
-
+    srli    a6, a5, 8
+    xor     a5, a5, a6      # 16 -- 8
     mv      a0, x0                      # 清空 a0
 
     # ack 周期
@@ -119,21 +114,18 @@ SWD_Write_GPIO_ASM_60M:
 
     #---------------- bit 0 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
+    srli    a6, a5, 4
+    xor     a5, a5, a6      # 8 -- 4
+    srli    a6, a5, 2
+
+    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
     xor     a5, a5, a6      # 4 -- 2
     srli    a6, a5, 1
     xor     a5, a5, a6      # 2 -- 1
-    andi    a5, a5, 1       # clear
-
-    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    nop
-    nop
-    nop
-    nop
     
     #---------------- bit 1 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    nop
-    nop
+    andi    a5, a5, 1       # clear
     nop
     nop
     
@@ -141,31 +133,28 @@ SWD_Write_GPIO_ASM_60M:
     nop
     nop
     nop
-    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
+
     #---------------- bit 2 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     nop
-    srli    a6, a6, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
-    andi    a6, a6, 1                   # 提取 BIT0
-    or      a0, a0, a6                  # 合并 BIT0 到 a0
-
+    nop
+    nop
+    
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
+    srli    a6, a6, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
     nop
-    nop
-    nop
-    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
+
     #---------------- bit 3 (virtual) ----------------
     nop // sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     nop
-    srli    a6, a6, (SWDI_SHIFT-1)      # 将 SWDI 数据移到 BIT1
-    andi    a6, a6, 2                   # 提取 BIT1
-    or      a0, a0, a6                  # 合并 BIT1 到 a0
-
+    andi    a6, a6, 1                   # 提取 BIT0
+    or      a0, a0, a6                  # 合并 BIT0 到 a0
+    
     nop // sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
     nop
-    nop
-    nop
-    nop
+    srli    a6, a6, (SWDI_SHIFT-1)      # 将 SWDI 数据移到 BIT1
 
     # turnaround 周期
     # 本阶段使用的寄存器：
@@ -179,18 +168,21 @@ SWD_Write_GPIO_ASM_60M:
     # a6 -- ack temp read value (ack 阶段延迟采样)
     # t6 -- data
 
-    #---------------- bit 0 ----------------
+    #---------------- bit 4 (virtual) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
+    andi    a6, a6, 2                   # 提取 BIT1
+    or      a0, a0, a6                  # 合并 BIT1 到 a0
     li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
-    li      t5, ACK_FAULT_MASK          # ACK_FAULT (预加载比较值)
-    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
 
-    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
+    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
+    
     srli    a6, a6, (SWDI_SHIFT-2)      # 将 SWDI 数据移到 BIT2
     andi    a6, a6, 4                   # 提取 BIT2
     or      a0, a0, a6                  # 合并 BIT2 到 a0
+
 
     # 判断跳转
     # 本阶段使用的寄存器：
@@ -236,10 +228,9 @@ SWD_Write_GPIO_ASM_60M:
     slli    t3, a5, SWDO_SHIFT          # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    nop
-    nop
-    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
     csrrsi  zero, mstatus, 8
+    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
+    
 
     #=========== SWDIO high ===========
     li      t3, SWDO_OFFSET

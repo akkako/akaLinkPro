@@ -27,6 +27,7 @@
 .equ ACK_OK_MASK,               1
 .equ ACK_WAIT_MASK,             2
 .equ ACK_FAULT_MASK,            4
+.equ ACK_ERROR_MASK,            8
 
 .section .fast, "ax"
 .align  2
@@ -174,10 +175,10 @@ SWD_Write_GPIO_ASM_60M:
     or      a0, a0, a6                  # 合并 BIT1 到 a0
     li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
 
-    li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
-    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
     sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
+    li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
     
     srli    a6, a6, (SWDI_SHIFT-2)      # 将 SWDI 数据移到 BIT2
     andi    a6, a6, 4                   # 提取 BIT2

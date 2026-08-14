@@ -36,12 +36,15 @@
 #if (DAP_PACKET_SIZE > 32768U)
 #error "Maximum Packet Size is 32768!"
 #endif
-#if (DAP_PACKET_COUNT < 1U)
-#error "Minimum Packet Count is 1!"
+#if (DAP_PACKET_COUNT < 2U)
+#error "Minimum Packet Count is 2!"
 #endif
 #if (DAP_PACKET_COUNT > 255U)
 #error "Maximum Packet Count is 255!"
 #endif
+
+#define LIKELY(x) __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
 
 // Clock Macros
 #define MAX_SWJ_CLOCK(delay_cycles) \
@@ -466,7 +469,7 @@ ATTR_RAMFUNC static uint32_t DAP_SWJ_Sequence(const uint8_t *request, uint8_t *r
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_SWD_Configure(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_SWD_Configure(const uint8_t *request, uint8_t *response)
 {
 #if (DAP_SWD != 0)
 	uint8_t value;
@@ -600,7 +603,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Sequence(const uint8_t *request, uint8_t *
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_JTAG_Configure(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_JTAG_Configure(const uint8_t *request, uint8_t *response)
 {
 	uint32_t count;
 #if (DAP_JTAG != 0)
@@ -682,7 +685,7 @@ id_error:
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_TransferConfigure(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_TransferConfigure(const uint8_t *request, uint8_t *response)
 {
 
 	DAP_Data.transfer.idle_cycles = *(request + 0);
@@ -763,7 +766,7 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 					post_read = 0U;
 				}
-				if (response_value != DAP_TRANSFER_OK)
+				if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 				{
 					break;
 				}
@@ -803,8 +806,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 					do
 					{
 						response_value = SWD_Read(request_value, NULL);
-					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-					if (response_value != DAP_TRANSFER_OK)
+					} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+					if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 					{
 						break;
 					}
@@ -816,8 +819,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 					do
 					{
 						response_value = SWD_Read(request_value, &data);
-					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-					if (response_value != DAP_TRANSFER_OK)
+					} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+					if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 					{
 						break;
 					}
@@ -826,7 +829,7 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 				{
 					response_value |= DAP_TRANSFER_MISMATCH;
 				}
-				if (response_value != DAP_TRANSFER_OK)
+				if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 				{
 					break;
 				}
@@ -844,8 +847,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 						do
 						{
 							response_value = SWD_Read(request_value, NULL);
-						} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-						if (response_value != DAP_TRANSFER_OK)
+						} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+						if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 						{
 							break;
 						}
@@ -869,8 +872,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 					do
 					{
 						response_value = SWD_Read(request_value, &data);
-					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-					if (response_value != DAP_TRANSFER_OK)
+					} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+					if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 					{
 						break;
 					}
@@ -904,8 +907,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 				do
 				{
 					response_value = SWD_Write(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
-				} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-				if (response_value != DAP_TRANSFER_OK)
+				} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+				if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 				{
 					break;
 				}
@@ -935,8 +938,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 				do
 				{
 					response_value = SWD_Write(request_value, &data);
-				} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-				if (response_value != DAP_TRANSFER_OK)
+				} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+				if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 				{
 					break;
 				}
@@ -982,7 +985,7 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 		}
 	}
 
-	if (response_value == DAP_TRANSFER_OK)
+	if (LIKELY(response_value == DAP_TRANSFER_OK))
 	{
 		if (post_read)
 		{
@@ -991,8 +994,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 			do
 			{
 				response_value = SWD_Read(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
-			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-			if (response_value != DAP_TRANSFER_OK)
+			} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+			if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 			{
 				goto end;
 			}
@@ -1009,7 +1012,7 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_Transfer(const uint8_t *request, uint8_t *r
 			do
 			{
 				response_value = SWD_Read(DP_RDBUFF | DAP_TRANSFER_RnW, NULL);
-			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
+			} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
 		}
 	}
 
@@ -1468,8 +1471,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_TransferBlock(const uint8_t *request, uint8
 			do
 			{
 				response_value = SWD_Read(request_value, NULL);
-			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-			if (response_value != DAP_TRANSFER_OK)
+			} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+			if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 			{
 				goto end;
 			}
@@ -1486,8 +1489,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_TransferBlock(const uint8_t *request, uint8
 			do
 			{
 				response_value = SWD_Read(request_value, &data);
-			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-			if (response_value != DAP_TRANSFER_OK)
+			} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+			if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 			{
 				goto end;
 			}
@@ -1515,8 +1518,8 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_TransferBlock(const uint8_t *request, uint8
 			do
 			{
 				response_value = SWD_Write(request_value, &data);
-			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
-			if (response_value != DAP_TRANSFER_OK)
+			} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
+			if (UNLIKELY(response_value != DAP_TRANSFER_OK))
 			{
 				goto end;
 			}
@@ -1527,7 +1530,7 @@ ATTR_RAMFUNC static uint32_t DAP_SWD_TransferBlock(const uint8_t *request, uint8
 		do
 		{
 			response_value = SWD_Read(DP_RDBUFF | DAP_TRANSFER_RnW, NULL);
-		} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
+		} while (UNLIKELY((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort));
 	}
 
 end:
@@ -1674,7 +1677,7 @@ end:
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_TransferBlock(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_TransferBlock(const uint8_t *request, uint8_t *response)
 {
 	uint32_t num;
 
@@ -1717,7 +1720,7 @@ static uint32_t DAP_TransferBlock(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response
 #if (DAP_SWD != 0)
-static uint32_t DAP_SWD_WriteAbort(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_SWD_WriteAbort(const uint8_t *request, uint8_t *response)
 {
 	uint32_t data;
 
@@ -1740,7 +1743,7 @@ static uint32_t DAP_SWD_WriteAbort(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response
 #if (DAP_JTAG != 0)
-static uint32_t DAP_JTAG_WriteAbort(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_JTAG_WriteAbort(const uint8_t *request, uint8_t *response)
 {
 	uint32_t data;
 
@@ -1774,7 +1777,7 @@ static uint32_t DAP_JTAG_WriteAbort(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_WriteAbort(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC static uint32_t DAP_WriteAbort(const uint8_t *request, uint8_t *response)
 {
 	uint32_t num;
 

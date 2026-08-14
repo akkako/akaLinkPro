@@ -29,7 +29,7 @@ find_package(hpm-sdk REQUIRED HINTS $ENV{HPM_SDK_BASE})
 project(akaLinkPro_App)
 
 # compile opt
-sdk_compile_options(-Ofast )
+sdk_compile_options(-O3)
 
 # linker opt
 # sdk_ld_options(-flto)

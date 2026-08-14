@@ -64,7 +64,6 @@ static void Set_Clock_Delay(uint32_t clock)
 	{
 		DAP_Data.fast_clock = 1U;
 		DAP_Data.clock_delay = 1U;
-		printf("Fast Clock\n");
 	}
 	else
 	{
@@ -82,7 +81,6 @@ static void Set_Clock_Delay(uint32_t clock)
 		}
 
 		DAP_Data.clock_delay = delay;
-		printf("Slow Clock :%d, %d\n", delay, clock);
 	}
 }
 

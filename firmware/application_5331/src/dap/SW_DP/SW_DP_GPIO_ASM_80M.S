@@ -14,6 +14,7 @@
     JTMS_OUT    PA29
     JTMS_DIR    PA30
 */
+
 .equ SWCLK_SHIFT,               27
 .equ SWDI_SHIFT,                28
 .equ SWDO_SHIFT,                29
@@ -31,12 +32,12 @@
 
 .section .fast, "ax"
 .align  2
-.global SWD_Write_GPIO_ASM_60M
-.type   SWD_Write_GPIO_ASM_60M, @function
+.global SWD_Write_GPIO_ASM_80M
+.type   SWD_Write_GPIO_ASM_80M, @function
 
-// uint8_t SWD_Write_GPIO_ASM_60M(uint8_t header, uint32_t *data);
+// uint8_t SWD_Write_GPIO_ASM_80M(uint8_t header, uint32_t *data);
 
-SWD_Write_GPIO_ASM_60M:
+SWD_Write_GPIO_ASM_80M:
     # 加载预设值和地址
     csrrci  zero, mstatus, 8
     li      t0, FGPIO_BASE
@@ -57,17 +58,14 @@ SWD_Write_GPIO_ASM_60M:
     .rept 8
     slli    t3, t3, SWDO_SHIFT          # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
-    nop
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
     srli    a0, a0, 1                   # a0 >>= 1
     andi    t3, a0, 1                   # t3 = 包头 LSB
-    nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
     .endr
     lw      t6, 0(a1)                   # 读取数据指针指向的 32 位数据
-    nop
     mv      a5, t6
     
     
@@ -95,7 +93,7 @@ SWD_Write_GPIO_ASM_60M:
     # a6 -- parity calc temp
     # t6 -- data
 
-    #---------------- bit 0 ----------------
+    #---------------- bit 0 (trn) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     sw      t1, FGPIO_DO_CLR_OFFSET(t0) # SWDIR 拉低，SWDIO 切换为输入状态
     srli    a6, a5, 16
@@ -240,12 +238,10 @@ SWD_Write_GPIO_ASM_60M:
     .rept 32
     slli    t3, t3, SWDO_SHIFT          # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
-    nop
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
     srli    t6, t6, 1                   # a0 >>= 1
     andi    t3, t6, 1                   # t3 = 包头 LSB
-    nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
     .endr
@@ -253,11 +249,11 @@ SWD_Write_GPIO_ASM_60M:
     #=========== send parity bit ===========
     slli    t3, a5, SWDO_SHIFT          # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
-    nop
+
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
     li      t4, SWDO_OFFSET
     or      t4, t4, t2
-    nop
+
     sw      t4, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK, SWDIO 拉高
     
     csrrsi  zero, mstatus, 8
@@ -283,12 +279,12 @@ SWD_Write_GPIO_ASM_60M:
 
 .section .fast, "ax"
 .align  2
-.global SWD_Read_GPIO_ASM_60M
-.type   SWD_Read_GPIO_ASM_60M, @function
+.global SWD_Read_GPIO_ASM_80M
+.type   SWD_Read_GPIO_ASM_80M, @function
 
-// uint8_t SWD_Read_GPIO_ASM_60M(uint8_t header, uint32_t *data);
+// uint8_t SWD_Read_GPIO_ASM_80M(uint8_t header, uint32_t *data);
 
-SWD_Read_GPIO_ASM_60M:
+SWD_Read_GPIO_ASM_80M:
     # 加载预设值和地址
     csrrci  zero, mstatus, 8            # 4 nop
     li      t0, FGPIO_BASE
@@ -310,16 +306,13 @@ SWD_Read_GPIO_ASM_60M:
     .rept 8
     slli    t3, t3, SWDO_SHIFT          # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
-    nop
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
     srli    a0, a0, 1                   # a0 >>= 1
     andi    t3, a0, 1                   # t3 = 包头 LSB
-    nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
     .endr
-    nop
     nop
     nop
     

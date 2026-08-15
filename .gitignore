@@ -5,3 +5,8 @@
 build
 .vscode
 
+# kicad
+
+*-backups
+*.lck
+_autosave-*

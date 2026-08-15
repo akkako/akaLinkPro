@@ -1,0 +1,72 @@
+{
+  "clientKey": "34a4c1d38c6a02818e63baad608f7357",
+  "secretKey": "46425f1014319c5d5b8a1800ec7e18d8",
+  "content": {
+    "pid": "00bbb1ae-fd71-442f-b46a-ef26b424f2d6",
+    "info": {
+      "projectName": "akaLinkPro.hpmpc",
+      "sdkName": "1.12.0",
+      "socName": "HPM5331",
+      "packageName": "QFN48",
+      "createTime": 1786776472965,
+      "updateTime": 1786777016954
+    },
+    "pinmux": {
+      "functions": {
+        "init_pins": {
+          "selectPins": {}
+        }
+      },
+      "sorter": []
+    },
+    "clock": {
+      "functions": {
+        "init_clocks": {
+          "selectClocks": {
+            "srcClocks": [
+              "osc32k",
+              "osc24m",
+              "clk0_pll0",
+              "clk1_pll0",
+              "clk2_pll0",
+              "clk0_pll1",
+              "clk1_pll1",
+              "clk2_pll1",
+              "clk3_pll1"
+            ],
+            "funcClocks": []
+          },
+          "enableClocks": {},
+          "pllClkConfig": {
+            "pll0": {
+              "params": {
+                "mfd": 240000000,
+                "mfi": 40,
+                "mfn": 0,
+                "frequency": 960000000
+              }
+            }
+          },
+          "srcClkConfig": {
+            "clk0_pll0": {
+              "divFactor": 3
+            },
+            "clk1_pll0": {
+              "divFactor": 3
+            },
+            "clk2_pll0": {
+              "divFactor": 7
+            }
+          },
+          "funcClkConfig": {
+            "clk_top_cpu0": {
+              "from": "clk0_pll0",
+              "divFactor": 1
+            }
+          }
+        }
+      },
+      "sorter": []
+    }
+  }
+}

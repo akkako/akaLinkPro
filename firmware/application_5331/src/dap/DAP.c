@@ -56,7 +56,7 @@ static const char DAP_FW_Ver[] = DAP_FW_VER;
 
 // Common clock delay calculation routine
 //   clock:    requested SWJ frequency in Hertz
-static void Set_Clock_Delay(uint32_t clock)
+static inline void Set_Clock_Delay(uint32_t clock)
 {
 	uint32_t delay;
 
@@ -88,7 +88,7 @@ static void Set_Clock_Delay(uint32_t clock)
 //   id:      info identifier
 //   info:    pointer to info data
 //   return:  number of bytes in info data
-static uint8_t DAP_Info(uint8_t id, uint8_t *info)
+static inline uint8_t DAP_Info(uint8_t id, uint8_t *info)
 {
 	uint8_t length = 0U;
 
@@ -173,7 +173,7 @@ static uint8_t DAP_Info(uint8_t id, uint8_t *info)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_Delay(const uint8_t *request, uint8_t *response)
+static inline uint32_t DAP_Delay(const uint8_t *request, uint8_t *response)
 {
 	uint32_t delay;
 
@@ -192,7 +192,7 @@ static uint32_t DAP_Delay(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_HostStatus(const uint8_t *request, uint8_t *response)
+static inline uint32_t DAP_HostStatus(const uint8_t *request, uint8_t *response)
 {
 
 	switch (*request)
@@ -217,7 +217,7 @@ static uint32_t DAP_HostStatus(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_Connect(const uint8_t *request, uint8_t *response)
+static inline uint32_t DAP_Connect(const uint8_t *request, uint8_t *response)
 {
 	uint32_t port;
 
@@ -256,7 +256,7 @@ static uint32_t DAP_Connect(const uint8_t *request, uint8_t *response)
 // Process Disconnect command and prepare response
 //   response: pointer to response data
 //   return:   number of bytes in response
-static uint32_t DAP_Disconnect(uint8_t *response)
+static inline uint32_t DAP_Disconnect(uint8_t *response)
 {
 
 	DAP_Data.debug_port = DAP_PORT_DISABLED;
@@ -269,7 +269,7 @@ static uint32_t DAP_Disconnect(uint8_t *response)
 // Process Reset Target command and prepare response
 //   response: pointer to response data
 //   return:   number of bytes in response
-static uint32_t DAP_ResetTarget(uint8_t *response)
+static inline uint32_t DAP_ResetTarget(uint8_t *response)
 {
 
 	*(response + 1) = RESET_TARGET();
@@ -282,7 +282,7 @@ static uint32_t DAP_ResetTarget(uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_SWJ_Pins(const uint8_t *request, uint8_t *response)
+static inline uint32_t DAP_SWJ_Pins(const uint8_t *request, uint8_t *response)
 {
 #if ((DAP_SWD != 0) || (DAP_JTAG != 0))
 	uint32_t value;
@@ -409,7 +409,7 @@ static uint32_t DAP_SWJ_Pins(const uint8_t *request, uint8_t *response)
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static uint32_t DAP_SWJ_Clock(const uint8_t *request, uint8_t *response)
+static inline uint32_t DAP_SWJ_Clock(const uint8_t *request, uint8_t *response)
 {
 #if ((DAP_SWD != 0) || (DAP_JTAG != 0))
 	uint32_t clock;
@@ -1932,7 +1932,7 @@ ATTR_RAMFUNC uint32_t DAP_ProcessCommand(const uint8_t *request, uint8_t *respon
 //   response: pointer to response data
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-uint32_t DAP_ExecuteCommand(const uint8_t *request, uint8_t *response)
+ATTR_RAMFUNC uint32_t DAP_ExecuteCommand(const uint8_t *request, uint8_t *response)
 {
 	uint32_t cnt, num, n;
 

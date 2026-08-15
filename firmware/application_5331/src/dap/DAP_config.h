@@ -98,7 +98,7 @@
 /// 命令和响应数据的最大包缓冲区数量。
 /// 此配置设置用于优化与调试器的通信性能，并取决于 USB 外设。对于 RAM 或 USB 缓冲区有限的设备，可以
 /// 减小此设置（有效范围为 1 .. 255）。
-#define DAP_PACKET_COUNT        4U              ///< 指定缓冲的包数量。
+#define DAP_PACKET_COUNT        8U              ///< 指定缓冲的包数量。
 
 /// 指示是否支持 UART 串行线输出 (SWO) 跟踪。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。

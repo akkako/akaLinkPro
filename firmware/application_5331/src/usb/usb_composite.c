@@ -691,12 +691,6 @@ void chry_dap_handle(void)
             if (n == DAP_PACKET_COUNT) {
                 n = 0U;
             }
-            if (n == USB_RequestIndexI) {
-                // flags = osThreadFlagsWait(0x81U, osFlagsWaitAny, osWaitForever);
-                // if (flags & 0x80U) {
-                //     break;
-                // }
-            }
         }
 
         // Execute DAP Command (process request and prepare response)

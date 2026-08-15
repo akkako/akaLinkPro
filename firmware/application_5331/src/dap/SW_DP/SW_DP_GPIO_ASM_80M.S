@@ -66,7 +66,7 @@ SWD_Write_GPIO_ASM_80M:
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
     .endr
     lw      t6, 0(a1)                   # 读取数据指针指向的 32 位数据
-    
+    mv      a0, x0                      # 清空 a0
     
     #=========== calc parity bit ===========
     // 旧算法：
@@ -98,11 +98,12 @@ SWD_Write_GPIO_ASM_80M:
     #---------------- bit 0 (trn) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     sw      t1, FGPIO_DO_CLR_OFFSET(t0) # SWDIR 拉低，SWDIO 切换为输入状态
-    cpop    a5, t6
+    nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    cpop    a5, t6                      # 直接计算校验值
     andi    a5, a5, 1
-    mv      a0, x0                      # 清空 a0
+    
 
     # ack 周期
     # 本阶段使用的寄存器：
@@ -204,10 +205,8 @@ SWD_Write_GPIO_ASM_80M:
     bexti   a6, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0，并清除其他位
     sh2add  a0, a6, a0                  # a0 = (a6 << 2) + a0
 
-
     // sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     // li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    
     
     # 判断跳转
     # 本阶段使用的寄存器：
@@ -257,13 +256,12 @@ SWD_Write_GPIO_ASM_80M:
     or      t4, t4, t2
 
     sw      t4, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK, SWDIO 拉高
-    
     csrrsi  zero, mstatus, 8
     ret
 
 .lable_w_ack_not_ok:
     li      t4, ACK_WAIT_MASK           # ACK_WAIT (预加载比较值)
-    li      t5, ACK_FAULT_MASK            # ACK_FAULT (预加载比较值)
+    li      t5, ACK_FAULT_MASK          # ACK_FAULT (预加载比较值)
     beq     a0, t4, .lable_w_ack_wait
     beq     a0, t5, .lable_w_ack_fault
     j       .lable_w_ack_error
@@ -331,7 +329,7 @@ SWD_Read_GPIO_ASM_80M:
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
     mv      a5, x0                      # 清空 a5 (用于保存接收数据)
-    mv      a0, x0                      # 清空 a0
+    nop
 
     # ack 周期
     # 本阶段使用的寄存器：
@@ -525,42 +523,38 @@ SWD_Read_GPIO_ASM_80M:
     or      a5, a5, t6                  # 合并 BIT0 到 a5
 
     #---------------- bit 34 (recv data 30 / no send) ----------------
-    nop
+    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
     rori    a5, a5, 1                   # a5 循环右移 1 位
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT30)
 
-    nop
+    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     bexti   t6, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
     or      a5, a5, t6                  # 合并 BIT0 到 a5
 
     #---------------- bit 35 (recv data 31 / no send) ----------------
-    nop
     rori    a5, a5, 1                   # a5 循环右移 1 位
+    srli    a5, a5, 1                   # a5 >>= 1
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT31)
 
-    srli    a5, a5, 1                   # a5 >>= 1
     slli    a6, a6, (31-SWDI_SHIFT)     # 将 SWDI 数据移到 BIT31
     and     a6, a6, t3                  # 提取 BIT31
+    or      a5, a5, a6                  # 合并 BIT31 到 a5
 
     #---------------- bit 36 (recv parity / no send) ----------------
-    or      a5, a5, a6                  # 合并 BIT31 到 a5
     li      t3, SWDO_OFFSET
+    cpop    t5, a5                      # 直接计算校验位，保存在 t5 BIT0
     lw      t4, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 t4 (parity)
     
-    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
+    sw      a5, 0(a1)                   # 将接收的数据保存（不管校验是否正确）
     bexti   t4, t4, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
-    cpop    t5, a5                      # 直接计算校验位，保存在 t5 BIT0
     andi    t5, t5, 1
-    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
+    
     beq     t4, t5, .L_r_parity_check_ok
     li      a0, ACK_ERROR_MASK
 
 .L_r_parity_check_ok:
-    sw      a5, 0(a1)       # save data in memory
-
     csrrsi  zero, mstatus, 8
     ret
-
 
 .label_r_not_ack_ok:
     # 处理 ACK_WAIT 和 ACK_FAULT
@@ -570,25 +564,8 @@ SWD_Read_GPIO_ASM_80M:
     beq     a0, t5, .lable_r_ack_fault  # ACK_FAULT
     j       .lable_r_ack_error          # ACK_ERROR
 
-
 .lable_r_ack_wait:
 .lable_r_ack_fault:
-    # turnaround 周期
-    # 本阶段使用的寄存器：
-    # t0 -- FGPIO_BASE
-    # t1 -- SWDIR_OFFSET
-    # t2 -- SWCLK_OFFSET
-
-    #---------------- bit 0 ----------------
-    sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
-    li      t3, SWDO_OFFSET
-    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
-
-    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    csrrsi  zero, mstatus, 8
-    ret
-
 .lable_r_ack_error:
     # turnaround 周期
     # 本阶段使用的寄存器：
@@ -600,8 +577,8 @@ SWD_Read_GPIO_ASM_80M:
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     li      t3, SWDO_OFFSET
-    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
+    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
     csrrsi  zero, mstatus, 8
     ret

@@ -74,11 +74,9 @@ SWD_Write_GPIO_ASM_80M:
     // xor     a5, a5, a6      # 32 -- 16
     // srli    a6, a5, 8
     // xor     a5, a5, a6      # 16 -- 8
-
     // srli    a6, a5, 4
     // xor     a5, a5, a6      # 8 -- 4
     // srli    a6, a5, 2
-
     // xor     a5, a5, a6      # 4 -- 2
     // srli    a6, a5, 1
     // xor     a5, a5, a6      # 2 -- 1
@@ -96,12 +94,10 @@ SWD_Write_GPIO_ASM_80M:
     #---------------- bit 0 (trn) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     sw      t1, FGPIO_DO_CLR_OFFSET(t0) # SWDIR 拉低，SWDIO 切换为输入状态
-    srli    a6, a5, 16
-    xor     a5, a5, a6      # 32 -- 16
+    nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    srli    a6, a5, 8
-    xor     a5, a5, a6      # 16 -- 8
+    nop
     mv      a0, x0                      # 清空 a0
 
     # ack 周期
@@ -131,36 +127,30 @@ SWD_Write_GPIO_ASM_80M:
 
     #---------------- bit 0 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    srli    a6, a5, 4
-    xor     a5, a5, a6      # 8 -- 4
-    srli    a6, a5, 2
+    nop
+    srli    a6, a5, 16
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    xor     a5, a5, a6      # 4 -- 2
-    srli    a6, a5, 1
-    xor     a5, a5, a6      # 2 -- 1
+    xor     a5, a5, a6      # 32 -- 16
+    srli    a6, a5, 8
     
     #---------------- bit 1 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    andi    a5, a5, 1       # clear
-    nop
-    nop
+    xor     a5, a5, a6      # 16 -- 8
+    srli    a6, a5, 4
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    nop
-    nop
-    nop
+    xor     a5, a5, a6      # 8 -- 4
+    srli    a6, a5, 2
 
     #---------------- bit 2 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    nop
-    nop
-    nop
+    xor     a5, a5, a6      # 4 -- 2
+    srli    a6, a5, 1
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    nop
-    nop
-    nop
+    xor     a5, a5, a6      # 2 -- 1
+    andi    a5, a5, 1       # clear
 
     # turnaround 周期
     # 本阶段使用的寄存器：
@@ -174,39 +164,47 @@ SWD_Write_GPIO_ASM_80M:
     # a6 -- ack temp read value (ack 阶段延迟采样)
     # t6 -- data
 
-    #---------------- bit 3 (recv ack bit 0 / send trn) ----------------
+    #---------------- bit 3 (send trn) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     nop
     nop
-    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    srli    a6, a6, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
-    andi    a6, a6, 1                   # 提取 BIT0
-    or      a0, a0, a6                  # 合并 BIT0 到 a0
-
-    #---------------- bit 4 (recv ack bit 1 / no send) ----------------
     nop
+    nop
+
+    #---------------- bit 4 (virtual) ----------------
     nop
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
+
+    nop
+    srli    a6, a6, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
+    andi    a6, a6, 1                   # 提取 BIT0
+
+    #---------------- bit 5 (virtual) ----------------
+    or      a0, a0, a6                  # 合并 BIT0 到 a0
+    nop
+    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
 
     nop
     srli    a6, a6, (SWDI_SHIFT-1)      # 将 SWDI 数据移到 BIT1
     andi    a6, a6, 2                   # 提取 BIT1
-    or      a0, a0, a6                  # 合并 BIT1 到 a0
 
-    #---------------- bit 5 (recv ack bit 2 / no send) ----------------
-    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    nop
-    nop
+    #---------------- bit 6 (virtual) ----------------
+    or      a0, a0, a6                  # 合并 BIT1 到 a0
+    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
 
-    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
+    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
     srli    a6, a6, (SWDI_SHIFT-2)      # 将 SWDI 数据移到 BIT2
     andi    a6, a6, 4                   # 提取 BIT2
     or      a0, a0, a6                  # 合并 BIT2 到 a0
 
+    // sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
+    // li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
+    
+    
     # 判断跳转
     # 本阶段使用的寄存器：
     # t0 -- FGPIO_BASE

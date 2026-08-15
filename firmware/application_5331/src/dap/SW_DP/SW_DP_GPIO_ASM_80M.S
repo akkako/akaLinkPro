@@ -320,14 +320,12 @@ SWD_Read_GPIO_ASM_80M:
     # t1 -- SWDIR_OFFSET
     # t2 -- SWCLK_OFFSET
 
-    #---------------- bit 0 ----------------
+    #---------------- bit 0 (trn) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     sw      t1, FGPIO_DO_CLR_OFFSET(t0) # SWDIR 拉低，SWDIO 切换为输入状态
     nop
-    nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    nop
     mv      a5, x0                      # 清空 a5 (用于保存接收数据)
     mv      a0, x0                      # 清空 a0
 
@@ -359,21 +357,17 @@ SWD_Read_GPIO_ASM_80M:
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     nop
     nop
-    nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
     nop
     nop
-    nop
-    
+
     #---------------- bit 1 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     nop
     nop
-    nop
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    nop
     nop
     nop
 
@@ -381,10 +375,8 @@ SWD_Read_GPIO_ASM_80M:
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     nop
     nop
-    nop
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    nop
     nop
     nop
 
@@ -392,34 +384,42 @@ SWD_Read_GPIO_ASM_80M:
     nop
     nop
     nop
+
+    nop
+    nop
+    nop
+
+    #---------------- bit 4 (virtual) ----------------
+    nop
+    nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
 
     nop
     srli    a6, a6, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
     andi    a6, a6, 1                   # 提取 BIT0
+
+    #---------------- bit 5 (virtual) ----------------
     or      a0, a0, a6                  # 合并 BIT0 到 a0
-    
-    #---------------- bit 4 (virtual) ----------------
-    nop
-    nop
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
 
     nop
     srli    a6, a6, (SWDI_SHIFT-1)      # 将 SWDI 数据移到 BIT1
     andi    a6, a6, 2                   # 提取 BIT1
+
+    #---------------- bit 6 (virtual) ----------------
     or      a0, a0, a6                  # 合并 BIT1 到 a0
-    
-    #---------------- bit 5 (virtual) ----------------
-    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    li      t6, 0x80000000              # 0x80000000 (预加载筛选值)
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
 
-    nop
+    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
     srli    a6, a6, (SWDI_SHIFT-2)      # 将 SWDI 数据移到 BIT2
     andi    a6, a6, 4                   # 提取 BIT2
     or      a0, a0, a6                  # 合并 BIT2 到 a0
+
+
+    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
+    li      t6, 0x80000000              # 0x80000000 (预加载筛选值)
 
     #=========== check ack and branch ===========
     bne     a0, t3, .label_r_not_ack_ok # 如果不是 ACK_OK，跳转到 label_r_not_ack_ok

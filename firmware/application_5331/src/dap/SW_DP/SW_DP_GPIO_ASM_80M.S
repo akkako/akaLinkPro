@@ -67,10 +67,6 @@ SWD_Write_GPIO_ASM_80M:
     .endr
     lw      t6, 0(a1)                   # 读取数据指针指向的 32 位数据
     
-    // mv      a5, t6
-    
-    
-    
     
     #=========== calc parity bit ===========
     // 旧算法：
@@ -187,27 +183,27 @@ SWD_Write_GPIO_ASM_80M:
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
 
     nop
-    srli    a6, a6, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
-    andi    a6, a6, 1                   # 提取 BIT0
+    bexti   a0, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0，并清除其他位赋值给 a0
+    nop
 
     #---------------- bit 5 (virtual) ----------------
-    or      a0, a0, a6                  # 合并 BIT0 到 a0
+    nop
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
 
     nop
-    srli    a6, a6, (SWDI_SHIFT-1)      # 将 SWDI 数据移到 BIT1
-    andi    a6, a6, 2                   # 提取 BIT1
+    bexti   a6, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0，并清除其他位
+    sh1add  a0, a6, a0                  # a0 = (a6 << 1) + a0
 
     #---------------- bit 6 (virtual) ----------------
-    or      a0, a0, a6                  # 合并 BIT1 到 a0
+    nop
     sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
 
     li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    srli    a6, a6, (SWDI_SHIFT-2)      # 将 SWDI 数据移到 BIT2
-    andi    a6, a6, 4                   # 提取 BIT2
-    or      a0, a0, a6                  # 合并 BIT2 到 a0
+    bexti   a6, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0，并清除其他位
+    sh2add  a0, a6, a0                  # a0 = (a6 << 2) + a0
+
 
     // sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     // li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
@@ -403,31 +399,26 @@ SWD_Read_GPIO_ASM_80M:
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
 
     nop
-    srli    a6, a6, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
-    andi    a6, a6, 1                   # 提取 BIT0
+    bexti   a0, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0，并清除其他位赋值给 a0
+    nop
 
     #---------------- bit 5 (virtual) ----------------
-    or      a0, a0, a6                  # 合并 BIT0 到 a0
+    nop
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
 
     nop
-    srli    a6, a6, (SWDI_SHIFT-1)      # 将 SWDI 数据移到 BIT1
-    andi    a6, a6, 2                   # 提取 BIT1
+    bexti   a6, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0，并清除其他位
+    sh1add  a0, a6, a0                  # a0 = (a6 << 1) + a0
 
     #---------------- bit 6 (virtual) ----------------
-    or      a0, a0, a6                  # 合并 BIT1 到 a0
+    nop
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
 
     li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    srli    a6, a6, (SWDI_SHIFT-2)      # 将 SWDI 数据移到 BIT2
-    andi    a6, a6, 4                   # 提取 BIT2
-    or      a0, a0, a6                  # 合并 BIT2 到 a0
-
-
-    li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
-    nop
+    bexti   a6, a6, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0，并清除其他位
+    sh2add  a0, a6, a0                  # a0 = (a6 << 2) + a0
 
     #=========== check ack and branch ===========
     bne     a0, t3, .label_r_not_ack_ok # 如果不是 ACK_OK，跳转到 label_r_not_ack_ok
@@ -553,16 +544,14 @@ SWD_Read_GPIO_ASM_80M:
 
     #---------------- bit 36 (recv parity / no send) ----------------
     or      a5, a5, a6                  # 合并 BIT31 到 a5
-    nop
+    li      t3, SWDO_OFFSET
     lw      t4, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 t4 (parity)
-
-    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
-    srli    t4, t4, (SWDI_SHIFT-0)      # 将 SWDI 数据移到 BIT0
-    andi    t4, t4, 1                   # 提取 BIT0
-
-    cpop    t5, a5
+    
+    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
+    bexti   t4, t4, SWDI_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
+    cpop    t5, a5                      # 直接计算校验位，保存在 t5 BIT0
     andi    t5, t5, 1
-
+    sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
     beq     t4, t5, .L_r_parity_check_ok
     li      a0, ACK_ERROR_MASK
 
@@ -570,9 +559,6 @@ SWD_Read_GPIO_ASM_80M:
     sw      a5, 0(a1)       # save data in memory
 
     csrrsi  zero, mstatus, 8
-    #=========== SWDIO high ===========
-    li      t3, SWDO_OFFSET
-    sw      t3, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
     ret
 
 

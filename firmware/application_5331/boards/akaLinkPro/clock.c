@@ -15,7 +15,6 @@
 #include "hpm_clock_drv.h"
 #include "hpm_pllctlv2_drv.h"
 
-
 void init_board_clock(void)
 {
     clock_add_to_group(clock_cpu0, 0);
@@ -40,16 +39,16 @@ void init_board_clock(void)
 void init_board_clock_source(void)
 {
     /* Generate pll0 code */
-    pllctlv2_init_pll_with_freq(HPM_PLLCTLV2, PLLCTLV2_PLL_PLL0, 720000000);
+    pllctlv2_init_pll_with_freq(HPM_PLLCTLV2, PLLCTLV2_PLL_PLL0, 960000000);
 
     /* Generate clk0_pll0 code */
     pllctlv2_set_postdiv(HPM_PLLCTLV2, PLLCTLV2_PLL_PLL0, pllctlv2_clk0, pllctlv2_div_1p0);
 
     /* Generate clk1_pll0 code */
-    pllctlv2_set_postdiv(HPM_PLLCTLV2, PLLCTLV2_PLL_PLL0, pllctlv2_clk1, pllctlv2_div_1p2);
+    pllctlv2_set_postdiv(HPM_PLLCTLV2, PLLCTLV2_PLL_PLL0, pllctlv2_clk1, pllctlv2_div_1p6);
 
     /* Generate clk2_pll0 code */
-    pllctlv2_set_postdiv(HPM_PLLCTLV2, PLLCTLV2_PLL_PLL0, pllctlv2_clk2, pllctlv2_div_1p8);
+    pllctlv2_set_postdiv(HPM_PLLCTLV2, PLLCTLV2_PLL_PLL0, pllctlv2_clk2, pllctlv2_div_2p4);
 
     /* Generate clk_top_mct0 code */
     clock_set_source_divider(clock_mchtmr0, clk_src_osc24m, 1);

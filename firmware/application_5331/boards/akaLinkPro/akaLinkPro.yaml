@@ -3,7 +3,7 @@
 
 board:
     soc: HPM5301
-    device: HPM5301xEGx
+    device: HPM5331xEGx
     openocd-soc: hpm5300
     openocd-probe: cmsis_dap
     on-board-flash:

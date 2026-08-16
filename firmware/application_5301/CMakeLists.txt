@@ -70,6 +70,7 @@ sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_Slow.c)
 sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_ASM_30M.S)
 sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_ASM_36M.S)
 sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_ASM_45M.S)
+sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_ASM_60M.S)
 sdk_app_src(src/dap/JTAG_DP/JTAG_DP.c)
 
 # generate_ide_projects()

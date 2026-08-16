@@ -347,10 +347,10 @@ char serial_number_dynamic[33] = {0}; // Dynamic serial number
 char *string_descriptors[] = {
     (char[]){0x09, 0x04},   /* Langid */
     "ARM",                  /* Manufacturer */
-    "akaLinkPro CMSIS-DAP", /* Product */
+    "akaLinkIso CMSIS-DAP", /* Product */
     "Serial Number",        /* Serial Number */
-    "akaLinkPro WebUSB",
-    "akaLinkPro DFU Runtime",
+    "akaLinkIso WebUSB",
+    "akaLinkIso DFU Runtime",
 };
 
 static const uint8_t device_quality_descriptor[] = {

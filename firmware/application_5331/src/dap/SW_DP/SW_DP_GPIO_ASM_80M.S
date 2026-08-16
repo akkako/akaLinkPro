@@ -30,6 +30,84 @@
 .equ ACK_FAULT_MASK,            4
 .equ ACK_ERROR_MASK,            8
 
+
+.section .fast, "ax"
+.align  2
+.global SWJ_Sequence_GPIO_ASM_80M
+.type   SWJ_Sequence_GPIO_ASM_80M, @function
+
+// void SWJ_Sequence_GPIO_ASM_80M(uint32_t count, const uint8_t *data)
+
+SWJ_Sequence_GPIO_ASM_80M:
+    # count == 0 快速退出
+    beqz    a0, swj_send_end
+
+    # 加载预设值和地址
+    li      t0, FGPIO_BASE
+    li      t1, SWDIR_OFFSET
+    li      t2, SWCLK_OFFSET
+
+    # 本阶段使用的寄存器：
+    # a0 -- uint32_t count
+    # a1 -- const uint8_t *data
+    # a2 -- uint8_t val
+    # a3 -- uint32_t pack_bytes
+    # a4 -- uint32_t tail_bits
+    # a5 -- 
+    # a6 -- 
+    # t0 -- FGPIO_BASE
+    # t1 -- SWDIR_OFFSET
+    # t2 -- SWCLK_OFFSET
+    # t3 -- send temp bit
+    # t4 -- 
+    # t5 -- 
+    # t6 -- data
+
+    # 计算 pack_bytes 和 tail_bits
+    srli    a3, a0, 3                   # pack_bytes = count / 8
+    andi    a4, a0, 0x7                 # tail_bits = count % 8
+
+    # pack_bytes == 0 跳过 pack 发送阶段
+    beqz    a3, swj_send_tail_start
+
+swj_loop_send_pack_start:
+    lbu     a2, 0(a1)                   # val = *data
+    addi    a1, a1, 1                   # data++
+
+    andi    t3, a2, 1                   # t3 = a2(val) & 1
+.rept 8
+    slli    t3, t3, SWDO_SHIFT          # t3 = 数据偏移到 SWDO 数据位
+    or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
+
+    sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
+    srli    a2, a2, 1                   # a2 >>= 1
+    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
+.endr
+    
+    addi    a3, a3, -1                  # pack_bytes--
+    bnez    a3, swj_loop_send_pack_start# 循环向后跳转，BTFN 预测为 Taken
+
+swj_send_tail_start:
+    beqz    a4, swj_send_end            # tail_bits == 0 直接返回
+
+    lbu     a2, 0(a1)                   # val = *data
+    andi    t3, a2, 1                   # t3 = a2(val) & 1
+swj_loop_send_tail_start:
+    slli    t3, t3, SWDO_SHIFT          # t3 = 数据偏移到 SWDO 数据位
+    or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
+
+    sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
+    srli    a2, a2, 1                   # a2 >>= 1
+    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
+
+    addi    a4, a4, -1                  # tail_bits--
+    bnez    a4, swj_loop_send_tail_start# 循环向后跳转，BTFN 预测为 Taken
+swj_send_end:
+    ret
+
+
 .section .fast, "ax"
 .align  2
 .global SWD_Write_GPIO_ASM_80M

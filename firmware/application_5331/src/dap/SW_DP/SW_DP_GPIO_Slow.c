@@ -56,29 +56,26 @@ static inline uint8_t SW_READ_BIT(void)
  */
 ATTR_RAMFUNC void SWJ_Sequence_GPIO_Slow(uint32_t count, const uint8_t *data)
 {
-    uint32_t val;
-    uint32_t n;
+    register uint8_t val;
+    register uint32_t pack_bytes = count / 8;
+    register uint32_t tail_bits = count % 8;
 
-    val = 0U;
-    n = 0U;
-    while (count--)
+    for (uint32_t i = 0; i < pack_bytes; i++)
     {
-        if (n == 0U)
+        val = *data++;
+        for (uint32_t j = 0; j < 8; j++)
         {
-            val = *data++;
-            n = 8U;
+            SW_WRITE_BIT(val);
+            val >>= 1;
         }
-        if (val & 1U)
-        {
-            PIN_SWDIO_TMS_SET();
-        }
-        else
-        {
-            PIN_SWDIO_TMS_CLR();
-        }
-        SW_CLOCK_CYCLE();
+    }
+
+    val = *data;
+
+    for (uint32_t i = 0; i < tail_bits; i++)
+    {
+        SW_WRITE_BIT(val);
         val >>= 1;
-        n--;
     }
 }
 #endif

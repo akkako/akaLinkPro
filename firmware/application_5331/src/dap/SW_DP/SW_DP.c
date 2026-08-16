@@ -39,8 +39,8 @@
  */
 ATTR_RAMFUNC void SWJ_Sequence(uint32_t count, const uint8_t *data)
 {
-    // SWJ_Sequence_GPIO_Fast(count, data);
-    SWJ_Sequence_GPIO_Slow(count, data);
+    // SWJ_Sequence_GPIO_Slow(count, data);
+    SWJ_Sequence_GPIO_ASM_80M(count, data);
 }
 #endif
 

@@ -13,7 +13,8 @@
     JTMS_IN     PA28
     JTMS_OUT    PA29
     JTMS_DIR    PA30
- */
+*/
+
 .equ SWCLK_SHIFT,               27
 .equ SWDI_SHIFT,                28
 .equ SWDO_SHIFT,                29

@@ -31,12 +31,14 @@
 .equ ACK_ERROR_MASK,            8
 
 
+
+
 .section .fast, "ax"
 .align  2
 .global SWJ_Sequence_GPIO_ASM_60M
 .type   SWJ_Sequence_GPIO_ASM_60M, @function
 
-# void SWJ_Sequence_GPIO_ASM_60M(uint32_t count, const uint8_t *data)
+# void SWJ_Sequence_GPIO_ASM_60M(uint32_t count, uint32_t delay, const uint8_t *data)
 
 SWJ_Sequence_GPIO_ASM_60M:
     # Preload offset value
@@ -47,20 +49,23 @@ SWJ_Sequence_GPIO_ASM_60M:
     # Used generic register:
     # a0 -- uint32_t        count           // [param] SWJ sequence count
     # a1 -- const uint8_t*  data            // [param] SWJ sequence data pointer
-    # a2 -- uint8_t         val             // [local] SWJ sequence data load
-    # a3 -- uint32_t        pack_bytes      // [local] 
-    # a4 -- uint32_t        tail_bits
-    # a5 -- 
+    # a2 -- uint32_t        delay           // [param] SWJ bit delay time
+    #
+    # a3 -- uint8_t         val             // [local] SWJ sequence data load
+    # a4 -- uint32_t        pack_bytes      // [local] packed bytes to send
+    # a5 -- uint32_t        tail_bits       // [local] tail bits to send
     # a6 -- 
-    # t0 -- FGPIO_BASE
-    # t1 -- SWDIR_OFFSET
-    # t2 -- SWCLK_OFFSET
-    # t3 -- send temp bit
+    # a7 -- 
+    #
+    # t0 -- FGPIO_BASE                      // [prest]
+    # t1 -- SWDIR_OFFSET                    // [prest]
+    # t2 -- SWCLK_OFFSET                    // [prest]
+    # t3 -- send temp bit                   // [prest]
     # t4 -- 
     # t5 -- 
-    # t6 -- data
+    # t6 -- uint32_t data                   // [local] recieved data
 
-    # 计算 pack_bytes 和 tail_bits
+    # calcualte pack_bytes and tail_bits
     srli    a3, a0, 3                   # pack_bytes = count / 8
     andi    a4, a0, 0x7                 # tail_bits = count % 8
 

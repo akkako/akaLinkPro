@@ -216,7 +216,7 @@
 	(net 84 "Net-(Q1-G)")
 	(net 85 "Net-(Q2-D)")
 	(net 86 "Net-(U3-B)")
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "011de0f6-7746-41b8-9a70-cdbfe6555fb5")
 		(at 80 148.1 180)
@@ -312,7 +312,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/d3b13427-5068-4ec0-b25b-5dc32404a144")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -493,7 +493,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/13207a03-bf9e-4783-9af2-1ae3214e1091")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -878,7 +878,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/4b8bec5d-eae7-4d9b-84ab-b050a5463670")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -1244,7 +1244,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/ddfe935e-f9cd-4113-a187-f2b958e93fae")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -1534,7 +1534,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:MountingHole_2.5mm"
+	(footprint "akaLink:MountingHole_2.5mm"
 		(layer "F.Cu")
 		(uuid "0559b390-69a8-4f88-aad2-ae8b48209e2d")
 		(at 53.5 157)
@@ -1630,7 +1630,7 @@
 		(property ki_fp_filters "MountingHole*")
 		(path "/f54eb36f-0262-43e5-b1a5-7925c999df91")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(clearance 1)
 		(attr exclude_from_pos_files exclude_from_bom)
 		(fp_circle
@@ -1664,7 +1664,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "akaLinkIso:MountingHole_2.5mm"
+	(footprint "akaLink:MountingHole_2.5mm"
 		(layer "F.Cu")
 		(uuid "05a3114e-2c91-48b1-a850-a204e3812972")
 		(at 89.5 157)
@@ -1760,7 +1760,7 @@
 		(property ki_fp_filters "MountingHole*")
 		(path "/42e99ae9-348f-485b-853d-b5d36d0da379")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(clearance 1)
 		(attr exclude_from_pos_files exclude_from_bom)
 		(fp_circle
@@ -1852,7 +1852,7 @@
 		(property ki_fp_filters "*TC2050*")
 		(path "/6486de2f-f6fb-4f33-8cd5-ac965e229712")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr exclude_from_pos_files exclude_from_bom)
 		(fp_line
 			(start 4.48 -2.05)
@@ -2573,7 +2573,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "12c62230-02f9-460b-b0d7-adba5622d878")
 		(at 79.5 145.1)
@@ -2630,7 +2630,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/b798a645-e2ce-4b92-b9e0-ef0fb2c0e149")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -2716,7 +2716,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1412af56-d808-48b4-bea7-def7631a5a8c")
 		(at 60.8 146.4 180)
@@ -2812,7 +2812,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/fc571f58-1944-4640-bf05-3f5130bdb217")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.140581 0.51)
@@ -2900,7 +2900,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1450468a-afb3-4909-a254-c8b6db3908e4")
 		(at 66.35 157.4 180)
@@ -2996,7 +2996,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f141e4be-2e7d-48e4-9f50-4f72185583ae")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -3138,7 +3138,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/e14cebf6-6542-4283-84c2-d9be0c8a196c")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 -0.735)
@@ -3224,7 +3224,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1b5e8f06-c4d7-45cf-a008-f3f8c2609841")
 		(at 66.35 158.7)
@@ -3320,7 +3320,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/67197315-3de4-457d-b12f-897b4ea505a8")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -3463,7 +3463,7 @@
 		)
 		(path "/ac852b1a-6b6c-4060-bc87-0add0a9d0aeb")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 1.65 -1.4)
@@ -3658,7 +3658,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "1e0de6cc-eb99-4ff6-bfe0-782ec7389bd3")
 		(at 84.55 136.299999 180)
@@ -3715,7 +3715,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/a29e38e9-28ca-4c11-a3e6-8751e3106e7a")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -3801,7 +3801,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "247d3bc8-8fd8-4618-9b6f-faeec14ec7e7")
 		(at 63 152 180)
@@ -3858,7 +3858,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/0a626d7e-3057-409e-a88d-95105e40fc9b")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -3944,7 +3944,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "27789bc5-09c7-4349-80e6-a982294bb8a1")
 		(at 60.8 145.1 180)
@@ -4001,7 +4001,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/c7c96952-04a1-45f9-bfc9-a073421e1d05")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.140581 0.51)
@@ -4144,7 +4144,7 @@
 		)
 		(path "/a34d805b-bbff-4d32-bb6a-127f03226f43")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 0.91 1.56)
@@ -4454,7 +4454,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "2c6adb93-0a0a-4efc-b8f5-b0087bbc3f1d")
 		(at 69.8 152 180)
@@ -4511,7 +4511,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/7d9ced5c-cc5d-4e14-98ed-619c1297f8ea")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -4653,7 +4653,7 @@
 		(property ki_fp_filters "SOT?23?3*")
 		(path "/e85148ac-4111-405b-a7d6-6025b88f6ef3")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 0.91 -1.56)
@@ -4963,7 +4963,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "30b173ea-465a-4673-891a-1054e40726c7")
 		(at 69.75 158.7)
@@ -5059,7 +5059,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/13ba9d16-b1c8-4f5c-9144-13720b530ed8")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -5145,7 +5145,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3223f91c-60ee-4509-9302-5c59fc68df76")
 		(at 63.4 142.1 180)
@@ -5202,7 +5202,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/cc52cc70-5b6a-4033-980e-fbd46039e0f9")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -5344,7 +5344,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/bb896269-ff85-43f7-a0ac-d4982d7d8aeb")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 -0.735)
@@ -5486,7 +5486,7 @@
 		(property ki_fp_filters "SOT?23* *SC*70*")
 		(path "/99325f18-29e5-4907-977d-ce43bdcd2418")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 0.91 -1.56)
@@ -5910,7 +5910,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/e8fe4576-0604-44ac-aae5-1ec36840c2b0")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 -1.56)
@@ -6220,7 +6220,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3cddc935-1d92-4fda-a160-7a7c3213e5e5")
 		(at 63.4 145.1 180)
@@ -6277,7 +6277,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/06a71020-5b59-4d93-abe8-a3b058c40252")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -6363,7 +6363,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3de837c5-85b6-4c95-806e-73d06d769287")
 		(at 76.6 135.8 90)
@@ -6420,7 +6420,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/a4639313-2267-4c35-8c5f-77ae396257cb")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -6506,7 +6506,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "3efbba76-29b2-49d1-894a-181d3c0b6bb0")
 		(at 69.75 157.4 180)
@@ -6602,7 +6602,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/ce52389b-c241-4684-bcd2-1e547bcb67a9")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -6783,7 +6783,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/d3b1940b-6693-4455-8ac5-2a57a791c5b3")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -7142,7 +7142,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/146ad4ae-fead-4057-a5ae-23384d1d67ed")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -0.29 -1.236)
@@ -7297,7 +7297,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "450a4864-4ad5-4536-a386-9f166f96059f")
 		(at 63 157.4 180)
@@ -7393,7 +7393,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/ee70e390-67eb-440d-a8d7-335e82e8f48f")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -7479,7 +7479,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "487b09a0-93ae-4c3e-aabf-79033790e932")
 		(at 73.2 152 180)
@@ -7536,7 +7536,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/3c1c765f-d2cb-47ea-9d22-3c04d7fb5fa1")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -7622,7 +7622,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4d478234-d682-42a6-bed1-312e3ba31495")
 		(at 80 152)
@@ -7718,7 +7718,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/f8faca0a-87bc-4ec7-8e3d-8300d3b7ef0c")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -7804,7 +7804,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:MountingHole_2.5mm"
+	(footprint "akaLink:MountingHole_2.5mm"
 		(layer "F.Cu")
 		(uuid "4dcc8cfe-2be6-4ca9-a5d4-73ec36c85809")
 		(at 60 130)
@@ -7900,7 +7900,7 @@
 		(property ki_fp_filters "MountingHole*")
 		(path "/3e86ed2f-05e9-45d0-8e67-38ca5b388206")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(clearance 1)
 		(attr exclude_from_pos_files exclude_from_bom)
 		(fp_circle
@@ -7934,7 +7934,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "4e9deb6e-debb-44a1-9e3b-3cbd7a122fa1")
 		(at 76.55 158.7)
@@ -8030,7 +8030,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/4d4b085c-fc58-40a9-a279-5a6513192186")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -8116,7 +8116,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "569f6284-06b5-46b4-a0b8-d4342089b41b")
 		(at 55.95 152.85 90)
@@ -8212,7 +8212,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/94599dae-791d-437f-a9a5-9f68f22906e1")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -8298,7 +8298,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "57091313-03db-47d3-918e-bc65a810e850")
 		(at 63.4 143.6 180)
@@ -8355,7 +8355,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/88d1c3e2-60bb-4eb9-a259-3f9c22d03601")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -8441,7 +8441,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "57740db2-8786-4e48-a647-a49c7b2d0d2c")
 		(at 83.45 152)
@@ -8537,7 +8537,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/1d514d5a-9588-43b6-a07f-3d09aa50d0dd")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -8623,7 +8623,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "610c8ae8-049e-4823-a856-3064d45dc784")
 		(at 55.2 148.35 90)
@@ -8719,7 +8719,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/9b1df64c-1564-4e2e-930f-338d549ebe39")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -8805,7 +8805,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "627b3f38-79f2-4d63-abca-7a6247ff1ea5")
 		(at 57.65 162.15 -90)
@@ -8901,7 +8901,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/22eeb499-9c26-481c-98c1-46896fb6c2ed")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -8987,7 +8987,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "62dea822-dc31-405d-a288-880547f8a23f")
 		(at 85.8 152.85 90)
@@ -9083,7 +9083,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/a53a81f2-9d32-41dd-9979-79b5515c7e68")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -9225,7 +9225,7 @@
 		(property ki_fp_filters "Choke_* *Coil* Inductor_* L_*")
 		(path "/b1346e7e-17a5-474f-b899-af9f57af282d")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -1.61 -1.61)
@@ -9422,7 +9422,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "6509dda7-08f5-4e38-a4e4-00648943641f")
 		(at 57.25 152.85 -90)
@@ -9518,7 +9518,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/c6b6c5d8-c7a4-4221-9534-e41563057393")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -9604,7 +9604,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "67f693d0-cab8-44d0-887b-db311b998a93")
 		(at 85.8 155.45 90)
@@ -9700,7 +9700,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/fa96599c-8e28-4059-b4f1-04cfe19b1a10")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -9786,7 +9786,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "68075f88-6b50-49eb-bb09-80c7a4aea99c")
 		(at 63 158.7 180)
@@ -9882,7 +9882,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/369f7c61-a687-4971-a3de-20ace7c96ec7")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -10024,7 +10024,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/901b61f3-1487-404e-8a9f-ce8a2c240289")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -10110,7 +10110,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "68ce4c18-00d7-423a-9d87-2c2225ce560a")
 		(at 69 135.8 -90)
@@ -10206,7 +10206,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/1d3871da-e042-41b0-b03c-1024750c7054")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -10292,7 +10292,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "68fcf5c6-0736-4778-8449-037442aa2137")
 		(at 59.6 157.4)
@@ -10388,7 +10388,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/9e5c5047-0edd-4d6f-8959-dc53d2b0f2a9")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -10474,7 +10474,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "72a87cdc-db86-4c8c-827d-d930c4af1402")
 		(at 76.6 152 180)
@@ -10531,7 +10531,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/af6e2f7d-7549-48ff-b996-a17df70e572b")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -10617,7 +10617,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "734bc9f4-2539-44fc-81a1-2ec1c9c1f167")
 		(at 66.4 152 180)
@@ -10674,7 +10674,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/fa34d221-7716-4d58-9c57-49a99606f143")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -10760,7 +10760,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "74d512ed-a2bf-4fba-a8d1-a6cecdc84a62")
 		(at 83.45 158.7 180)
@@ -10856,7 +10856,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/5b314fef-c990-4a07-950f-458e71bf7f50")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -10942,7 +10942,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "76505aff-ee97-40e4-b43d-10fd0a4d4f42")
 		(at 87.1 152.85 90)
@@ -11038,7 +11038,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f4456e1b-cc1a-4a21-8cff-a2056149ddd9")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -11124,7 +11124,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "7d14da95-fa6a-4824-bd9a-1ad3026a45d7")
 		(at 59.6 152 180)
@@ -11220,7 +11220,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/8d578d87-312a-46a5-9d35-3a8c603eff41")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -11306,7 +11306,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:MountingHole_2.5mm"
+	(footprint "akaLink:MountingHole_2.5mm"
 		(layer "F.Cu")
 		(uuid "8135a378-dbcd-4750-bcba-0f99ba4bbdee")
 		(at 83 130)
@@ -11402,7 +11402,7 @@
 		(property ki_fp_filters "MountingHole*")
 		(path "/ebb5c30b-5043-43d1-8560-4aaccd3d038f")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(clearance 1)
 		(attr exclude_from_pos_files exclude_from_bom)
 		(fp_circle
@@ -11436,7 +11436,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(footprint "akaLinkIso:IDC-Header_2x10_P2.54mm_Horizontal"
+	(footprint "akaLink:IDC-Header_2x10_P2.54mm_Horizontal"
 		(layer "F.Cu")
 		(uuid "86ff1009-596e-4905-951a-cfdc56693d4b")
 		(at 82.93 160.6475 -90)
@@ -11531,7 +11531,7 @@
 		(property ki_fp_filters "Connector*:*_2x??_*")
 		(path "/505cb9ad-339b-43a4-bb70-33ae950c7ad5")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 4.27 28.07)
@@ -12264,7 +12264,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/6dcec2cf-85ac-46f9-9e57-9881f7a3cc66")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -12610,7 +12610,7 @@
 		(property ki_fp_filters "*Fuse*")
 		(path "/d0f0036c-971f-40f5-9b9d-c4a8f1304ac8")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.16278 0.51)
@@ -12698,7 +12698,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "93739b9d-83c3-44d1-aec5-f3fc7172dc47")
 		(at 59.6 158.7)
@@ -12794,7 +12794,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/90dbc6ca-9b2a-47b1-af30-08f2b4f4798a")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -12880,7 +12880,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "95a72d95-c556-4ada-8c01-1ed21cdb1e5a")
 		(at 80.65 150.05 90)
@@ -12976,7 +12976,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/5eaa276a-ada6-4de7-9e0d-25d1721aeaa7")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -13062,7 +13062,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "9ba7fca8-0960-4e3a-a1af-5ec72607e75e")
 		(at 86.45 150.9 180)
@@ -13158,7 +13158,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/823d11b3-3dd1-4838-aaab-ad50c47c0f98")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -13244,7 +13244,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "9c28e6d0-577b-4501-bcda-2b942a610f90")
 		(at 79.5 140.6)
@@ -13301,7 +13301,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/5d1cb9bd-6468-45d7-a427-ffef72d02fe3")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -13456,7 +13456,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/0f712761-d867-4b8d-8232-d2ad24472153")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -0.29 1.08)
@@ -13706,7 +13706,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/9b60081c-4d64-40e7-b9c4-86efbd6da432")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -13996,7 +13996,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a79398f1-33d6-4db7-bdd9-739a387aef89")
 		(at 73.15 157.4 180)
@@ -14092,7 +14092,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/0cd6bad3-1860-4e92-9835-dc1c4534e453")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -14178,7 +14178,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "a9ec2014-eabd-4dbb-9ecb-9827192c24ae")
 		(at 76.6 149.4)
@@ -14235,7 +14235,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/a80b4cca-f8da-485a-b1ea-b9ea16a865e7")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.140581 -0.51)
@@ -14323,7 +14323,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ae401bbb-63e0-436a-be20-201b22828714")
 		(at 76.55 157.4 180)
@@ -14419,7 +14419,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/1010bdb0-9c5b-46bd-8a34-74737018fd13")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -14505,7 +14505,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b2ddb431-5cc6-436d-8099-8cee01990883")
 		(at 76.6 150.7 180)
@@ -14601,7 +14601,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f1700768-1b4a-456d-b37d-7e10139a4a65")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -14687,7 +14687,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:USB_C_Receptacle_HRO_TYPE-C-31-M-12"
+	(footprint "akaLink:USB_C_Receptacle_HRO_TYPE-C-31-M-12"
 		(layer "F.Cu")
 		(uuid "b6f3e6c0-0f77-42b2-9c64-6dd76ec0e53b")
 		(at 71.5 129.0525 180)
@@ -14784,7 +14784,7 @@
 		(property ki_fp_filters "USB*C*Receptacle*")
 		(path "/ac20e7e7-4614-40b1-8ed7-c20ac791550f")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 4.7 -1.9)
@@ -15120,7 +15120,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b7009aa9-73e4-432e-bb7b-f06acb4ff17e")
 		(at 79.35 150.05 -90)
@@ -15216,7 +15216,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/a2b6307e-b4a9-4206-b394-3fd17404ca24")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -15302,7 +15302,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "b9f5758d-6d99-47fc-91e4-409e04d767a9")
 		(at 79.95 158.7)
@@ -15398,7 +15398,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/e40a6891-10a4-4a0d-a546-b20390dd8037")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -15484,7 +15484,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "be061aeb-ff8f-441e-be2e-332f494fcf17")
 		(at 63.4 140.6 180)
@@ -15541,7 +15541,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f384570b-16db-451e-bad1-a324649825cd")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -15683,7 +15683,7 @@
 		(property ki_fp_filters "*QFN*48*1EP*6x6mm*P0.4mm*EP4.2x4.2mm*")
 		(path "/eca4dbea-f7f8-4030-a124-e27f4c94f857")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -3.11 -3.11)
@@ -16567,7 +16567,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "befe8c34-982d-4c96-b777-a5825caa11d1")
 		(at 84.55 142 180)
@@ -16624,7 +16624,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/b9c889b2-99f4-496b-a23b-09f482221941")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -16710,7 +16710,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c15b3bcc-f51f-4ed8-958e-f0f4e522a884")
 		(at 73.15 158.7)
@@ -16806,7 +16806,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/5f654865-e57f-439d-9011-ee788d589e3d")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -16892,7 +16892,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c3340aba-b0aa-4a02-aede-69150eb52aca")
 		(at 85.4 158.05 90)
@@ -16988,7 +16988,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/ad183de1-16dc-470a-9439-b2bb5381f675")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -17074,7 +17074,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c3cc2932-2bdf-4a5c-a358-d490ef2ccdf6")
 		(at 57.25 155.45 90)
@@ -17170,7 +17170,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/efcfbccd-4f88-4b87-aa40-b5face0dda1b")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -17256,7 +17256,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "c9103047-e04d-4aca-8596-a1147a20b20b")
 		(at 63.4 139.1 180)
@@ -17352,7 +17352,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/ff952824-893b-4bbf-9d83-7e2567058a1f")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -17438,7 +17438,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ca4a1437-8900-4f65-8e33-c0bd01af5a8b")
 		(at 83.45 150.7)
@@ -17534,7 +17534,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/a7bbbc7b-5618-4bb5-9669-a8f11c714285")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -17620,7 +17620,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "cf535d55-d230-45f3-85e5-6228f6aa6867")
 		(at 83.45 157.4)
@@ -17716,7 +17716,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/d463b732-400b-4e0f-8973-c7403c5c517f")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd exclude_from_bom dnp)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -17802,7 +17802,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d44c9885-5ae8-484b-a5a7-457d500b8a48")
 		(at 74 135.8 -90)
@@ -17898,7 +17898,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/7df9a4db-4dbf-490f-adde-30aeb0a08874")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -17984,7 +17984,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "d7d89010-bbec-4359-82c9-91503b36b922")
 		(at 79.5 142.1)
@@ -18041,7 +18041,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/690ea744-9266-457b-a951-a6aa02e43bfd")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -18127,7 +18127,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "da0b0684-5f67-4edc-9688-a39b51c11f4f")
 		(at 79.5 133.3 180)
@@ -18184,7 +18184,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/c656be89-7a6c-4348-a6b7-2cc983055bd6")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -18270,7 +18270,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "dc4145b3-663f-4611-93d2-c4a28ad991f6")
 		(at 79.5 143.6)
@@ -18327,7 +18327,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/633a98fa-5e0e-46a7-b2c3-1cd86df669d1")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -18413,7 +18413,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "dcd4ac8f-c68a-477c-8e7f-9c3cb446d822")
 		(at 86.55 148.35 -90)
@@ -18509,7 +18509,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/8267d233-815d-4942-b7de-c4e7e83ea3ea")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -18690,7 +18690,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/1ea468ca-20dd-4615-a05a-b25c97497651")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -18980,7 +18980,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "eb08e545-4859-4cb5-9991-6d8f8adb7253")
 		(at 57.65 158.05 -90)
@@ -19076,7 +19076,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/d32f76eb-09fe-459c-8b14-2d194559e7a3")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -19257,7 +19257,7 @@
 		(property ki_fp_filters "SOT?23*")
 		(path "/412482b2-ea78-476a-95b2-5a5e8ff909a0")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.91 1.56)
@@ -19603,7 +19603,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/f291f2d8-011a-4b89-b7fe-caadfa134921")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr through_hole exclude_from_bom dnp)
 		(fp_line
 			(start -1.38 -1.38)
@@ -19860,7 +19860,7 @@
 		(property ki_fp_filters "Crystal*")
 		(path "/4211de2c-eb56-40fc-b2c7-f1d22b7c8522")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -2.06 -1.710001)
@@ -19970,7 +19970,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:C_0603_1608Metric"
+	(footprint "akaLink:C_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "ef5fe99e-dd0e-48f2-a234-9426dcf37404")
 		(at 67.5 135.8 90)
@@ -20027,7 +20027,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/cbbf6e3a-5811-4e80-8a62-2e34a14dd40c")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -20113,7 +20113,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f0416ff1-c068-4325-bb13-ef1416e7e4f2")
 		(at 85.35 162.15 -90)
@@ -20209,7 +20209,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/e88bccbf-8193-442f-885e-da6dce6f724a")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -20295,7 +20295,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f0fc0d72-b300-43b0-afa2-f08ca6239a7e")
 		(at 66 135.8 90)
@@ -20391,7 +20391,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/4bc596c7-38e4-43e6-a0ca-361163d5869d")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -20477,7 +20477,7 @@
 			)
 		)
 	)
-	(footprint "akaLinkIso:R_0603_1608Metric"
+	(footprint "akaLink:R_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "f2c0148d-ec3e-4e90-be2e-a37c1a2b87a1")
 		(at 79.95 157.4 180)
@@ -20573,7 +20573,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/e83383a8-bb1e-45e2-9735-b50e218b1dc0")
 		(sheetname "/")
-		(sheetfile "HSLinkIsolate.kicad_sch")
+		(sheetfile "akaLinkPro.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)

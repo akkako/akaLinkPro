@@ -11995,7 +11995,7 @@
 			(uuid "1cc666b9-7f47-4adf-a318-dcd3476dd74c")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR011")
 					(unit 1)
@@ -12061,7 +12061,7 @@
 			(uuid "9ec28835-8b31-46d3-b4d0-f227e481f65a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0178")
 					(unit 1)
@@ -12127,7 +12127,7 @@
 			(uuid "d45273e2-4cf6-46dd-b9c7-f65d36260786")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR07")
 					(unit 1)
@@ -12161,7 +12161,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 133.35 48.5648 0)
 			(effects
 				(font
@@ -12195,7 +12195,7 @@
 			(uuid "b44e1572-de4b-48b5-ac0b-054f95c19a91")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C106")
 					(unit 1)
@@ -12261,7 +12261,7 @@
 			(uuid "14680bb7-ec4d-4f01-83dd-ce37ba477d18")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR035")
 					(unit 1)
@@ -12327,7 +12327,7 @@
 			(uuid "1051d458-7d36-46b6-a452-43fcf7f06a31")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0151")
 					(unit 1)
@@ -12394,7 +12394,7 @@
 			(uuid "8b585230-3bfd-4f1b-be2c-6ee0b46222ba")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR047")
 					(unit 1)
@@ -12460,7 +12460,7 @@
 			(uuid "9a035d46-0841-470f-b944-ee164f25f713")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR021")
 					(unit 1)
@@ -12496,7 +12496,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 260.0452 166.37 0)
 			(effects
 				(font
@@ -12530,7 +12530,7 @@
 			(uuid "5d9fbd50-9cf9-4988-884e-833d17358b67")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C11")
 					(unit 1)
@@ -12596,7 +12596,7 @@
 			(uuid "5fc9463d-2e6e-4612-aac3-a3202762ff40")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0181")
 					(unit 1)
@@ -12662,7 +12662,7 @@
 			(uuid "39ba6ed0-84c4-4cc4-b656-816d0493f9af")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR016")
 					(unit 1)
@@ -12698,7 +12698,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 272.7452 187.96 0)
 			(effects
 				(font
@@ -12759,7 +12759,7 @@
 			(uuid "eb956cc7-1822-4f58-9c53-3cbca24d45e2")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C139")
 					(unit 1)
@@ -12825,7 +12825,7 @@
 			(uuid "bc4cf391-3159-429e-ade2-d0bd227654a0")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR023")
 					(unit 1)
@@ -12903,7 +12903,7 @@
 			(uuid "4e87c0a6-5fee-4b76-b0e1-964bfc795f0e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "D103")
 					(unit 1)
@@ -12969,7 +12969,7 @@
 			(uuid "1753724a-8c96-40bd-8b60-1b93a79be865")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0179")
 					(unit 1)
@@ -13035,7 +13035,7 @@
 			(uuid "effa13eb-29ab-4e04-a5d7-362c314eb63e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR030")
 					(unit 1)
@@ -13071,7 +13071,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 285.4452 187.96 0)
 			(effects
 				(font
@@ -13132,7 +13132,7 @@
 			(uuid "d79b9bc2-1fd4-4a55-8d7c-3d0bb17d5149")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C144")
 					(unit 1)
@@ -13239,7 +13239,7 @@
 			(uuid "d4dac5cb-cf28-4ad8-8ab9-a688335473f5")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U113")
 					(unit 1)
@@ -13305,7 +13305,7 @@
 			(uuid "23c88554-c0f5-4bb9-bdb0-5196208f8592")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0163")
 					(unit 1)
@@ -13339,7 +13339,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 311.15 69.088 90)
 			(effects
 				(font
@@ -13400,7 +13400,7 @@
 			(uuid "cdb56fe7-ebd5-46f5-ae36-eedd445625f9")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R129")
 					(unit 1)
@@ -13466,7 +13466,7 @@
 			(uuid "f8148931-6584-47bc-8afa-8bccadd75531")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR013")
 					(unit 1)
@@ -13545,7 +13545,7 @@
 			(uuid "10231c12-7cbe-4398-a72b-7d324d205b8a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "D101")
 					(unit 1)
@@ -13612,7 +13612,7 @@
 			(uuid "2193b0c2-03df-42ff-99d3-7330b4a3bc0c")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR036")
 					(unit 1)
@@ -13679,7 +13679,7 @@
 			(uuid "78aa2eb1-aa6b-4ac5-b4ad-0ad197aa44b1")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR03")
 					(unit 1)
@@ -13713,7 +13713,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 74.93 159.258 90)
 			(effects
 				(font
@@ -13747,7 +13747,7 @@
 			(uuid "9f899564-a680-4111-8aa4-50e15a56b455")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R2")
 					(unit 1)
@@ -13783,7 +13783,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 394.6652 217.17 0)
 			(effects
 				(font
@@ -13844,7 +13844,7 @@
 			(uuid "e8205061-536b-4f60-b523-60b3b446db1c")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C6")
 					(unit 1)
@@ -13911,7 +13911,7 @@
 			(uuid "fa7fa041-e412-4373-8195-3099b984a7e2")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR037")
 					(unit 1)
@@ -13978,7 +13978,7 @@
 			(uuid "0592516a-7bb0-4071-9cb8-8be715bf6997")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR042")
 					(unit 1)
@@ -14085,7 +14085,7 @@
 			(uuid "f850dfbb-676a-47cb-8dff-fab6206f8fd5")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U105")
 					(unit 1)
@@ -14151,7 +14151,7 @@
 			(uuid "f592cca3-84dc-4e5d-b3e8-a21575cdc15a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR034")
 					(unit 1)
@@ -14360,7 +14360,7 @@
 			(uuid "ec83e6ca-e98f-4bff-85fb-ee66cb0a0b55")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U101")
 					(unit 1)
@@ -14396,7 +14396,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 191.262 254 90)
 			(effects
 				(font
@@ -14430,7 +14430,7 @@
 			(uuid "e1174454-2c22-415c-a5c3-1e4bead717da")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R107")
 					(unit 1)
@@ -14496,7 +14496,7 @@
 			(uuid "169cfa47-587a-4d1c-8ea0-510a716015d1")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0105")
 					(unit 1)
@@ -14561,7 +14561,7 @@
 			(uuid "194754e4-e731-44a6-99f5-1f490e70e245")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR060")
 					(unit 1)
@@ -14627,7 +14627,7 @@
 			(uuid "39a154f3-57e6-4c46-aa6f-c81f2ca8cc3a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR09")
 					(unit 1)
@@ -14694,7 +14694,7 @@
 			(uuid "64472cb9-1263-4c1b-9912-233b59d11f4e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR048")
 					(unit 1)
@@ -14760,7 +14760,7 @@
 			(uuid "b5a5b17c-a0e8-4979-93cd-b041de067002")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR032")
 					(unit 1)
@@ -14824,7 +14824,7 @@
 			)
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#SYM101")
 					(unit 1)
@@ -14890,7 +14890,7 @@
 			(uuid "6805fe40-52bf-4994-876e-a910afe15857")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR057")
 					(unit 1)
@@ -14956,7 +14956,7 @@
 			(uuid "f537a350-26a2-4128-aff9-cc148ea3f4b9")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0133")
 					(unit 1)
@@ -14990,7 +14990,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 311.15 104.648 90)
 			(effects
 				(font
@@ -15051,7 +15051,7 @@
 			(uuid "6db73f4a-98a7-46c0-bf6f-d34e2e9bfb8c")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R12")
 					(unit 1)
@@ -15117,7 +15117,7 @@
 			(uuid "15dce5a6-cfe7-449e-a943-345f806cc47a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0125")
 					(unit 1)
@@ -15153,7 +15153,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 298.1452 166.37 0)
 			(effects
 				(font
@@ -15187,7 +15187,7 @@
 			(uuid "0e89ca6d-4bcb-42da-968c-499b9aec3e69")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C9")
 					(unit 1)
@@ -15223,7 +15223,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:MountingHole_2.5mm"
+		(property "Footprint" "akaLink:MountingHole_2.5mm"
 			(at 279.4 259.08 0)
 			(effects
 				(font
@@ -15251,7 +15251,7 @@
 			)
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "H101")
 					(unit 1)
@@ -15358,7 +15358,7 @@
 			(uuid "4db6239c-4e3f-45e8-9ff8-f707636a89cb")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U110")
 					(unit 1)
@@ -15434,7 +15434,7 @@
 			(uuid "d69ec78f-aa53-4b85-8560-d32007f67429")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "Y101")
 					(unit 1)
@@ -15470,7 +15470,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:MountingHole_2.5mm"
+		(property "Footprint" "akaLink:MountingHole_2.5mm"
 			(at 279.4 274.32 0)
 			(effects
 				(font
@@ -15498,7 +15498,7 @@
 			)
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "H104")
 					(unit 1)
@@ -15565,7 +15565,7 @@
 			(uuid "75f8fa26-7c01-46cd-8290-735bfdd257df")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0129")
 					(unit 1)
@@ -15632,7 +15632,7 @@
 			(uuid "6b8eb70e-e970-4b7c-8e1b-84a572815b5c")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0101")
 					(unit 1)
@@ -15735,7 +15735,7 @@
 			(uuid "93404d96-d4f4-4d5d-8b53-36ef590542fa")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "Q2")
 					(unit 1)
@@ -15769,7 +15769,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 140.97 146.812 90)
 			(effects
 				(font
@@ -15803,7 +15803,7 @@
 			(uuid "2f5e07a3-2ed0-4a8d-bf87-551fe509a3ea")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R103")
 					(unit 1)
@@ -15869,7 +15869,7 @@
 			(uuid "e083e705-40ae-43ae-ae51-35b64acb9ebe")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0162")
 					(unit 1)
@@ -15903,7 +15903,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 311.15 33.528 90)
 			(effects
 				(font
@@ -15964,7 +15964,7 @@
 			(uuid "ac9bff0b-4c19-4410-8caa-ff4b0bbbfe35")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R127")
 					(unit 1)
@@ -16030,7 +16030,7 @@
 			(uuid "46b99c6f-6877-4d9b-9595-e335920c913f")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0160")
 					(unit 1)
@@ -16064,7 +16064,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:IDC-Header_2x10_P2.54mm_Horizontal"
+		(property "Footprint" "akaLink:IDC-Header_2x10_P2.54mm_Horizontal"
 			(at 369.57 95.25 0)
 			(effects
 				(font
@@ -16152,7 +16152,7 @@
 			(uuid "f37d3d65-f9d1-42ed-95f7-7100f15a110b")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "J103")
 					(unit 1)
@@ -16188,7 +16188,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 338.582 167.64 90)
 			(effects
 				(font
@@ -16249,7 +16249,7 @@
 			(uuid "c89bf5d9-9117-4063-b050-dda1255007db")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R4")
 					(unit 1)
@@ -16285,7 +16285,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 166.0652 54.61 0)
 			(effects
 				(font
@@ -16319,7 +16319,7 @@
 			(uuid "992906d0-c9f5-4d31-9c23-1fbe78550b61")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C130")
 					(unit 1)
@@ -16385,7 +16385,7 @@
 			(uuid "246a5439-fcf2-432a-b0be-aa0c5f702c93")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR020")
 					(unit 1)
@@ -16420,7 +16420,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 379.73 169.672 90)
 			(effects
 				(font
@@ -16481,7 +16481,7 @@
 			(uuid "70b77eee-718c-4b01-af99-492f7373d6e4")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R7")
 					(unit 1)
@@ -16515,7 +16515,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 311.15 51.308 90)
 			(effects
 				(font
@@ -16576,7 +16576,7 @@
 			(uuid "d18429ff-4fc0-4ec6-9df6-4b4aec27f019")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R128")
 					(unit 1)
@@ -16642,7 +16642,7 @@
 			(uuid "7b5e97b7-d5d6-44c3-9665-89c3d6ee1abc")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0209")
 					(unit 1)
@@ -16678,7 +16678,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 178.7652 54.61 0)
 			(effects
 				(font
@@ -16712,7 +16712,7 @@
 			(uuid "7e610b55-6fb9-4eb1-9c1b-8d5731c188f5")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C131")
 					(unit 1)
@@ -16804,7 +16804,7 @@
 			(uuid "994f056a-fadb-4b25-b3be-e2bcf027d5e6")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "J3")
 					(unit 1)
@@ -16838,7 +16838,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 311.15 86.868 90)
 			(effects
 				(font
@@ -16899,7 +16899,7 @@
 			(uuid "841f7d28-cc1b-4611-b928-59f6db9085a5")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R130")
 					(unit 1)
@@ -16935,7 +16935,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 158.4452 78.74 0)
 			(effects
 				(font
@@ -16969,7 +16969,7 @@
 			(uuid "aefbcd50-8b74-48e0-9004-3df7cdbe35e6")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C115")
 					(unit 1)
@@ -17035,7 +17035,7 @@
 			(uuid "7cf0cef5-6c0b-4494-9384-a9796313a990")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR019")
 					(unit 1)
@@ -17101,7 +17101,7 @@
 			(uuid "c82d1d4b-16e0-46cf-8c8a-729321099ae6")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0124")
 					(unit 1)
@@ -17208,7 +17208,7 @@
 			(uuid "5d68fea1-9b3d-4fb6-be6c-19d06ac36b13")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U112")
 					(unit 1)
@@ -17274,7 +17274,7 @@
 			(uuid "57fff457-35b7-46f7-be90-47d6a3a996ae")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0132")
 					(unit 1)
@@ -17341,7 +17341,7 @@
 			(uuid "98e9894a-4fcc-4e36-bd7c-970cff409d11")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0102")
 					(unit 1)
@@ -17407,7 +17407,7 @@
 			(uuid "06b265d5-d346-454a-a83e-f443ebde9733")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR04")
 					(unit 1)
@@ -17473,7 +17473,7 @@
 			(uuid "a3354f1f-c284-4e72-acaa-067d552a08c4")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0166")
 					(unit 1)
@@ -17538,7 +17538,7 @@
 			(uuid "d09ec940-3e87-435f-99fa-e47a94d4462b")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR052")
 					(unit 1)
@@ -17604,7 +17604,7 @@
 			(uuid "42918cc0-ea04-41f6-85f6-4fd039501900")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR053")
 					(unit 1)
@@ -17671,7 +17671,7 @@
 			(uuid "3d8c1937-e4eb-48db-96f0-a95a1ab60a8d")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0128")
 					(unit 1)
@@ -17738,7 +17738,7 @@
 			(uuid "e810a2bf-2790-4cd2-b3fb-f5c14b91cbbd")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR044")
 					(unit 1)
@@ -17804,7 +17804,7 @@
 			(uuid "437b4038-94af-453d-8064-f5eee7aa2696")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0211")
 					(unit 1)
@@ -17870,7 +17870,7 @@
 			(uuid "3705f54d-6dee-4a4b-acc5-682f0948bf88")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR058")
 					(unit 1)
@@ -17937,7 +17937,7 @@
 			(uuid "fc54a13c-c6f5-4eec-b76d-7c9400d10bac")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0111")
 					(unit 1)
@@ -17973,7 +17973,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 285.4452 166.37 0)
 			(effects
 				(font
@@ -18007,7 +18007,7 @@
 			(uuid "8e793ed5-84a9-4553-bd10-e2bfab3554d0")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C8")
 					(unit 1)
@@ -18074,7 +18074,7 @@
 			(uuid "5ccd4f6c-6be1-406f-9bf8-a59fc94ce57b")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR06")
 					(unit 1)
@@ -18108,7 +18108,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 74.93 156.718 90)
 			(effects
 				(font
@@ -18142,7 +18142,7 @@
 			(uuid "864f3dd2-f185-468f-8f55-26668463281e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R1")
 					(unit 1)
@@ -18208,7 +18208,7 @@
 			(uuid "1b388f31-f967-4668-b998-19ba41ea78e1")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0106")
 					(unit 1)
@@ -18274,7 +18274,7 @@
 			(uuid "2cc748ff-06f0-42e4-8a16-dfb1c233018e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0213")
 					(unit 1)
@@ -18340,7 +18340,7 @@
 			(uuid "1e60762c-d64a-425f-b81a-b37ad8cd5ff7")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR040")
 					(unit 1)
@@ -18407,7 +18407,7 @@
 			(uuid "a7cfe0e4-af4c-4b00-b5d3-82e4952fb522")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR022")
 					(unit 1)
@@ -18442,7 +18442,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 379.73 162.052 90)
 			(effects
 				(font
@@ -18503,7 +18503,7 @@
 			(uuid "c06477a6-88a9-4797-ab68-d2285d479f9f")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R6")
 					(unit 1)
@@ -18539,7 +18539,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 392.1252 140.97 0)
 			(effects
 				(font
@@ -18600,7 +18600,7 @@
 			(uuid "41d3f72d-962b-4ef3-afc6-3a4883ec4359")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C2")
 					(unit 1)
@@ -18666,7 +18666,7 @@
 			(uuid "bd1b20dc-d7b3-46c0-816f-cea26ba3726d")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0127")
 					(unit 1)
@@ -18732,7 +18732,7 @@
 			(uuid "8601a4cb-1e9e-4c83-91ed-82c12898fc19")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR045")
 					(unit 1)
@@ -18798,7 +18798,7 @@
 			(uuid "c36cfbf3-5088-4bfb-9c5d-c20db7b4cf64")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0122")
 					(unit 1)
@@ -18866,7 +18866,7 @@
 			(uuid "036311f8-3b47-40d3-a7d3-a0b5e0210498")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR015")
 					(unit 1)
@@ -18932,7 +18932,7 @@
 			(uuid "1531dd22-7633-44c0-b42b-d3ed8f5b2afb")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR039")
 					(unit 1)
@@ -18968,7 +18968,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 183.8452 78.74 0)
 			(effects
 				(font
@@ -19002,7 +19002,7 @@
 			(uuid "ab4d73f2-0f1c-4977-9aa6-91f986699d86")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C117")
 					(unit 1)
@@ -19068,7 +19068,7 @@
 			(uuid "fdb43ad0-47a5-4b78-b73d-2c50f5ac55e7")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR038")
 					(unit 1)
@@ -19104,7 +19104,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 280.3652 229.87 0)
 			(effects
 				(font
@@ -19165,7 +19165,7 @@
 			(uuid "91a95d01-001c-4f11-8a78-b20aa985b764")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C4")
 					(unit 1)
@@ -19231,7 +19231,7 @@
 			(uuid "6b900e98-730d-4587-bb6c-3148878aee65")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR055")
 					(unit 1)
@@ -19301,7 +19301,7 @@
 			(uuid "df361830-bd86-4de9-b1a4-ae972f2a7f06")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C103")
 					(unit 1)
@@ -19337,7 +19337,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 334.9752 229.87 0)
 			(effects
 				(font
@@ -19398,7 +19398,7 @@
 			(uuid "5bff3228-8216-4dc4-bc74-5dfbb13cf988")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C125")
 					(unit 1)
@@ -19432,7 +19432,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 316.23 125.222 90)
 			(effects
 				(font
@@ -19493,7 +19493,7 @@
 			(uuid "dc244968-4eb1-4135-81c3-db818b5b324a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R125")
 					(unit 1)
@@ -19559,7 +19559,7 @@
 			(uuid "84367151-2e50-4bef-b870-ab74eecf70db")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR041")
 					(unit 1)
@@ -19626,7 +19626,7 @@
 			(uuid "8af30f5e-11e5-4a65-b4f5-2261a58a2862")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR026")
 					(unit 1)
@@ -19692,7 +19692,7 @@
 			(uuid "8e04b1be-e160-4bac-84ad-f8b508037b05")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0104")
 					(unit 1)
@@ -19759,7 +19759,7 @@
 			(uuid "78f4fed3-d737-458b-bd47-31c3495194be")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0103")
 					(unit 1)
@@ -19840,7 +19840,7 @@
 			(uuid "9cb08722-9f7b-40ad-ac1d-5450a727b909")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U2")
 					(unit 1)
@@ -19906,7 +19906,7 @@
 			(uuid "7c9cf283-7842-4430-a8e5-f39c6751549f")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0108")
 					(unit 1)
@@ -19942,7 +19942,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 301.498 140.97 90)
 			(effects
 				(font
@@ -20003,7 +20003,7 @@
 			(uuid "6b327514-c432-4cb3-86e0-a222672c466e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R13")
 					(unit 1)
@@ -20110,7 +20110,7 @@
 			(uuid "8974869f-fabd-4451-8b30-8bb6758fd03e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U111")
 					(unit 1)
@@ -20176,7 +20176,7 @@
 			(uuid "efeea8ae-cb6b-46fb-932c-1dc69851ce7a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0131")
 					(unit 1)
@@ -20243,7 +20243,7 @@
 			(uuid "0daf3924-5cae-4246-862b-e55380ee8da3")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR014")
 					(unit 1)
@@ -20279,7 +20279,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 326.898 219.71 90)
 			(effects
 				(font
@@ -20340,7 +20340,7 @@
 			(uuid "b2abce78-368f-4cd1-8c43-d27397617ae8")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R113")
 					(unit 1)
@@ -20405,7 +20405,7 @@
 			(uuid "875c3af8-9e5d-4b8e-8d66-7ee6dda9c73d")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0212")
 					(unit 1)
@@ -20471,7 +20471,7 @@
 			(uuid "807eccb6-f3fd-4fa3-ad5c-7a8dde6ec40c")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR029")
 					(unit 1)
@@ -20537,7 +20537,7 @@
 			(uuid "790ddeb1-b2dd-4466-b270-639c5a34de6b")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR027")
 					(unit 1)
@@ -20603,7 +20603,7 @@
 			(uuid "e0e71303-7c03-4283-b442-ae4038dd9e9a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR025")
 					(unit 1)
@@ -20669,7 +20669,7 @@
 			(uuid "7206a6b5-dcf4-447c-8383-36a03dab122c")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR028")
 					(unit 1)
@@ -20705,7 +20705,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 213.0552 48.26 0)
 			(effects
 				(font
@@ -20739,7 +20739,7 @@
 			(uuid "76496ff1-7b29-4156-9263-9961cdb31ed8")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C123")
 					(unit 1)
@@ -20775,7 +20775,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 375.412 213.36 90)
 			(effects
 				(font
@@ -20836,7 +20836,7 @@
 			(uuid "0c222730-eb9d-47b9-8234-626b2c9cdfd2")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R133")
 					(unit 1)
@@ -20910,7 +20910,7 @@
 			(uuid "1437f263-b3fc-474a-a564-0c4e288ce676")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "Q1")
 					(unit 1)
@@ -20976,7 +20976,7 @@
 			(uuid "17528cb0-27fa-49fd-933e-5efc5288ba37")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR02")
 					(unit 1)
@@ -21010,7 +21010,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 223.52 178.1048 0)
 			(effects
 				(font
@@ -21044,7 +21044,7 @@
 			(uuid "7738fce0-5158-4767-8b95-f5455d975428")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C120")
 					(unit 1)
@@ -21110,7 +21110,7 @@
 			(uuid "3836d732-acbc-45a5-b523-4dc24e838eae")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR049")
 					(unit 1)
@@ -21144,7 +21144,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 370.84 146.3548 0)
 			(effects
 				(font
@@ -21205,7 +21205,7 @@
 			(uuid "a8003f7d-5021-4f72-979b-7437e592c999")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C13")
 					(unit 1)
@@ -21271,7 +21271,7 @@
 			(uuid "f63918a0-d91f-4008-9c53-242a6625fb77")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0170")
 					(unit 1)
@@ -21337,7 +21337,7 @@
 			(uuid "871f61f2-6d66-46cb-9829-382207b45c36")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR012")
 					(unit 1)
@@ -21403,7 +21403,7 @@
 			(uuid "ebef0f4b-ec45-497c-941c-2a946542ebbc")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR054")
 					(unit 1)
@@ -21439,7 +21439,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 392.1252 181.61 0)
 			(effects
 				(font
@@ -21500,7 +21500,7 @@
 			(uuid "e850a28f-cd55-4ea1-a1df-6c5c4f57ae35")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C12")
 					(unit 1)
@@ -21534,7 +21534,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 133.35 43.4848 0)
 			(effects
 				(font
@@ -21568,7 +21568,7 @@
 			(uuid "8cccabd6-f54c-447a-aa96-6da95705b73b")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C108")
 					(unit 1)
@@ -21633,7 +21633,7 @@
 			(uuid "d6e8c87d-0e2e-4113-aaa8-d602d6c5f8bc")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR024")
 					(unit 1)
@@ -21667,7 +21667,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:USB_C_Receptacle_HRO_TYPE-C-31-M-12"
+		(property "Footprint" "akaLink:USB_C_Receptacle_HRO_TYPE-C-31-M-12"
 			(at 54.61 165.1 0)
 			(effects
 				(font
@@ -21746,7 +21746,7 @@
 			(uuid "085efa24-9200-4cd7-93b3-05bde20346f0")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "J1")
 					(unit 1)
@@ -21815,7 +21815,7 @@
 			(uuid "6e62d31e-75aa-4f21-97ae-962866a005d8")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "SW101")
 					(unit 1)
@@ -21850,7 +21850,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 346.71 159.512 90)
 			(effects
 				(font
@@ -21911,7 +21911,7 @@
 			(uuid "61d20f77-584b-4857-ba5e-ca9e80db8501")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R5")
 					(unit 1)
@@ -21978,7 +21978,7 @@
 			(uuid "e8458a89-65c3-47e6-acaf-e36b65a6fa14")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR043")
 					(unit 1)
@@ -22044,7 +22044,7 @@
 			(uuid "9056be82-642b-4760-ac53-8ebdbcc43bb3")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR017")
 					(unit 1)
@@ -22080,7 +22080,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 310.8452 166.37 0)
 			(effects
 				(font
@@ -22114,7 +22114,7 @@
 			(uuid "80aea88d-5824-4c55-aacc-8f272e030015")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C10")
 					(unit 1)
@@ -22182,7 +22182,7 @@
 			(uuid "527a057b-6251-4fa4-8259-24427455881b")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "L101")
 					(unit 1)
@@ -22248,7 +22248,7 @@
 			(uuid "90bfb452-41bb-4ec0-9aef-c53f7f8f4f06")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0200")
 					(unit 1)
@@ -22313,7 +22313,7 @@
 			(uuid "e8e46c1d-f00e-497d-a40e-0cc0c296ed84")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR059")
 					(unit 1)
@@ -22349,7 +22349,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 171.1452 78.74 0)
 			(effects
 				(font
@@ -22383,7 +22383,7 @@
 			(uuid "93b1c48a-05b2-4df9-bb89-4f19d9615466")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C116")
 					(unit 1)
@@ -22449,7 +22449,7 @@
 			(uuid "106fbf67-ef64-4674-8dec-6f3bd6aee42d")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0123")
 					(unit 1)
@@ -22515,7 +22515,7 @@
 			(uuid "0c4a0b3b-6338-4154-a184-c3a691342f1a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR01")
 					(unit 1)
@@ -22551,7 +22551,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 233.3752 48.26 0)
 			(effects
 				(font
@@ -22585,7 +22585,7 @@
 			(uuid "725a6309-0576-4c28-8248-add30a3639eb")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C122")
 					(unit 1)
@@ -22651,7 +22651,7 @@
 			(uuid "85c2a1b0-fce7-4f94-adbe-f762b1226ac1")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR031")
 					(unit 1)
@@ -22721,7 +22721,7 @@
 			(uuid "0e70c7dd-2010-48b7-8fff-1b568fcb05b9")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C102")
 					(unit 1)
@@ -22787,7 +22787,7 @@
 			(uuid "163a1e3f-c580-496d-b9ce-540388bcd430")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR05")
 					(unit 1)
@@ -22854,7 +22854,7 @@
 			(uuid "0081a242-1d4c-4d1f-9c2e-16b8c3f8ac3e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR010")
 					(unit 1)
@@ -22920,7 +22920,7 @@
 			(uuid "eccddf15-11ab-4b50-8193-e5c584c17d80")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0107")
 					(unit 1)
@@ -22987,7 +22987,7 @@
 			(uuid "1c3a7bd9-6999-480a-97a1-094a7239e4bb")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0138")
 					(unit 1)
@@ -23053,7 +23053,7 @@
 			(uuid "8930800e-c36d-4b0f-bfeb-875e9880ce76")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0142")
 					(unit 1)
@@ -23087,7 +23087,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 223.52 170.4848 0)
 			(effects
 				(font
@@ -23121,7 +23121,7 @@
 			(uuid "cc328a43-abdf-4a3a-b43e-c5956c58eba0")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C119")
 					(unit 1)
@@ -23157,7 +23157,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 298.958 226.06 90)
 			(effects
 				(font
@@ -23218,7 +23218,7 @@
 			(uuid "2f7ca440-5dda-42a2-a509-f939d6e1b6b1")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R110")
 					(unit 1)
@@ -23252,7 +23252,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 193.04 194.0052 0)
 			(effects
 				(font
@@ -23286,7 +23286,7 @@
 			(uuid "03a45896-6acd-4bae-b128-63491a309497")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C121")
 					(unit 1)
@@ -23353,7 +23353,7 @@
 			(uuid "9b0f8b51-7c59-4452-9dcb-6a5a8ce4ae19")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0130")
 					(unit 1)
@@ -23389,7 +23389,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 145.7452 78.74 0)
 			(effects
 				(font
@@ -23423,7 +23423,7 @@
 			(uuid "2b8c07ef-27c9-4d5e-bcbb-260870d7e7cb")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C114")
 					(unit 1)
@@ -23458,7 +23458,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 153.3652 54.61 0)
 			(effects
 				(font
@@ -23492,7 +23492,7 @@
 			(uuid "1ecce3b8-7239-403c-b993-b8a33703ae39")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C129")
 					(unit 1)
@@ -23558,7 +23558,7 @@
 			(uuid "fd833973-8c43-4a9d-a2fb-c52f62742c1b")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0135")
 					(unit 1)
@@ -23594,7 +23594,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 298.1452 187.96 0)
 			(effects
 				(font
@@ -23655,7 +23655,7 @@
 			(uuid "149f5c1e-7177-49cf-ab73-67415f9e99a0")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C3")
 					(unit 1)
@@ -23721,7 +23721,7 @@
 			(uuid "a922b544-e00f-40ef-9e17-47620edc30dd")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR050")
 					(unit 1)
@@ -23791,7 +23791,7 @@
 			(uuid "3593ebcd-e5fb-489a-ae41-9c6fd75d714e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "F1")
 					(unit 1)
@@ -23825,7 +23825,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 303.53 128.778 90)
 			(effects
 				(font
@@ -23886,7 +23886,7 @@
 			(uuid "6647ab96-62e5-42e6-b8df-2d2ffc5eb8b1")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R10")
 					(unit 1)
@@ -23953,7 +23953,7 @@
 			(uuid "d4032eb5-54b5-4fb8-ba7e-84bbb07e41dd")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0113")
 					(unit 1)
@@ -23989,7 +23989,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 375.412 200.66 90)
 			(effects
 				(font
@@ -24050,7 +24050,7 @@
 			(uuid "44162460-9ce5-43ca-9bf6-ebeb8670e287")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R117")
 					(unit 1)
@@ -24157,7 +24157,7 @@
 			(uuid "d501ec1d-509c-4bdd-a1df-67467d70a035")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U3")
 					(unit 1)
@@ -24191,7 +24191,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 340.36 29.972 90)
 			(effects
 				(font
@@ -24252,7 +24252,7 @@
 			(uuid "5d9d9f55-06df-43ff-aaf0-5249b86cb910")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R11")
 					(unit 1)
@@ -24318,7 +24318,7 @@
 			(uuid "61d81c5d-6dd0-4b32-b7a6-d44f8d7973b9")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0180")
 					(unit 1)
@@ -24384,7 +24384,7 @@
 			(uuid "37a64661-dd5e-45f5-8771-c979fc8f5384")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0134")
 					(unit 1)
@@ -24450,7 +24450,7 @@
 			(uuid "ba9d1d1e-4c0b-4cf5-ac8c-c75f33545447")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR018")
 					(unit 1)
@@ -24535,7 +24535,7 @@
 			(uuid "45b4bb6c-0c3b-442c-adc8-268aa79f1fbf")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U102")
 					(unit 1)
@@ -24605,7 +24605,7 @@
 			(uuid "0cf2bcd2-072b-4b83-92b1-eee2ee405308")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C101")
 					(unit 1)
@@ -24639,7 +24639,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 275.59 128.778 90)
 			(effects
 				(font
@@ -24700,7 +24700,7 @@
 			(uuid "58f54738-4db1-47b6-9435-ab52345ce458")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R3")
 					(unit 1)
@@ -24764,7 +24764,7 @@
 			)
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#SYM102")
 					(unit 1)
@@ -24830,7 +24830,7 @@
 			(uuid "b2e2c75a-21d2-4df1-8107-a2312784a1b5")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR051")
 					(unit 1)
@@ -24864,7 +24864,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 262.89 128.778 90)
 			(effects
 				(font
@@ -24925,7 +24925,7 @@
 			(uuid "57f0014b-c9e1-4b95-b916-adbcb2fceb12")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R9")
 					(unit 1)
@@ -24997,7 +24997,7 @@
 			(uuid "8ffd0a82-7ee2-4976-8489-b5bbce83a0a0")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U1")
 					(unit 1)
@@ -25032,7 +25032,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 177.292 254 90)
 			(effects
 				(font
@@ -25066,7 +25066,7 @@
 			(uuid "487a8801-3054-487b-a672-066c6d9e9a03")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R109")
 					(unit 1)
@@ -25169,7 +25169,7 @@
 			(uuid "5034756f-3d41-483f-99f0-cf36f837eaf9")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "Q104")
 					(unit 1)
@@ -25235,7 +25235,7 @@
 			(uuid "bb452fbd-59d4-4a9a-94ec-a536356d82c1")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR056")
 					(unit 1)
@@ -25301,7 +25301,7 @@
 			(uuid "d7dbc3fe-185e-4a01-9139-78461fbf0497")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0126")
 					(unit 1)
@@ -25337,7 +25337,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:MountingHole_2.5mm"
+		(property "Footprint" "akaLink:MountingHole_2.5mm"
 			(at 279.4 264.16 0)
 			(effects
 				(font
@@ -25365,7 +25365,7 @@
 			)
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "H102")
 					(unit 1)
@@ -25574,7 +25574,7 @@
 			(uuid "ec83e6ca-e98f-4bff-85fb-ee66cb0a0b56")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "U101")
 					(unit 2)
@@ -25640,7 +25640,7 @@
 			(uuid "f31c41b9-eaa5-4ca9-888c-31dd49c77dff")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0191")
 					(unit 1)
@@ -25676,7 +25676,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 260.0452 187.96 0)
 			(effects
 				(font
@@ -25737,7 +25737,7 @@
 			(uuid "1fe19e54-244e-4781-b4a3-88dff9c6017f")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C15")
 					(unit 1)
@@ -25803,7 +25803,7 @@
 			(uuid "fde04095-dcee-405c-879a-4a77fa8226f0")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR08")
 					(unit 1)
@@ -25839,7 +25839,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 285.4452 229.87 0)
 			(effects
 				(font
@@ -25900,7 +25900,7 @@
 			(uuid "be314a63-f125-4371-92a5-e19c5962c33a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C110")
 					(unit 1)
@@ -25936,7 +25936,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 310.8452 187.96 0)
 			(effects
 				(font
@@ -25997,7 +25997,7 @@
 			(uuid "eff478f4-791b-4d74-9d8f-f8c1f88bdb3a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C5")
 					(unit 1)
@@ -26033,7 +26033,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 366.7252 217.17 0)
 			(effects
 				(font
@@ -26094,7 +26094,7 @@
 			(uuid "c999511f-6e7c-4abf-8c9c-98c7dba71269")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C1")
 					(unit 1)
@@ -26172,7 +26172,7 @@
 			(uuid "3874ceeb-7b1a-4982-aea1-1ebd026937d7")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "J2")
 					(unit 1)
@@ -26239,7 +26239,7 @@
 			(uuid "ec981de6-4879-456a-ac0c-02cbd2db2a67")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0215")
 					(unit 1)
@@ -26275,7 +26275,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 133.0452 78.74 0)
 			(effects
 				(font
@@ -26309,7 +26309,7 @@
 			(uuid "f96308c5-ca37-46ef-a9e8-a77c4ca677c7")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C118")
 					(unit 1)
@@ -26343,7 +26343,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 367.03 133.6548 0)
 			(effects
 				(font
@@ -26404,7 +26404,7 @@
 			(uuid "24eeece2-4667-4f25-9c4a-65a285afb34f")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C14")
 					(unit 1)
@@ -26440,7 +26440,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:MountingHole_2.5mm"
+		(property "Footprint" "akaLink:MountingHole_2.5mm"
 			(at 279.4 269.24 0)
 			(effects
 				(font
@@ -26468,7 +26468,7 @@
 			)
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "H103")
 					(unit 1)
@@ -26534,7 +26534,7 @@
 			(uuid "d11556d3-e1ce-4403-9dfd-c617ca07dc15")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0159")
 					(unit 1)
@@ -26600,7 +26600,7 @@
 			(uuid "3276054b-c6be-4471-a44d-464c23246c4a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR033")
 					(unit 1)
@@ -26636,7 +26636,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 260.858 140.97 90)
 			(effects
 				(font
@@ -26697,7 +26697,7 @@
 			(uuid "52ac4d2b-e1e3-444f-b257-21faae5fe545")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R14")
 					(unit 1)
@@ -26763,7 +26763,7 @@
 			(uuid "306a8497-1451-4e04-b597-3388f426588a")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR046")
 					(unit 1)
@@ -26799,7 +26799,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+		(property "Footprint" "akaLink:C_0603_1608Metric"
 			(at 272.7452 166.37 0)
 			(effects
 				(font
@@ -26833,7 +26833,7 @@
 			(uuid "f85e9bc6-13d0-4727-8fcc-fdf12ff9ad0e")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C7")
 					(unit 1)
@@ -26868,7 +26868,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 359.41 145.542 90)
 			(effects
 				(font
@@ -26929,7 +26929,7 @@
 			(uuid "611a04cf-d85a-46e3-b927-cf0354d8cf1f")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R8")
 					(unit 1)
@@ -26963,7 +26963,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 209.55 194.818 90)
 			(effects
 				(font
@@ -26997,7 +26997,7 @@
 			(uuid "8858ea80-a31b-464d-b832-01d859ee7368")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R101")
 					(unit 1)
@@ -27031,7 +27031,7 @@
 				)
 			)
 		)
-		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+		(property "Footprint" "akaLink:R_0603_1608Metric"
 			(at 140.97 144.272 90)
 			(effects
 				(font
@@ -27065,7 +27065,7 @@
 			(uuid "640f64c2-42e9-4508-b99d-10ee9221ac99")
 		)
 		(instances
-			(project "HSLinkIsolate"
+			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "R104")
 					(unit 1)

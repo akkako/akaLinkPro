@@ -6,7 +6,7 @@ build
 .vscode
 
 # kicad
-
+fp-info-cache
 *-backups
 *.lck
 _autosave-*

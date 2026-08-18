@@ -8133,6 +8133,12 @@
 		(uuid "f5566b06-ac91-4ccc-b03b-91543a4958de")
 	)
 	(junction
+		(at 304.8 80.01)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "024eb7ab-6fd3-4212-b38c-08e2857e7abc")
+	)
+	(junction
 		(at 379.73 95.25)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8175,13 +8181,19 @@
 		(uuid "285fc0f6-7fa1-4d3d-9718-96f66040a1c2")
 	)
 	(junction
+		(at 302.26 100.33)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3741ea8a-df96-42b3-99d5-f60943dd386d")
+	)
+	(junction
 		(at 377.19 207.01)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3da14b3b-f6a0-4e08-8fdb-2f7bf771953f")
 	)
 	(junction
-		(at 269.24 102.87)
+		(at 269.24 127)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "47de6e59-ad51-4225-b1fa-33060ea7b4ab")
@@ -8229,7 +8241,7 @@
 		(uuid "76567790-3b63-4846-ae9d-b9f64a683411")
 	)
 	(junction
-		(at 271.78 214.63)
+		(at 279.4 214.63)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "793a1c1d-af84-4fac-8243-5aed3bbccf6e")
@@ -8253,6 +8265,12 @@
 		(uuid "7fb786a1-f768-4200-ad6a-f37a801699be")
 	)
 	(junction
+		(at 259.08 134.62)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7fcedcd6-5467-49db-99f2-185e8e175532")
+	)
+	(junction
 		(at 203.2 193.04)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -8265,7 +8283,7 @@
 		(uuid "8668b298-cb9d-4ca2-8a37-947cdf1e6255")
 	)
 	(junction
-		(at 309.88 102.87)
+		(at 309.88 127)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8926e12f-31f6-40c9-9d38-025726eaf144")
@@ -8287,6 +8305,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "938bd846-f7f0-4173-a296-2ceef3ac4185")
+	)
+	(junction
+		(at 276.86 100.33)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "99da7b1e-127f-4dab-b6d4-093ddbc33619")
 	)
 	(junction
 		(at 276.86 46.99)
@@ -8323,6 +8347,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "a7728cb5-eb9a-48cf-b2ad-740abb9e4e1f")
+	)
+	(junction
+		(at 299.72 134.62)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "acf049c3-6081-4714-8d16-d8256199574b")
 	)
 	(junction
 		(at 208.28 171.45)
@@ -8371,6 +8401,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c2fa36bc-8c30-4507-a665-8a941fcfb2c4")
+	)
+	(junction
+		(at 274.32 80.01)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c5ea9f38-75f6-44a2-9e3f-656593de4b93")
 	)
 	(junction
 		(at 73.66 74.93)
@@ -8455,10 +8491,6 @@
 		(uuid "2642d9cf-1d34-4c90-8ac4-178406f29417")
 	)
 	(no_connect
-		(at 364.49 105.41)
-		(uuid "62fe1080-b4ce-415a-b113-92a5fa9bb585")
-	)
-	(no_connect
 		(at 377.19 85.09)
 		(uuid "69f7b76a-143f-4d76-a0ec-f3088f255c39")
 	)
@@ -8485,10 +8517,6 @@
 	(no_connect
 		(at 207.01 158.75)
 		(uuid "d26c16dc-f222-46d6-b78a-ea5a9d5080be")
-	)
-	(no_connect
-		(at 207.01 156.21)
-		(uuid "e2a84944-2ab9-4bfe-8c81-10dde55cc795")
 	)
 	(no_connect
 		(at 66.04 177.8)
@@ -8578,6 +8606,16 @@
 		)
 		(uuid "0a64adfe-5f36-40f2-ba19-ef1d60cf4b68")
 	)
+	(wire
+		(pts
+			(xy 299.72 137.16) (xy 299.72 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0aabf36d-46dc-4690-9056-a2f06f462cf9")
+	)
 	(polyline
 		(pts
 			(xy 242.57 270.51) (xy 267.97 270.51)
@@ -8590,7 +8628,7 @@
 	)
 	(wire
 		(pts
-			(xy 307.34 102.87) (xy 309.88 102.87)
+			(xy 307.34 127) (xy 309.88 127)
 		)
 		(stroke
 			(width 0)
@@ -8607,6 +8645,16 @@
 			(type default)
 		)
 		(uuid "0f3eb68f-78e7-4922-9b07-72dedc82120f")
+	)
+	(wire
+		(pts
+			(xy 299.72 100.33) (xy 302.26 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0f6b1b02-12ce-42e7-8b69-76384d4652dc")
 	)
 	(wire
 		(pts
@@ -8750,7 +8798,7 @@
 	)
 	(wire
 		(pts
-			(xy 251.46 110.49) (xy 261.62 110.49)
+			(xy 251.46 134.62) (xy 259.08 134.62)
 		)
 		(stroke
 			(width 0)
@@ -8880,6 +8928,26 @@
 	)
 	(wire
 		(pts
+			(xy 279.4 97.79) (xy 274.32 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "29495961-53a4-4c47-b779-71c67d0fc6c3")
+	)
+	(wire
+		(pts
+			(xy 261.62 102.87) (xy 279.4 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2b9c70c5-4498-4d94-80a8-38661b4886ca")
+	)
+	(wire
+		(pts
 			(xy 147.32 158.75) (xy 158.75 158.75)
 		)
 		(stroke
@@ -8930,7 +8998,7 @@
 	)
 	(wire
 		(pts
-			(xy 290.83 110.49) (xy 302.26 110.49)
+			(xy 290.83 134.62) (xy 299.72 134.62)
 		)
 		(stroke
 			(width 0)
@@ -8980,6 +9048,16 @@
 	)
 	(wire
 		(pts
+			(xy 314.96 102.87) (xy 323.85 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "38c5e14e-dc4f-43d3-8d32-2b8c923ddf34")
+	)
+	(wire
+		(pts
 			(xy 320.04 224.79) (xy 325.12 224.79)
 		)
 		(stroke
@@ -8997,6 +9075,16 @@
 			(type default)
 		)
 		(uuid "3a435eab-bd48-437d-9e35-569260f0d097")
+	)
+	(wire
+		(pts
+			(xy 276.86 100.33) (xy 276.86 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3a6a3a26-6c90-4f15-8411-7eb8c54b6eff")
 	)
 	(wire
 		(pts
@@ -9310,16 +9398,6 @@
 	)
 	(wire
 		(pts
-			(xy 304.8 80.01) (xy 304.8 64.77)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "544da5ca-d795-4908-9295-2c661b365858")
-	)
-	(wire
-		(pts
 			(xy 116.84 74.93) (xy 116.84 72.39)
 		)
 		(stroke
@@ -9370,7 +9448,7 @@
 	)
 	(wire
 		(pts
-			(xy 312.42 102.87) (xy 309.88 102.87)
+			(xy 312.42 127) (xy 309.88 127)
 		)
 		(stroke
 			(width 0)
@@ -9390,7 +9468,7 @@
 	)
 	(wire
 		(pts
-			(xy 328.93 102.87) (xy 320.04 102.87)
+			(xy 328.93 127) (xy 320.04 127)
 		)
 		(stroke
 			(width 0)
@@ -9437,6 +9515,16 @@
 			(type default)
 		)
 		(uuid "5fc14f73-3005-4946-91ac-f6d1a39e50c6")
+	)
+	(wire
+		(pts
+			(xy 274.32 62.23) (xy 274.32 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61cafc80-0449-4c36-8939-839283fbbbfc")
 	)
 	(wire
 		(pts
@@ -9500,7 +9588,7 @@
 	)
 	(wire
 		(pts
-			(xy 271.78 214.63) (xy 299.72 214.63)
+			(xy 279.4 214.63) (xy 299.72 214.63)
 		)
 		(stroke
 			(width 0)
@@ -9557,6 +9645,16 @@
 			(type default)
 		)
 		(uuid "6d140fb2-dfd1-4537-badb-c8eb01f50d85")
+	)
+	(wire
+		(pts
+			(xy 304.8 64.77) (xy 304.8 80.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6d8cd90e-3bcf-42fa-9681-205bf91bae16")
 	)
 	(wire
 		(pts
@@ -9720,7 +9818,7 @@
 	)
 	(wire
 		(pts
-			(xy 269.24 102.87) (xy 271.78 102.87)
+			(xy 269.24 127) (xy 271.78 127)
 		)
 		(stroke
 			(width 0)
@@ -9730,7 +9828,7 @@
 	)
 	(wire
 		(pts
-			(xy 276.86 82.55) (xy 276.86 87.63)
+			(xy 276.86 82.55) (xy 276.86 100.33)
 		)
 		(stroke
 			(width 0)
@@ -9807,6 +9905,16 @@
 			(type default)
 		)
 		(uuid "81b203bf-0940-484f-a056-8ecd1491c8a0")
+	)
+	(wire
+		(pts
+			(xy 276.86 100.33) (xy 279.4 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8238154f-1870-4371-870c-610f25ec7bf1")
 	)
 	(wire
 		(pts
@@ -9950,13 +10058,23 @@
 	)
 	(wire
 		(pts
-			(xy 271.78 212.09) (xy 271.78 214.63)
+			(xy 279.4 212.09) (xy 279.4 214.63)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "8e8ffcde-aa5e-41cb-b4a7-16e7767e03cd")
+	)
+	(wire
+		(pts
+			(xy 259.08 134.62) (xy 261.62 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8f0d7eee-ed1b-4a99-a1c5-712d8bd64be0")
 	)
 	(wire
 		(pts
@@ -9977,16 +10095,6 @@
 			(type default)
 		)
 		(uuid "903a6afb-3c11-4955-a3a0-9e0379131598")
-	)
-	(wire
-		(pts
-			(xy 274.32 80.01) (xy 274.32 62.23)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "904f5897-240c-4419-a30a-f4ed5dd67e64")
 	)
 	(wire
 		(pts
@@ -10120,7 +10228,7 @@
 	)
 	(wire
 		(pts
-			(xy 279.4 102.87) (xy 288.29 102.87)
+			(xy 279.4 127) (xy 288.29 127)
 		)
 		(stroke
 			(width 0)
@@ -10230,6 +10338,16 @@
 	)
 	(wire
 		(pts
+			(xy 299.72 102.87) (xy 307.34 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a998a0ca-9e65-4f45-90d4-f3223930a3ee")
+	)
+	(wire
+		(pts
 			(xy 279.4 44.45) (xy 274.32 44.45)
 		)
 		(stroke
@@ -10237,6 +10355,16 @@
 			(type default)
 		)
 		(uuid "aa6d8e58-f6c0-40bf-8551-8d53abb4e8e7")
+	)
+	(wire
+		(pts
+			(xy 304.8 80.01) (xy 304.8 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa6ff3e8-026b-411d-9cab-70e0599626be")
 	)
 	(wire
 		(pts
@@ -10250,7 +10378,7 @@
 	)
 	(wire
 		(pts
-			(xy 269.24 105.41) (xy 269.24 102.87)
+			(xy 269.24 129.54) (xy 269.24 127)
 		)
 		(stroke
 			(width 0)
@@ -10270,7 +10398,7 @@
 	)
 	(wire
 		(pts
-			(xy 266.7 102.87) (xy 269.24 102.87)
+			(xy 266.7 127) (xy 269.24 127)
 		)
 		(stroke
 			(width 0)
@@ -10297,6 +10425,16 @@
 			(type default)
 		)
 		(uuid "af745425-d565-4b81-af06-0a33308a81a7")
+	)
+	(wire
+		(pts
+			(xy 299.72 134.62) (xy 302.26 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "afe1f92f-46ff-41d3-94be-008cfa2f322a")
 	)
 	(wire
 		(pts
@@ -10410,6 +10548,16 @@
 	)
 	(wire
 		(pts
+			(xy 274.32 80.01) (xy 274.32 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bbf352cd-4318-4b71-b19f-1ae847d88d14")
+	)
+	(wire
+		(pts
 			(xy 81.28 154.94) (xy 81.28 156.21)
 		)
 		(stroke
@@ -10480,7 +10628,7 @@
 	)
 	(wire
 		(pts
-			(xy 302.26 82.55) (xy 302.26 87.63)
+			(xy 302.26 82.55) (xy 302.26 100.33)
 		)
 		(stroke
 			(width 0)
@@ -10507,6 +10655,16 @@
 			(type default)
 		)
 		(uuid "c9464ee8-9bb7-4086-b2ec-524c2e14fa6c")
+	)
+	(wire
+		(pts
+			(xy 299.72 97.79) (xy 304.8 97.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c95a649e-dd1a-4aa7-8d0b-810f410eb0ba")
 	)
 	(wire
 		(pts
@@ -10660,6 +10818,16 @@
 	)
 	(wire
 		(pts
+			(xy 259.08 137.16) (xy 259.08 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "deb4e4b2-5fef-43e8-a3d1-2079500b0ae8")
+	)
+	(wire
+		(pts
 			(xy 222.25 45.72) (xy 222.25 48.26)
 		)
 		(stroke
@@ -10680,7 +10848,7 @@
 	)
 	(wire
 		(pts
-			(xy 271.78 214.63) (xy 271.78 222.25)
+			(xy 279.4 214.63) (xy 279.4 222.25)
 		)
 		(stroke
 			(width 0)
@@ -10890,6 +11058,16 @@
 	)
 	(wire
 		(pts
+			(xy 355.6 105.41) (xy 364.49 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f5e3a253-d0a0-474f-83ae-5b20fca2a4ec")
+	)
+	(wire
+		(pts
 			(xy 276.86 29.21) (xy 276.86 46.99)
 		)
 		(stroke
@@ -10930,13 +11108,23 @@
 	)
 	(wire
 		(pts
-			(xy 309.88 102.87) (xy 309.88 105.41)
+			(xy 309.88 127) (xy 309.88 129.54)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "f983c70f-2581-44ea-a2b1-e7553c078228")
+	)
+	(wire
+		(pts
+			(xy 302.26 100.33) (xy 302.26 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9d9ab5f-31f5-4525-a1cc-2bec6f01a891")
 	)
 	(wire
 		(pts
@@ -11168,6 +11356,16 @@
 		)
 		(uuid "347d2eee-c955-4325-aad2-cb7050415109")
 	)
+	(label "O_COMRX"
+		(at 323.85 102.87 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "414f25a7-2811-4e07-a2ad-3ddac2456d3e")
+	)
 	(label "USB_D+"
 		(at 105.41 167.64 180)
 		(effects
@@ -11359,7 +11557,7 @@
 		(uuid "88dbe61c-9b7d-43e2-9ad4-7090850c840c")
 	)
 	(label "O_JTRST"
-		(at 288.29 102.87 180)
+		(at 288.29 127 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11419,7 +11617,7 @@
 		(uuid "9c9a9886-f7de-4cf8-9a2d-32a873d1f57e")
 	)
 	(label "nRESET"
-		(at 290.83 110.49 0)
+		(at 290.83 134.62 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11539,7 +11737,7 @@
 		(uuid "c044a001-b9f0-4c6e-89df-a695d83e4d2b")
 	)
 	(label "O_SRST"
-		(at 328.93 102.87 180)
+		(at 328.93 127 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11649,7 +11847,7 @@
 		(uuid "e7fd7a25-5abb-45e2-95a8-b76cbf154b95")
 	)
 	(label "JTRST"
-		(at 251.46 110.49 0)
+		(at 251.46 134.62 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -11667,6 +11865,16 @@
 			(justify right bottom)
 		)
 		(uuid "f2d01359-0ef8-49c0-a803-f21746f12510")
+	)
+	(label "AUX_RXD"
+		(at 261.62 102.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f3df109e-d360-4ac8-96d1-692f9193fa22")
 	)
 	(label "JTDI_TXD"
 		(at 147.32 161.29 0)
@@ -11697,6 +11905,16 @@
 			(justify left bottom)
 		)
 		(uuid "fc941940-08c8-487a-bd1e-fcdc88925fc1")
+	)
+	(label "O_COMRX"
+		(at 355.6 105.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fe3aa156-cba8-413c-ba83-68effa959b66")
 	)
 	(label "USB_D-"
 		(at 147.32 171.45 0)
@@ -11943,7 +12161,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 133.35 48.5648 0)
 			(effects
 				(font
@@ -12251,6 +12469,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C")
+		(at 259.08 162.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0a626d7e-3057-409e-a88d-95105e40fc9b")
+		(property "Reference" "C11"
+			(at 262.89 161.2899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1uF"
+			(at 262.89 163.8299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+			(at 260.0452 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 259.08 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 259.08 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "3ba8236f-ecc8-48d1-8ab9-1caf7b68005f")
+		)
+		(pin "1"
+			(uuid "5d9fbd50-9cf9-4988-884e-833d17358b67")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "C11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3V3")
 		(at 165.1 41.91 0)
 		(unit 1)
@@ -12410,7 +12698,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 272.7452 187.96 0)
 			(effects
 				(font
@@ -12783,7 +13071,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 285.4452 187.96 0)
 			(effects
 				(font
@@ -13051,7 +13339,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 311.15 69.088 90)
 			(effects
 				(font
@@ -13267,7 +13555,7 @@
 	)
 	(symbol
 		(lib_id "power:VEE")
-		(at 299.72 102.87 90)
+		(at 299.72 127 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13276,7 +13564,7 @@
 		(fields_autoplaced yes)
 		(uuid "1764e949-53ce-47c4-b720-3003356c0a22")
 		(property "Reference" "#PWR036"
-			(at 303.53 102.87 0)
+			(at 303.53 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13285,7 +13573,7 @@
 			)
 		)
 		(property "Value" "VEE"
-			(at 295.91 102.8699 90)
+			(at 295.91 126.9999 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13294,7 +13582,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 299.72 102.87 0)
+			(at 299.72 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13303,7 +13591,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 299.72 102.87 0)
+			(at 299.72 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13312,7 +13600,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VEE\""
-			(at 299.72 102.87 0)
+			(at 299.72 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13334,7 +13622,7 @@
 	)
 	(symbol
 		(lib_id "power:VEE")
-		(at 259.08 102.87 90)
+		(at 259.08 127 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13343,7 +13631,7 @@
 		(fields_autoplaced yes)
 		(uuid "1a148c47-ba20-4ffa-b0d9-4ee18dbaf431")
 		(property "Reference" "#PWR03"
-			(at 262.89 102.87 0)
+			(at 262.89 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13352,7 +13640,7 @@
 			)
 		)
 		(property "Value" "VEE"
-			(at 255.27 102.8699 90)
+			(at 255.27 126.9999 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13361,7 +13649,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 259.08 102.87 0)
+			(at 259.08 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13370,7 +13658,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 259.08 102.87 0)
+			(at 259.08 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13379,7 +13667,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VEE\""
-			(at 259.08 102.87 0)
+			(at 259.08 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13425,7 +13713,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 74.93 159.258 90)
 			(effects
 				(font
@@ -13495,7 +13783,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 394.6652 217.17 0)
 			(effects
 				(font
@@ -13566,7 +13854,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:VCC")
-		(at 340.36 39.37 90)
+		(at 336.55 31.75 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13575,7 +13863,7 @@
 		(fields_autoplaced yes)
 		(uuid "1e232b64-f3ae-4e1f-9030-25c76db9d74d")
 		(property "Reference" "#PWR037"
-			(at 344.17 39.37 0)
+			(at 340.36 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13584,7 +13872,7 @@
 			)
 		)
 		(property "Value" "VCC"
-			(at 336.55 39.3699 90)
+			(at 332.74 31.7499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13593,7 +13881,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 340.36 39.37 0)
+			(at 336.55 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13602,7 +13890,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 340.36 39.37 0)
+			(at 336.55 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13611,7 +13899,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VCC\""
-			(at 340.36 39.37 0)
+			(at 336.55 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14108,7 +14396,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 191.262 254 90)
 			(effects
 				(font
@@ -14217,6 +14505,71 @@
 		)
 	)
 	(symbol
+		(lib_id "akaLinkCompact:GND")
+		(at 259.08 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "290ff5b0-aaf4-451d-9011-f79046c23f02")
+		(property "Reference" "#PWR060"
+			(at 259.08 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 259.08 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 259.08 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "194754e4-e731-44a6-99f5-1f490e70e245")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "#PWR060")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 58.42 247.65 0)
 		(unit 1)
@@ -14284,7 +14637,7 @@
 	)
 	(symbol
 		(lib_id "power:VEE")
-		(at 347.98 39.37 270)
+		(at 344.17 31.75 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -14293,7 +14646,7 @@
 		(fields_autoplaced yes)
 		(uuid "2eb1adc8-4c5b-4c7a-9452-72ea8769849a")
 		(property "Reference" "#PWR048"
-			(at 344.17 39.37 0)
+			(at 340.36 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14302,7 +14655,7 @@
 			)
 		)
 		(property "Value" "VEE"
-			(at 351.79 39.3699 90)
+			(at 347.98 31.7499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14311,7 +14664,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 347.98 39.37 0)
+			(at 344.17 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14320,7 +14673,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 347.98 39.37 0)
+			(at 344.17 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14329,7 +14682,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"VEE\""
-			(at 347.98 39.37 0)
+			(at 344.17 31.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -14480,6 +14833,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:VEE")
+		(at 259.08 180.34 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "31dcafa4-9603-4350-85a5-5ff93433f2c0")
+		(property "Reference" "#PWR057"
+			(at 259.08 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VEE"
+			(at 259.08 175.26 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"VEE\""
+			(at 259.08 180.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6805fe40-52bf-4994-876e-a910afe15857")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "#PWR057")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 90.17 142.24 0)
 		(unit 1)
@@ -14540,6 +14959,101 @@
 			(project "HSLinkIsolate"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0133")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "akaLinkCompact:R")
+		(at 311.15 102.87 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "369f7c61-a687-4971-a3de-20ace7c96ec7")
+		(property "Reference" "R12"
+			(at 311.15 96.52 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "22R"
+			(at 311.15 99.06 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 311.15 104.648 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 311.15 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 311.15 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 311.15 102.87 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "精度" ""
+			(at 311.15 102.87 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "耐压" ""
+			(at 311.15 102.87 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b933cb7d-8c54-486f-b7cf-5b6003284587")
+		)
+		(pin "2"
+			(uuid "6db73f4a-98a7-46c0-bf6f-d34e2e9bfb8c")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -14639,7 +15153,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 298.1452 166.37 0)
 			(effects
 				(font
@@ -15128,7 +15642,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:AO3400A")
-		(at 266.7 110.49 0)
+		(at 266.7 134.62 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15137,7 +15651,7 @@
 		(fields_autoplaced yes)
 		(uuid "4b8bec5d-eae7-4d9b-84ab-b050a5463670")
 		(property "Reference" "Q2"
-			(at 273.05 109.2199 0)
+			(at 273.05 133.3499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15146,7 +15660,7 @@
 			)
 		)
 		(property "Value" "AO3400A"
-			(at 273.05 111.7599 0)
+			(at 273.05 135.8899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15155,7 +15669,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
-			(at 271.78 112.395 0)
+			(at 271.78 136.525 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15166,7 +15680,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.aosmd.com/pdfs/datasheet/AO3400A.pdf"
-			(at 271.78 114.3 0)
+			(at 271.78 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15176,7 +15690,7 @@
 			)
 		)
 		(property "Description" "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23"
-			(at 266.7 110.49 0)
+			(at 266.7 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15185,7 +15699,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 266.7 110.49 0)
+			(at 266.7 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15194,7 +15708,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 266.7 110.49 0)
+			(at 266.7 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15203,7 +15717,7 @@
 			)
 		)
 		(property "耐压" ""
-			(at 266.7 110.49 0)
+			(at 266.7 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15255,7 +15769,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 140.97 146.812 90)
 			(effects
 				(font
@@ -15389,7 +15903,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 311.15 33.528 90)
 			(effects
 				(font
@@ -15674,7 +16188,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 338.582 167.64 90)
 			(effects
 				(font
@@ -15771,7 +16285,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 166.0652 54.61 0)
 			(effects
 				(font
@@ -15815,7 +16329,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:GND")
-		(at 271.78 229.87 0)
+		(at 279.4 229.87 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15824,7 +16338,7 @@
 		(fields_autoplaced yes)
 		(uuid "5e49be47-eb81-4e3f-9eee-bd99aaa778aa")
 		(property "Reference" "#PWR020"
-			(at 271.78 236.22 0)
+			(at 279.4 236.22 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15833,7 +16347,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 271.78 234.95 0)
+			(at 279.4 234.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15841,7 +16355,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 271.78 229.87 0)
+			(at 279.4 229.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15850,7 +16364,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 271.78 229.87 0)
+			(at 279.4 229.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15859,7 +16373,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 271.78 229.87 0)
+			(at 279.4 229.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15906,7 +16420,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 379.73 169.672 90)
 			(effects
 				(font
@@ -16001,7 +16515,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 311.15 51.308 90)
 			(effects
 				(font
@@ -16164,7 +16678,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 178.7652 54.61 0)
 			(effects
 				(font
@@ -16324,7 +16838,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 311.15 86.868 90)
 			(effects
 				(font
@@ -16421,7 +16935,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 158.4452 78.74 0)
 			(effects
 				(font
@@ -16465,7 +16979,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:+5V")
-		(at 271.78 212.09 0)
+		(at 279.4 212.09 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16474,7 +16988,7 @@
 		(fields_autoplaced yes)
 		(uuid "6b976a51-a8dd-40c2-b722-2f03054442dd")
 		(property "Reference" "#PWR019"
-			(at 271.78 215.9 0)
+			(at 279.4 215.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16483,7 +16997,7 @@
 			)
 		)
 		(property "Value" "+5V"
-			(at 271.78 207.01 0)
+			(at 279.4 207.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16491,7 +17005,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 271.78 212.09 0)
+			(at 279.4 212.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16500,7 +17014,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 271.78 212.09 0)
+			(at 279.4 212.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16509,7 +17023,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+5V\""
-			(at 271.78 212.09 0)
+			(at 279.4 212.09 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16969,7 +17483,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:GND")
-		(at 269.24 115.57 0)
+		(at 269.24 139.7 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -16977,7 +17491,7 @@
 		(dnp no)
 		(uuid "73e4b86a-9437-4f25-a7c5-86c9fdb96201")
 		(property "Reference" "#PWR052"
-			(at 269.24 121.92 0)
+			(at 269.24 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16986,7 +17500,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 269.24 120.65 0)
+			(at 269.24 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16994,7 +17508,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 269.24 115.57 0)
+			(at 269.24 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17003,7 +17517,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 269.24 115.57 0)
+			(at 269.24 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17012,7 +17526,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 269.24 115.57 0)
+			(at 269.24 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17234,7 +17748,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:GND")
-		(at 276.86 87.63 0)
+		(at 276.86 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -17243,7 +17757,7 @@
 		(fields_autoplaced yes)
 		(uuid "7bef0b31-1c7a-4651-b87a-3b35065c36ea")
 		(property "Reference" "#PWR0211"
-			(at 276.86 93.98 0)
+			(at 276.86 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17252,7 +17766,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 276.86 92.71 0)
+			(at 276.86 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17260,7 +17774,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 276.86 87.63 0)
+			(at 276.86 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17269,7 +17783,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 276.86 87.63 0)
+			(at 276.86 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17278,7 +17792,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 276.86 87.63 0)
+			(at 276.86 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17293,6 +17807,72 @@
 			(project "HSLinkIsolate"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0211")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "akaLinkCompact:GND")
+		(at 259.08 187.96 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7c4253e2-fbd6-4bfb-a5d7-bbcc1077b5d2")
+		(property "Reference" "#PWR058"
+			(at 259.08 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 259.08 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 259.08 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "3705f54d-6dee-4a4b-acc5-682f0948bf88")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "#PWR058")
 					(unit 1)
 				)
 			)
@@ -17393,7 +17973,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 285.4452 166.37 0)
 			(effects
 				(font
@@ -17528,7 +18108,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 74.93 156.718 90)
 			(effects
 				(font
@@ -17638,7 +18218,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:GND")
-		(at 302.26 87.63 0)
+		(at 302.26 105.41 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -17647,7 +18227,7 @@
 		(fields_autoplaced yes)
 		(uuid "80ffeee1-035e-4f7a-8986-83557aff5172")
 		(property "Reference" "#PWR0213"
-			(at 302.26 93.98 0)
+			(at 302.26 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17656,7 +18236,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 302.26 92.71 0)
+			(at 302.26 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17664,7 +18244,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 302.26 87.63 0)
+			(at 302.26 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17673,7 +18253,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 302.26 87.63 0)
+			(at 302.26 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17682,7 +18262,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 302.26 87.63 0)
+			(at 302.26 105.41 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -17862,7 +18442,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 379.73 162.052 90)
 			(effects
 				(font
@@ -17959,7 +18539,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 392.1252 140.97 0)
 			(effects
 				(font
@@ -18388,7 +18968,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 183.8452 78.74 0)
 			(effects
 				(font
@@ -18498,7 +19078,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:C")
-		(at 271.78 226.06 0)
+		(at 279.4 226.06 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18512,7 +19092,7 @@
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "4.7uF"
@@ -18521,11 +19101,11 @@
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 272.7452 229.87 0)
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+			(at 280.3652 229.87 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18534,7 +19114,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 271.78 226.06 0)
+			(at 279.4 226.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18543,7 +19123,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 271.78 226.06 0)
+			(at 279.4 226.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18552,7 +19132,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 271.78 226.06 0)
+			(at 279.4 226.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18561,7 +19141,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 271.78 226.06 0)
+			(at 279.4 226.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18570,7 +19150,7 @@
 			)
 		)
 		(property "耐压" ""
-			(at 271.78 226.06 0)
+			(at 279.4 226.06 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18588,6 +19168,72 @@
 			(project "HSLinkIsolate"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 259.08 158.75 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8f49d81e-bf9a-4fa6-a428-236f7d231375")
+		(property "Reference" "#PWR055"
+			(at 259.08 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 259.08 153.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 259.08 158.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6b900e98-730d-4587-bb6c-3148878aee65")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "#PWR055")
 					(unit 1)
 				)
 			)
@@ -18621,7 +19267,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 63.1952 57.15 0)
 			(effects
 				(font
@@ -18691,7 +19337,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 334.9752 229.87 0)
 			(effects
 				(font
@@ -18762,7 +19408,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:R")
-		(at 316.23 102.87 270)
+		(at 316.23 127 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18771,7 +19417,7 @@
 		(fields_autoplaced yes)
 		(uuid "94599dae-791d-437f-a9a5-9f68f22906e1")
 		(property "Reference" "R125"
-			(at 316.23 96.52 90)
+			(at 316.23 120.65 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18779,15 +19425,15 @@
 			)
 		)
 		(property "Value" "22R"
-			(at 316.23 99.06 90)
+			(at 316.23 123.19 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 316.23 101.092 90)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 316.23 125.222 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18796,7 +19442,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 316.23 102.87 0)
+			(at 316.23 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18805,7 +19451,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 316.23 102.87 0)
+			(at 316.23 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18814,7 +19460,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 316.23 102.87 90)
+			(at 316.23 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18823,7 +19469,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 316.23 102.87 90)
+			(at 316.23 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18832,7 +19478,7 @@
 			)
 		)
 		(property "耐压" ""
-			(at 316.23 102.87 90)
+			(at 316.23 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19269,6 +19915,103 @@
 		)
 	)
 	(symbol
+		(lib_id "akaLinkCompact:R")
+		(at 299.72 140.97 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9b1df64c-1564-4e2e-930f-338d549ebe39")
+		(property "Reference" "R13"
+			(at 302.26 139.6999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "4.7K"
+			(at 302.26 142.2399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 301.498 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 299.72 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 299.72 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 299.72 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "精度" ""
+			(at 299.72 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "耐压" ""
+			(at 299.72 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5c097a56-dedc-41f2-95d7-07cba0d3794c")
+		)
+		(pin "2"
+			(uuid "6b327514-c432-4cb3-86e0-a222672c466e")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "R13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "akaLinkCompact:SN74LVC1T45DBV")
 		(at 289.56 46.99 0)
 		(unit 1)
@@ -19536,7 +20279,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 326.898 219.71 90)
 			(effects
 				(font
@@ -19607,7 +20350,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:GND")
-		(at 309.88 115.57 0)
+		(at 309.88 139.7 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -19615,7 +20358,7 @@
 		(dnp no)
 		(uuid "9e9b2dc7-f9cd-45b7-8269-07d55e5f1525")
 		(property "Reference" "#PWR0212"
-			(at 309.88 121.92 0)
+			(at 309.88 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19624,7 +20367,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 309.88 120.65 0)
+			(at 309.88 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19632,7 +20375,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 309.88 115.57 0)
+			(at 309.88 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19641,7 +20384,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 309.88 115.57 0)
+			(at 309.88 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19650,7 +20393,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 309.88 115.57 0)
+			(at 309.88 139.7 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19962,7 +20705,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 213.0552 48.26 0)
 			(effects
 				(font
@@ -20032,7 +20775,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 375.412 213.36 90)
 			(effects
 				(font
@@ -20267,7 +21010,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 223.52 178.1048 0)
 			(effects
 				(font
@@ -20401,7 +21144,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 370.84 146.3548 0)
 			(effects
 				(font
@@ -20696,7 +21439,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 392.1252 181.61 0)
 			(effects
 				(font
@@ -20791,7 +21534,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 133.35 43.4848 0)
 			(effects
 				(font
@@ -21107,7 +21850,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 346.71 159.512 90)
 			(effects
 				(font
@@ -21337,7 +22080,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 310.8452 166.37 0)
 			(effects
 				(font
@@ -21514,6 +22257,71 @@
 		)
 	)
 	(symbol
+		(lib_id "akaLinkCompact:GND")
+		(at 299.72 144.78 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b77f5e9b-75f7-40b6-81df-608e41b6f806")
+		(property "Reference" "#PWR059"
+			(at 299.72 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 299.72 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 299.72 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 299.72 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 299.72 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e8e46c1d-f00e-497d-a40e-0cc0c296ed84")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "#PWR059")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 170.18 74.93 0)
 		(unit 1)
@@ -21541,7 +22349,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 171.1452 78.74 0)
 			(effects
 				(font
@@ -21743,7 +22551,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 233.3752 48.26 0)
 			(effects
 				(font
@@ -22279,7 +23087,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 223.52 170.4848 0)
 			(effects
 				(font
@@ -22349,7 +23157,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 298.958 226.06 90)
 			(effects
 				(font
@@ -22444,7 +23252,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 193.04 194.0052 0)
 			(effects
 				(font
@@ -22581,7 +23389,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 145.7452 78.74 0)
 			(effects
 				(font
@@ -22650,7 +23458,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 153.3652 54.61 0)
 			(effects
 				(font
@@ -22786,7 +23594,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 298.1452 187.96 0)
 			(effects
 				(font
@@ -22993,7 +23801,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:R")
-		(at 303.53 102.87 90)
+		(at 303.53 127 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -23002,7 +23810,7 @@
 		(fields_autoplaced yes)
 		(uuid "d32f76eb-09fe-459c-8b14-2d194559e7a3")
 		(property "Reference" "R10"
-			(at 303.53 96.52 90)
+			(at 303.53 120.65 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23010,15 +23818,15 @@
 			)
 		)
 		(property "Value" "4.7K"
-			(at 303.53 99.06 90)
+			(at 303.53 123.19 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 303.53 104.648 90)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 303.53 128.778 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23027,7 +23835,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 303.53 102.87 0)
+			(at 303.53 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23036,7 +23844,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 303.53 102.87 0)
+			(at 303.53 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23045,7 +23853,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 303.53 102.87 90)
+			(at 303.53 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23054,7 +23862,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 303.53 102.87 90)
+			(at 303.53 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23063,7 +23871,7 @@
 			)
 		)
 		(property "耐压" ""
-			(at 303.53 102.87 90)
+			(at 303.53 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23181,7 +23989,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 375.412 200.66 90)
 			(effects
 				(font
@@ -23251,42 +24059,33 @@
 		)
 	)
 	(symbol
-		(lib_id "akaLinkCompact:R")
-		(at 344.17 39.37 270)
+		(lib_id "akaLinkCompact:SN74LVC1T45DBV")
+		(at 289.56 100.33 0)
 		(unit 1)
 		(exclude_from_sim no)
-		(in_bom no)
+		(in_bom yes)
 		(on_board yes)
-		(dnp yes)
+		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "d463b732-400b-4e0f-8973-c7403c5c517f")
-		(property "Reference" "R11"
-			(at 344.17 33.02 90)
+		(uuid "d3b1940b-6693-4455-8ac5-2a57a791c5b3")
+		(property "Reference" "U3"
+			(at 289.56 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "0R"
-			(at 344.17 35.56 90)
+		(property "Value" "SN74LVC1T45DBV"
+			(at 289.56 92.71 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 344.17 37.592 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 344.17 39.37 0)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
+			(at 289.56 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23294,8 +24093,17 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Resistor"
-			(at 344.17 39.37 0)
+		(property "Datasheet" "http://www.ti.com/lit/ds/symlink/sn74lvc1t45.pdf"
+			(at 289.56 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Single-Bit Dual-Supply Bus Transceiver With Configurable Voltage Translation and 3-State Outputs, SOT-23-6"
+			(at 289.56 113.03 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23304,7 +24112,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 344.17 39.37 90)
+			(at 289.56 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23313,7 +24121,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 344.17 39.37 90)
+			(at 289.56 100.33 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23322,7 +24130,114 @@
 			)
 		)
 		(property "耐压" ""
-			(at 344.17 39.37 90)
+			(at 289.56 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "fe0c603f-5530-49c9-8d8c-15a8e677666b")
+		)
+		(pin "4"
+			(uuid "1ef7f7d1-b32c-41fb-841e-b3a530d4a419")
+		)
+		(pin "6"
+			(uuid "dd95bb1c-3218-4212-8f7b-33f2b98a0e13")
+		)
+		(pin "2"
+			(uuid "ee94cc6e-2069-42d9-bcc4-4d938a2fd458")
+		)
+		(pin "1"
+			(uuid "c64d24c3-f64f-4002-822e-0069f3d8248c")
+		)
+		(pin "5"
+			(uuid "d501ec1d-509c-4bdd-a1df-67467d70a035")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "akaLinkCompact:R")
+		(at 340.36 31.75 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "d463b732-400b-4e0f-8973-c7403c5c517f")
+		(property "Reference" "R11"
+			(at 340.36 25.4 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "0R"
+			(at 340.36 27.94 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 340.36 29.972 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 340.36 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 340.36 31.75 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 340.36 31.75 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "精度" ""
+			(at 340.36 31.75 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "耐压" ""
+			(at 340.36 31.75 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23700,7 +24615,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:R")
-		(at 275.59 102.87 90)
+		(at 275.59 127 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -23709,7 +24624,7 @@
 		(fields_autoplaced yes)
 		(uuid "e40a6891-10a4-4a0d-a546-b20390dd8037")
 		(property "Reference" "R3"
-			(at 275.59 96.52 90)
+			(at 275.59 120.65 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23717,15 +24632,15 @@
 			)
 		)
 		(property "Value" "22R"
-			(at 275.59 99.06 90)
+			(at 275.59 123.19 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 275.59 104.648 90)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 275.59 128.778 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23734,7 +24649,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 275.59 102.87 0)
+			(at 275.59 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23743,7 +24658,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 275.59 102.87 0)
+			(at 275.59 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23752,7 +24667,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 275.59 102.87 90)
+			(at 275.59 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23761,7 +24676,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 275.59 102.87 90)
+			(at 275.59 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23770,7 +24685,7 @@
 			)
 		)
 		(property "耐压" ""
-			(at 275.59 102.87 90)
+			(at 275.59 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23925,7 +24840,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:R")
-		(at 262.89 102.87 90)
+		(at 262.89 127 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -23934,7 +24849,7 @@
 		(fields_autoplaced yes)
 		(uuid "e83383a8-bb1e-45e2-9735-b50e218b1dc0")
 		(property "Reference" "R9"
-			(at 262.89 96.52 90)
+			(at 262.89 120.65 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23942,15 +24857,15 @@
 			)
 		)
 		(property "Value" "4.7K"
-			(at 262.89 99.06 90)
+			(at 262.89 123.19 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 262.89 104.648 90)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 262.89 128.778 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23959,7 +24874,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 262.89 102.87 0)
+			(at 262.89 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23968,7 +24883,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 262.89 102.87 0)
+			(at 262.89 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23977,7 +24892,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 262.89 102.87 90)
+			(at 262.89 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23986,7 +24901,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 262.89 102.87 90)
+			(at 262.89 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23995,7 +24910,7 @@
 			)
 		)
 		(property "耐压" ""
-			(at 262.89 102.87 90)
+			(at 262.89 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24117,7 +25032,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 177.292 254 90)
 			(effects
 				(font
@@ -24161,7 +25076,7 @@
 	)
 	(symbol
 		(lib_id "akaLinkCompact:AO3400A")
-		(at 307.34 110.49 0)
+		(at 307.34 134.62 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -24170,7 +25085,7 @@
 		(fields_autoplaced yes)
 		(uuid "e8fe4576-0604-44ac-aae5-1ec36840c2b0")
 		(property "Reference" "Q104"
-			(at 313.69 109.2199 0)
+			(at 313.69 133.3499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24179,7 +25094,7 @@
 			)
 		)
 		(property "Value" "AO3400A"
-			(at 313.69 111.7599 0)
+			(at 313.69 135.8899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24188,7 +25103,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
-			(at 312.42 112.395 0)
+			(at 312.42 136.525 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24199,7 +25114,7 @@
 			)
 		)
 		(property "Datasheet" "http://www.aosmd.com/pdfs/datasheet/AO3400A.pdf"
-			(at 312.42 114.3 0)
+			(at 312.42 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24209,7 +25124,7 @@
 			)
 		)
 		(property "Description" "30V Vds, 5.7A Id, N-Channel MOSFET, SOT-23"
-			(at 307.34 110.49 0)
+			(at 307.34 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24218,7 +25133,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 307.34 110.49 0)
+			(at 307.34 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24227,7 +25142,7 @@
 			)
 		)
 		(property "精度" ""
-			(at 307.34 110.49 0)
+			(at 307.34 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24236,7 +25151,7 @@
 			)
 		)
 		(property "耐压" ""
-			(at 307.34 110.49 0)
+			(at 307.34 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -24257,6 +25172,72 @@
 			(project "HSLinkIsolate"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "Q104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 259.08 166.37 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ea9e3f77-9526-4596-bb25-af9c2c607481")
+		(property "Reference" "#PWR056"
+			(at 259.08 172.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 259.08 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 259.08 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 259.08 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bb452fbd-59d4-4a9a-94ec-a536356d82c1")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)
@@ -24668,6 +25649,103 @@
 		)
 	)
 	(symbol
+		(lib_id "akaLinkCompact:C")
+		(at 259.08 184.15 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ee70e390-67eb-440d-a8d7-335e82e8f48f")
+		(property "Reference" "C15"
+			(at 262.89 182.8799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1uF"
+			(at 262.89 185.4199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
+			(at 260.0452 187.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 259.08 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 259.08 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 259.08 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "精度" ""
+			(at 259.08 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "耐压" ""
+			(at 259.08 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "dc087b17-5d9e-417f-9763-3275185d4e9d")
+		)
+		(pin "1"
+			(uuid "1fe19e54-244e-4781-b4a3-88dff9c6017f")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "C15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 193.04 265.43 0)
 		(unit 1)
@@ -24761,7 +25839,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 285.4452 229.87 0)
 			(effects
 				(font
@@ -24858,7 +25936,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 310.8452 187.96 0)
 			(effects
 				(font
@@ -24955,7 +26033,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 366.7252 217.17 0)
 			(effects
 				(font
@@ -25197,7 +26275,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 133.0452 78.74 0)
 			(effects
 				(font
@@ -25265,7 +26343,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 367.03 133.6548 0)
 			(effects
 				(font
@@ -25531,6 +26609,103 @@
 		)
 	)
 	(symbol
+		(lib_id "akaLinkCompact:R")
+		(at 259.08 140.97 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f8faca0a-87bc-4ec7-8e3d-8300d3b7ef0c")
+		(property "Reference" "R14"
+			(at 261.62 139.6999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "4.7K"
+			(at 261.62 142.2399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
+			(at 260.858 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 259.08 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 259.08 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 259.08 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "精度" ""
+			(at 259.08 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "耐压" ""
+			(at 259.08 140.97 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "b31cd554-6046-420d-9a13-7c8c49797232")
+		)
+		(pin "2"
+			(uuid "52ac4d2b-e1e3-444f-b257-21faae5fe545")
+		)
+		(instances
+			(project "HSLinkIsolate"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "R14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:VEE")
 		(at 304.8 24.13 0)
 		(unit 1)
@@ -25624,7 +26799,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:C_0603_1608Metric"
 			(at 272.7452 166.37 0)
 			(effects
 				(font
@@ -25693,7 +26868,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 359.41 145.542 90)
 			(effects
 				(font
@@ -25788,7 +26963,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 209.55 194.818 90)
 			(effects
 				(font
@@ -25856,7 +27031,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+		(property "Footprint" "akaLinkIso:R_0603_1608Metric"
 			(at 140.97 144.272 90)
 			(effects
 				(font

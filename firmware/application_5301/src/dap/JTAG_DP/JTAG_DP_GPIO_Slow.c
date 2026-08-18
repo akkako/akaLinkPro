@@ -27,6 +27,7 @@
 
 #include "DAP_config.h"
 #include "DAP.h"
+#include "JTAG_DP.h"
 #include "hpm_common.h"
 
 // JTAG Macros
@@ -94,10 +95,20 @@ ATTR_RAMFUNC void JTAG_Sequence_Slow(uint32_t delay, uint32_t info, const uint8_
     uint32_t bit;
     uint32_t n, k;
 
-    n = info & JTAG_SEQUENCE_TCK;
-    if (n == 0U)
+    if (info == 0x01)
     {
-        n = 64U;
+        i_val = *tdi;
+        PIN_TMS_CLR();
+        JTAG_CYCLE_TDI(i_val);
+        return;
+    }
+
+    else if (info == 0x41)
+    {
+        i_val = *tdi;
+        PIN_TMS_SET();
+        JTAG_CYCLE_TDI(i_val);
+        return;
     }
 
     if (info & JTAG_SEQUENCE_TMS)
@@ -107,6 +118,12 @@ ATTR_RAMFUNC void JTAG_Sequence_Slow(uint32_t delay, uint32_t info, const uint8_
     else
     {
         PIN_TMS_CLR();
+    }
+
+    n = info & JTAG_SEQUENCE_TCK;
+    if (n == 0U)
+    {
+        n = 64U;
     }
 
     while (n)

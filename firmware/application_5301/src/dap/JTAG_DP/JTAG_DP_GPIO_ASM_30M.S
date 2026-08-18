@@ -38,6 +38,8 @@
 
 JTAG_Sequence_GPIO_ASM_30M:
 
+    li      t1, JTCK_OFFSET
+
     # Used generic register:
     # a0 -- uint32_t        delay           // [param] JTAG sequence bit delay
     # a1 -- uint32_t        info            // [param] JTAG sequence configure
@@ -45,19 +47,32 @@ JTAG_Sequence_GPIO_ASM_30M:
     # a3 -- uint8_t*        tdo             // [param] JTAG sequence TDO data pointer
     # 
     # a4 -- uint32_t        send_bits       // [local] Sequence bit num
-    # a5 -- 
-    # a6 -- 
+    # a5 -- uint8_t         i_val           // [local] 
+    # a6 -- uint8_t         o_val           // [local]
     # a7 -- 
     #
     # t0 -- FGPIO_BASE                      // [prest]
-    # t1 -- 
+    # t1 -- JTCK_OFFSET                     // [prest]
     # t2 -- 
     # t3 -- 
     # t4 -- 
     # t5 -- 
-    # t6 -- 
+    # t6 -- temp
 
-    andi    a4, a1, 63                      # 提取待发送的 bit 数
+    bexti   t6, a1, 6                       # 提取 TMS 状态
+    slli    t6, t6, JTMS_SHIFT              # 位移到 JTMS_SHIFT 位
+
+    sw      t6, FGPIO_BASE(IOA_DO_VAL)      # ----- JTCK 拉低，同时输出 JTMS
+    nop
+    nop
+    nop
+
+    sw      t1, FGPIO_BASE(IOA_DO_SET)      # ----- JTCK 拉高，同时保持 JTMS
+    nop
+    nop
+    nop
+
+    ret
     
 
     // Send and read one bit:

@@ -39,7 +39,7 @@
 //   return: none
 ATTR_RAMFUNC void JTAG_Sequence(uint32_t info, const uint8_t *tdi, uint8_t *tdo)
 {
-    // printf("JTAG Seq: 0x%x\n", info);
+    // printf("JTAG Seq: 0x%02x, 0x%02x\n", info, *tdi);
     JTAG_Sequence_Slow(0, info, tdi, tdo);
 }
 

@@ -1290,7 +1290,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Connector_Generic:Conn_01x05"
+		(symbol "Connector_Generic:Conn_01x06"
 			(pin_names
 				(offset 1.016)
 				(hide yes)
@@ -1306,8 +1306,8 @@
 					)
 				)
 			)
-			(property "Value" "Conn_01x05"
-				(at 0 -7.62 0)
+			(property "Value" "Conn_01x06"
+				(at 0 -10.16 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1332,7 +1332,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1359,10 +1359,10 @@
 					(hide yes)
 				)
 			)
-			(symbol "Conn_01x05_1_1"
+			(symbol "Conn_01x06_1_1"
 				(rectangle
 					(start -1.27 6.35)
-					(end 1.27 -6.35)
+					(end 1.27 -8.89)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -1418,6 +1418,17 @@
 				(rectangle
 					(start -1.27 -4.953)
 					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(rectangle
+					(start -1.27 -7.493)
+					(end 0 -7.747)
 					(stroke
 						(width 0.1524)
 						(type default)
@@ -1509,6 +1520,24 @@
 						)
 					)
 					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -7.62 0)
+					(length 3.81)
+					(name "Pin_6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -4122,156 +4151,6 @@
 					(at 7.62 0 180)
 					(length 2.54)
 					(name "VO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "Switch:SW_Push"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "SW"
-				(at 1.27 2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "SW_Push"
-				(at 0 -1.524 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Push button switch, generic, two pins"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "switch normally-open pushbutton push-button"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "SW_Push_0_1"
-				(circle
-					(center -2.032 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 1.27) (xy 0 3.048)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.032 0)
-					(radius 0.508)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 1.27) (xy -2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 0 180)
-					(length 2.54)
-					(name "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -8876,16 +8755,6 @@
 	)
 	(wire
 		(pts
-			(xy 36.83 234.95) (xy 36.83 237.49)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "207971c0-103d-4a6b-82ec-6146c3d91af4")
-	)
-	(wire
-		(pts
 			(xy 130.81 248.92) (xy 130.81 242.57)
 		)
 		(stroke
@@ -9116,7 +8985,7 @@
 	)
 	(wire
 		(pts
-			(xy 140.97 171.45) (xy 154.94 171.45)
+			(xy 143.51 171.45) (xy 154.94 171.45)
 		)
 		(stroke
 			(width 0)
@@ -9376,7 +9245,7 @@
 	)
 	(wire
 		(pts
-			(xy 36.83 237.49) (xy 34.29 237.49)
+			(xy 43.18 237.49) (xy 34.29 237.49)
 		)
 		(stroke
 			(width 0)
@@ -10756,6 +10625,16 @@
 	)
 	(wire
 		(pts
+			(xy 34.29 234.95) (xy 43.18 234.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c181c50b-a803-442b-95c8-cea15337043e")
+	)
+	(wire
+		(pts
 			(xy 212.09 38.1) (xy 212.09 40.64)
 		)
 		(stroke
@@ -11694,7 +11573,7 @@
 		)
 		(uuid "7c29eb89-d88d-4664-96b2-97b1f348ab6e")
 	)
-	(label "BL_KEY"
+	(label "DFU_PIN"
 		(at 143.51 171.45 0)
 		(effects
 			(font
@@ -11773,6 +11652,16 @@
 			(justify left bottom)
 		)
 		(uuid "8ef1c026-38a2-4b4d-bb8a-b0a9457d5584")
+	)
+	(label "DFU_PIN"
+		(at 43.18 234.95 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "95cb4210-ad9d-4bc6-a2be-9bdb50d56d22")
 	)
 	(label "OTPCAP"
 		(at 125.73 49.53 180)
@@ -12879,6 +12768,87 @@
 			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0181")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x06")
+		(at 29.21 240.03 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp yes)
+		(fields_autoplaced yes)
+		(uuid "0b6df481-3a5a-45f2-b76e-5323b63193a6")
+		(property "Reference" "J101"
+			(at 29.21 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "ISP"
+			(at 29.21 231.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical"
+			(at 29.21 240.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 29.21 240.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x06, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 29.21 240.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "6"
+			(uuid "e90962db-b3f9-402d-8480-aff47a60cac0")
+		)
+		(pin "4"
+			(uuid "15a2de1e-da42-476f-9888-eb596468e057")
+		)
+		(pin "5"
+			(uuid "09b5f0f6-0553-40b7-8a5c-7eb81c9ebe8a")
+		)
+		(pin "1"
+			(uuid "8703632a-7280-40ad-814a-7df58aae47bf")
+		)
+		(pin "2"
+			(uuid "c39402c6-a8f4-4057-b398-da0401aedaeb")
+		)
+		(pin "3"
+			(uuid "becd8762-b83d-481b-b814-b0c8a66ecab1")
+		)
+		(instances
+			(project "akaLinkPro"
+				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
+					(reference "J101")
 					(unit 1)
 				)
 			)
@@ -22483,75 +22453,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Switch:SW_Push")
-		(at 135.89 171.45 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ac852b1a-6b6c-4060-bc87-0add0a9d0aeb")
-		(property "Reference" "SW101"
-			(at 135.89 173.99 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "BL"
-			(at 135.89 176.53 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Button_Switch_SMD:SW_SPST_B3U-1000P"
-			(at 135.89 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 135.89 166.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Push button switch, generic, two pins"
-			(at 135.89 171.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "3d1b0908-d310-46af-add5-08687524eb28")
-		)
-		(pin "2"
-			(uuid "6e62d31e-75aa-4f21-97ae-962866a005d8")
-		)
-		(instances
-			(project "akaLinkPro"
-				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
-					(reference "SW101")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "akaLinkCompact:R")
 		(at 346.71 161.29 90)
 		(mirror x)
@@ -23717,73 +23618,6 @@
 			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "#PWR0107")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3V3")
-		(at 130.81 171.45 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c0603479-8e5a-4cc2-a247-440f24388b8e")
-		(property "Reference" "#PWR0138"
-			(at 134.62 171.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3V3"
-			(at 127 171.4499 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 130.81 171.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 130.81 171.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 130.81 171.45 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "1c3a7bd9-6999-480a-97a1-094a7239e4bb")
-		)
-		(instances
-			(project "akaLinkPro"
-				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
-					(reference "#PWR0138")
 					(unit 1)
 				)
 			)
@@ -25255,7 +25089,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 36.83 234.95 0)
+		(at 43.18 237.49 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -25264,7 +25098,7 @@
 		(fields_autoplaced yes)
 		(uuid "d7477ce8-dea7-4c9c-a7b1-598d55521aff")
 		(property "Reference" "#PWR0134"
-			(at 36.83 238.76 0)
+			(at 39.37 237.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25273,15 +25107,16 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 36.83 229.87 0)
+			(at 46.99 237.4899 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" ""
-			(at 36.83 234.95 0)
+			(at 43.18 237.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25290,7 +25125,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 36.83 234.95 0)
+			(at 43.18 237.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -25299,7 +25134,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 36.83 234.95 0)
+			(at 43.18 237.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -26929,84 +26764,6 @@
 			(project "akaLinkPro"
 				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
 					(reference "C1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x05")
-		(at 29.21 242.57 0)
-		(mirror y)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom no)
-		(on_board yes)
-		(dnp yes)
-		(fields_autoplaced yes)
-		(uuid "f291f2d8-011a-4b89-b7fe-caadfa134921")
-		(property "Reference" "J2"
-			(at 29.21 231.14 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "ISP"
-			(at 29.21 233.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical"
-			(at 29.21 242.57 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 29.21 242.57 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 29.21 242.57 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "5"
-			(uuid "26bbbf62-396c-48c9-9b8d-6c45672dcf07")
-		)
-		(pin "3"
-			(uuid "1f971bb7-aeb0-4150-911a-392557aba3a5")
-		)
-		(pin "2"
-			(uuid "978d03c6-dfc2-476f-bc40-4a5f56cbe806")
-		)
-		(pin "1"
-			(uuid "cba37e3a-2471-4cf0-a471-3a1acc0cd85b")
-		)
-		(pin "4"
-			(uuid "3874ceeb-7b1a-4982-aea1-1ebd026937d7")
-		)
-		(instances
-			(project "akaLinkPro"
-				(path "/bdacb043-f14a-42d1-8c71-fc9028f33716"
-					(reference "J2")
 					(unit 1)
 				)
 			)

@@ -62,12 +62,12 @@ JTAG_Sequence_GPIO_ASM_30M:
     bexti   t6, a1, 6                       # 提取 TMS 状态
     slli    t6, t6, JTMS_SHIFT              # 位移到 JTMS_SHIFT 位
 
-    sw      t6, FGPIO_BASE(IOA_DO_VAL)      # ----- JTCK 拉低，同时输出 JTMS
+    // sw      t6, FGPIO_BASE(IOA_DO_VAL)      # ----- JTCK 拉低，同时输出 JTMS
     nop
     nop
     nop
 
-    sw      t1, FGPIO_BASE(IOA_DO_SET)      # ----- JTCK 拉高，同时保持 JTMS
+    // sw      t1, FGPIO_BASE(IOA_DO_SET)      # ----- JTCK 拉高，同时保持 JTMS
     nop
     nop
     nop

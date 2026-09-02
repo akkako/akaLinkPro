@@ -32,10 +32,10 @@ int main(void)
     }
 
     BOOT_PRINTF("\r\n\r\n");
-    BOOT_PRINTF("========================================\r\n");
-    BOOT_PRINTF("  HPM DFU Bootloader\r\n");
+    BOOT_PRINTF("===========================================\r\n");
+    BOOT_PRINTF("  akaLink HID MSC DFU tri-mode Bootloader\r\n");
     BOOT_PRINTF("  Build: %s %s\r\n", __DATE__, __TIME__);
-    BOOT_PRINTF("========================================\r\n\r\n");
+    BOOT_PRINTF("===========================================\r\n\r\n");
 
     /* Check triggers (boot pin, BGPR magic, APP validity).
      * Jumps to APP if valid and no trigger — never returns. */
@@ -49,7 +49,6 @@ int main(void)
     while (1)
     {
         WS2812_ShowRainbow();
-        //        WS2812_ShowFadeOn();
         hpm_dfu_delay_ms(10);
         ewdg_refresh(HPM_EWDG0);
     }

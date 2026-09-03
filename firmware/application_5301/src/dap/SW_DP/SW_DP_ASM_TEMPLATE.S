@@ -29,8 +29,10 @@
 .equ ACK_FAULT_MASK,            4
 .equ ACK_ERROR_MASK,            8
 
+// SWCLK 下降沿到 SWDIO 输入采样点延迟：15 机器周期
+// 适配 SN74LVC1T45DBVR
 
-
+// ACK 读取流程：
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
     bexti   a0, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0，并清除其他位赋值给 a0
 

@@ -477,7 +477,7 @@ SWD_Read_GPIO_ASM_60M:
 
     // RVB 加速读取一位
     // lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
-    // bexti   t6, a6, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
+    // bexti   t6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0 并清除其他位
     // or      a5, a5, t6                  # 合并 BIT0 到 a5
     // rori    a5, a5, 1                   # a5 循环右移 1 位
     // 注意最后一次直接操作最高位
@@ -512,7 +512,7 @@ SWD_Read_GPIO_ASM_60M:
     #---------------- bit 3-31 ----------------
 .rept 29
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    bexti   t6, a6, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
+    bexti   t6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0 并清除其他位
     or      a5, a5, t6                  # 合并 BIT0 到 a5
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
@@ -521,7 +521,7 @@ SWD_Read_GPIO_ASM_60M:
 .endr
     #---------------- bit 32 (recv data 30 / send parity clk) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    bexti   t6, a6, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
+    bexti   t6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0 并清除其他位
     or      a5, a5, t6                  # 合并 BIT0 到 a5
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
@@ -530,7 +530,7 @@ SWD_Read_GPIO_ASM_60M:
 
     #---------------- bit 33 (recv data 31 / send trn clk) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    bexti   t6, a6, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
+    bexti   t6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0 并清除其他位
     or      a5, a5, t6                  # 合并 BIT0 到 a5
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
@@ -539,14 +539,14 @@ SWD_Read_GPIO_ASM_60M:
 
     #---------------- bit 34 (recv parity / no send) ----------------
     srli    a5, a5, 1                   # a5 >>= 1
-    slli    a6, a6, (31-SWDIO_SHIFT)     # 将 SWDI 数据移到 BIT31
+    slli    a6, a6, (31-SWDIO_SHIFT)    # 将 SWDI 数据移到 BIT31
     and     a6, a6, t3                  # 提取 BIT31
 
     or      a5, a5, a6                  # 合并 BIT31 到 a5
     lw      t4, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT31)
     sw      t1, FGPIO_DO_SET_OFFSET(t0) # SWDIR 拉高，SWDIO 切换为输出状态
 
-    bexti   t4, t4, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
+    bexti   t4, t4, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0 并清除其他位
     cpop    t5, a5                      # 直接计算校验位，保存在 t5 BIT0
     andi    t5, t5, 1
 

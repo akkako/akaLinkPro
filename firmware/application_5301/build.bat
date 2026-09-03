@@ -11,4 +11,4 @@
 @cmake -G Ninja -DBOARD=%BOARD% -DHPM_BUILD_TYPE=%HPM_BUILD_TYPE% -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -B=./build -S .
 @cmake --build ./build
 
-@REM @dfu-util -a 0 -E 4 -s 0x80020000:leave -D build/output/akaLinkPro_App.bin
+@dfu-util -a 0 -E 1 -s 0x80020000:leave -D build/output/akaLinkPro_App.bin

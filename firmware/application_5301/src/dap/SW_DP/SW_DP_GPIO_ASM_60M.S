@@ -461,7 +461,7 @@ SWD_Read_GPIO_ASM_60M:
 
     #=========== check ack and branch ===========
     bne     a0, t3, .label_r_not_ack_ok # 如果不是 ACK_OK，跳转到 label_r_not_ack_ok
-    
+
 .lable_r_ack_ok:
     # 接收 32 位数据
     # 本阶段使用的寄存器：
@@ -509,15 +509,6 @@ SWD_Read_GPIO_ASM_60M:
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
     nop
 
-    #---------------- bit 3 ----------------
-    sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    nop
-    nop
-
-    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
-    nop
-
     #---------------- bit 3-31 ----------------
 .rept 29
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
@@ -525,19 +516,10 @@ SWD_Read_GPIO_ASM_60M:
     or      a5, a5, t6                  # 合并 BIT0 到 a5
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0-28)
+    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0-29)
     rori    a5, a5, 1                   # a5 循环右移 1 位
 .endr
-    #---------------- bit 32 (recv data 29 / send parity clk) ----------------
-    sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    bexti   t6, a6, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
-    or      a5, a5, t6                  # 合并 BIT0 到 a5
-
-    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT29)
-    rori    a5, a5, 1                   # a5 循环右移 1 位
-
-    #---------------- bit 33 (recv data 30 / send trn clk) ----------------
+    #---------------- bit 32 (recv data 30 / send parity clk) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     bexti   t6, a6, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
     or      a5, a5, t6                  # 合并 BIT0 到 a5
@@ -546,16 +528,16 @@ SWD_Read_GPIO_ASM_60M:
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT30)
     rori    a5, a5, 1                   # a5 循环右移 1 位
 
-    #---------------- bit 34 (recv data 31 / no send) ----------------
-    nop
+    #---------------- bit 33 (recv data 31 / send trn clk) ----------------
+    sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     bexti   t6, a6, SWDIO_SHIFT          # 将 SWDI 数据移到 BIT0 并清除其他位
     or      a5, a5, t6                  # 合并 BIT0 到 a5
 
-    nop
+    sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT31)
     rori    a5, a5, 1                   # a5 循环右移 1 位
 
-    #---------------- bit 35 (recv parity / no send) ----------------
+    #---------------- bit 34 (recv parity / no send) ----------------
     srli    a5, a5, 1                   # a5 >>= 1
     slli    a6, a6, (31-SWDIO_SHIFT)     # 将 SWDI 数据移到 BIT31
     and     a6, a6, t3                  # 提取 BIT31

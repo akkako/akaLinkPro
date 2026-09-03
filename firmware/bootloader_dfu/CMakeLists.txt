@@ -65,7 +65,6 @@ sdk_compile_definitions(-DUSBD_DFU_APP_DEFAULT_ADD=0x80020000)
 
 # Disable BOOT_PRINTF and UART console in Release builds
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    sdk_compile_definitions(-DNDEBUG)
     sdk_compile_definitions(-DCONFIG_NDEBUG_CONSOLE=1)
     message(STATUS "Release build: BOOT_PRINTF + console disabled")
 endif()

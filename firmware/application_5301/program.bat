@@ -1,1 +1,1 @@
-@dfu-util -a 0 -E 4 -s 0x80020000:leave -D build/output/akaLinkPro_App.bin
+@dfu-util -a 0 -E 1 -s 0x80020000:leave -D build/output/akaLinkPro_App.bin

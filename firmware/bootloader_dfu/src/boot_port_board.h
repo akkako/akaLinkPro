@@ -50,17 +50,6 @@ void boot_port_board_init_bootpin(void);
  */
 bool boot_port_board_read_bootpin(void);
 
-// ============================================================================
-// LED Control Interface
-// ============================================================================
-
-/**
- * @brief Toggle the status LED for visual feedback
- * 
- * Call this from erase/write operations to indicate activity.
- */
-void boot_port_board_led_toggle(void);
-
 #ifdef __cplusplus
 }
 #endif

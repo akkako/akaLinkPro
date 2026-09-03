@@ -25,26 +25,13 @@
 
 #define BOARD_NAME "akaLinkPro"
 #define BOARD_UF2_SIGNATURE (0x0A4D5048UL)
-#define BOARD_DFU_SIGNATURE (0x48504D21UL)  /* "HPM!" */
-#define BOARD_BGPR          HPM_BGPR0
+#define BOARD_DFU_SIGNATURE (0x48504D21UL) /* "HPM!" */
+#define BOARD_BGPR HPM_BGPR0
 
 /* core section */
 #ifndef BOARD_RUNNING_CORE
 #define BOARD_RUNNING_CORE HPM_CORE0
 #endif
-
-/* uart section */
-#ifndef BOARD_APP_UART_BASE
-#define BOARD_APP_UART_BASE HPM_UART3
-#define BOARD_APP_UART_IRQ IRQn_UART3
-#define BOARD_APP_UART_BAUDRATE (115200UL)
-#define BOARD_APP_UART_CLK_NAME clock_uart3
-#define BOARD_APP_UART_RX_DMA_REQ HPM_DMA_SRC_UART3_RX
-#define BOARD_APP_UART_TX_DMA_REQ HPM_DMA_SRC_UART3_TX
-#endif
-
-#define BOARD_APP_UART_BREAK_SIGNAL_PIN IOC_PAD_PA26
-
 
 #if !defined(CONFIG_NDEBUG_CONSOLE) || !CONFIG_NDEBUG_CONSOLE
 #ifndef BOARD_CONSOLE_TYPE
@@ -63,20 +50,9 @@
 #endif
 #endif
 
-/* usb cdc acm uart section */
-#define BOARD_USB_CDC_ACM_UART BOARD_APP_UART_BASE
-#define BOARD_USB_CDC_ACM_UART_CLK_NAME BOARD_APP_UART_CLK_NAME
-#define BOARD_USB_CDC_ACM_UART_TX_DMA_SRC BOARD_APP_UART_TX_DMA_REQ
-#define BOARD_USB_CDC_ACM_UART_RX_DMA_SRC BOARD_APP_UART_RX_DMA_REQ
-
 /* nor flash section */
 #define BOARD_FLASH_BASE_ADDRESS (0x80000000UL) /* Check */
 #define BOARD_FLASH_SIZE (SIZE_1MB)
-
-/* User LED */
-// #define BOARD_LED_GPIO_CTRL HPM_GPIO0
-// #define BOARD_LED_GPIO_INDEX GPIO_DI_GPIOA
-// #define BOARD_LED_GPIO_PIN 2
 
 /* gpiom section */
 #define BOARD_APP_GPIOM_BASE HPM_GPIOM
@@ -107,32 +83,33 @@
 #endif
 
 #if defined(__cplusplus)
-extern "C" {
+extern "C"
+{
 #endif /* __cplusplus */
 
-typedef void (*board_timer_cb)(void);
+    typedef void (*board_timer_cb)(void);
 
-void board_init_usb(USB_Type *ptr);
+    void board_init_usb(USB_Type *ptr);
 
-void board_init_console(void);
+    void board_init_console(void);
 
-void board_init_uart(UART_Type *ptr);
+    void board_init_uart(UART_Type *ptr);
 
-uint32_t board_init_uart_clock(UART_Type *ptr);
+    uint32_t board_init_uart_clock(UART_Type *ptr);
 
-void board_init(void);
+    void board_init_clock(void);
 
-void board_init_usb_dp_dm_pins(void);
+    void board_delay_us(uint32_t us);
 
-void board_init_clock(void);
+    void board_delay_ms(uint32_t ms);
 
-void board_delay_us(uint32_t us);
+    void board_led1_on(void);
 
-void board_delay_ms(uint32_t ms);
+    void board_led1_off(void);
 
-void board_timer_create(uint32_t ms, board_timer_cb cb);
+    void board_led2_on(void);
 
-void board_ungate_mchtmr_at_lp_mode(void);
+    void board_led2_off(void);
 
 #if defined(__cplusplus)
 }

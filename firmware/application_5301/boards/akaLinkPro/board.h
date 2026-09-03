@@ -80,57 +80,19 @@
 #define BOARD_SHOW_BANNER 1
 #endif
 
-/*
-    Pin connection:
-
-    UART_RTS    PA05            init as low     GPIO0
-    UART_DTR    PA06            init as low     GPIO0
-    WS2812      PA07 (SPI0)
-    UART_TXD    PA08 (USART3)   init as low     GPIO0
-    UART_RXD    PA09 (USART3)   init as input   GPIO0
-    JTCK        PA27            init as high    FGPIO
-    JTMS_IN     PA28            init as input   FGPIO
-    JTMS_OUT    PA29            init as high    FGPIO
-    JTMS_DIR    PA30            init as high    FGPIO
-    JTDO        PB12            init as input   FGPIO
-    JTDI        PB13            init as high    FGPIO
-    JTRST       PB14            init as high    FGPIO
-    nRESET      PB15            init as low     GPIO0
-
-    Unused Pin:
-
-    PA04 (PORT_EN NC)       init as low         GPIO0
-    PA10 (PWMDAC NC)        init as low         GPIO0
-    PA26 (SPI_CS)           init as low         GPIO0
-    PA31 (P_EN NC)          init as low         GPIO0
-    PB08 (ADC_VREF NC)      init as low         GPIO0
-    PB09 (ADC_TVCC NC)      init as low         GPIO0
-    PB10 (SPI_CS)           init as low         GPIO0
-    PB11 (JTCK)             init as float       GPIO0
-*/
 
 #define BOARD_PIN_UART_TXD      IOC_PAD_PA08
 #define BOARD_PIN_UART_RXD      IOC_PAD_PA09
-#define BOARD_PIN_UART_RTS      IOC_PAD_PA05
-#define BOARD_PIN_UART_DTR      IOC_PAD_PA06
 
 #define BOARD_PIN_JTCK          IOC_PAD_PA27
-#define BOARD_PIN_JTMS_IN       IOC_PAD_PA28
-#define BOARD_PIN_JTMS_OUT      IOC_PAD_PA29
+#define BOARD_PIN_JTMS          IOC_PAD_PA28
+// #define BOARD_PIN_JTMS_OUT      IOC_PAD_PA29
 #define BOARD_PIN_JTMS_DIR      IOC_PAD_PA30
-#define BOARD_PIN_JTDO          IOC_PAD_PB12
-#define BOARD_PIN_JTDI          IOC_PAD_PB13
-#define BOARD_PIN_JTRST         IOC_PAD_PB14
-#define BOARD_PIN_nRESET        IOC_PAD_PB15
+#define BOARD_PIN_JTDO          IOC_PAD_PA09
+#define BOARD_PIN_JTDI          IOC_PAD_PA08
+#define BOARD_PIN_JTRST         IOC_PAD_PA31
+#define BOARD_PIN_nRESET        IOC_PAD_PA26
 
-#define BOARD_PIN_UNUSED_PORTEN IOC_PAD_PA04
-#define BOARD_PIN_UNUSED_PWM    IOC_PAD_PA10
-#define BOARD_PIN_UNUSED_CS1    IOC_PAD_PA26
-#define BOARD_PIN_UNUSED_CS2    IOC_PAD_PB10
-#define BOARD_PIN_UNUSED_PEN    IOC_PAD_PA31
-#define BOARD_PIN_UNUSED_VREF   IOC_PAD_PB08
-#define BOARD_PIN_UNUSED_TVCC   IOC_PAD_PB09
-#define BOARD_PIN_UNUSED_JTCK   IOC_PAD_PB11
 
 #define PIN_GPIOM_BASE    HPM_GPIOM
 #define PIN_GPIO          HPM_FGPIO
@@ -159,7 +121,6 @@ extern "C"
     void board_init_pmp(void);
     uint32_t board_init_uart_clock(UART_Type *ptr);
     void init_uart_pins(UART_Type *ptr);
-    void init_uart_pin_as_gpio(UART_Type *ptr);
     void init_usb_pins(USB_Type *ptr);
 #if defined(__cplusplus)
 }

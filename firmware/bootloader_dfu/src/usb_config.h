@@ -6,10 +6,9 @@
 #define USB_CONFIG_H
 
 #include "board.h"
-#include "boot_log.h"
 
 /* ================ USB common ================ */
-#define CONFIG_USB_PRINTF(...) BOOT_PRINTF(__VA_ARGS__)
+#define CONFIG_USB_PRINTF(...) // printf(__VA_ARGS__)
 #define CONFIG_USB_DBG_LEVEL USB_DBG_INFO
 #define CONFIG_USB_ALIGN_SIZE 4
 #define USB_NOCACHE_RAM_SECTION __attribute__((section(".noncacheable")))

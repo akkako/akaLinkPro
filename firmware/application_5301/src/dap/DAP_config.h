@@ -75,7 +75,7 @@
 
 /// 指示在调试端口上是否支持 JTAG 通信模式。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
-#define DAP_JTAG                1               ///< JTAG 模式：1 = 可用，0 = 不可用。
+#define DAP_JTAG                0               ///< JTAG 模式：1 = 可用，0 = 不可用。
 
 /// 配置连接到调试访问端口的扫描链上 JTAG 设备的最大数量。
 /// 此设置影响调试探针单元的 RAM 需求。有效范围为 1 .. 255。
@@ -284,29 +284,29 @@ __STATIC_INLINE void PORT_JTAG_SETUP(void)
 {
     // 设置 IO 由 FGPIO 驱动
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTCK);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
+    // gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTDO);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTDI);
 
-    gpiom_config_pin_to_gpio0(BOARD_PIN_JTMS_IN);
+    gpiom_config_pin_to_gpio0(BOARD_PIN_JTMS);
     gpiom_config_pin_to_gpio0(BOARD_PIN_nRESET);
     gpiom_config_pin_to_gpio0(BOARD_PIN_JTMS_DIR);
     gpiom_config_pin_to_gpio0(BOARD_PIN_JTRST);
 
     // 设置输入输出模式
     gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
-    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
+    // gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
     gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
     gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
 
-    gpio_set_pin_input(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN));
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR));
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
 
     // 设置默认输出电平
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
-    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS), 1);
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
 
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1); // output
@@ -323,10 +323,10 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
 {
     // 设置 IO 由 FGPIO 驱动
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTCK);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_IN);
-    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
+    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS);
+    // gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_DIR);
-    
+
     gpiom_config_pin_to_gpio0(BOARD_PIN_nRESET);
     gpiom_config_pin_to_gpio0(BOARD_PIN_JTRST);
     gpiom_config_pin_to_gpio0(BOARD_PIN_JTDO);
@@ -334,9 +334,9 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
 
     // 设置输入输出模式
     gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
-    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
+    // gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
     gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR));
-    gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
 
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
@@ -346,7 +346,7 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
     // 设置默认输出电平
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
-    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS), 1);
 
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
@@ -403,7 +403,7 @@ __STATIC_FORCEINLINE void PIN_SWCLK_TCK_CLR(void)
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void)
 {
-    return (gpio_read_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
+    return (gpio_read_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS)));
 }
 
 /** SWDIO/TMS I/O 引脚：设置输出为高电平。
@@ -411,7 +411,7 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_SET(void)
 {
-    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 1);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS), 1);
 }
 
 /** SWDIO/TMS I/O 引脚：设置输出为低电平。
@@ -419,7 +419,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_TMS_SET(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void)
 {
-    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), 0);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS), 0);
 }
 
 /** SWDIO I/O 引脚：获取输入（仅在 SWD 模式下使用）。
@@ -427,7 +427,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void)
 */
 __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 {
-    return (gpio_read_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_IN), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_IN)));
+    return (gpio_read_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS)));
 }
 
 /** SWDIO I/O 引脚：设置输出（仅在 SWD 模式下使用）。
@@ -435,7 +435,7 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit)
 {
-    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT), bit & 0x01);
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS), bit & 0x01);
 }
 
 /** SWDIO I/O 引脚：切换到输出模式（仅在 SWD 模式下使用）。
@@ -445,6 +445,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit)
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void)
 {
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
 }
 
 /** SWDIO I/O 引脚：切换到输入模式（仅在 SWD 模式下使用）。
@@ -454,6 +455,7 @@ __STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void)
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_DISABLE(void)
 {
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 0);
+    gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
 }
 
 // TDI 引脚 I/O ---------------------------------------------
@@ -599,8 +601,8 @@ __STATIC_INLINE void DAP_SETUP(void)
 {
     // 配置 IOC->PAD[FUNC_CTL] 为 GPIO
     HPM_IOC->PAD[BOARD_PIN_JTCK].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0) | IOC_PAD_FUNC_CTL_LOOP_BACK_MASK;
-    HPM_IOC->PAD[BOARD_PIN_JTMS_IN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
-    HPM_IOC->PAD[BOARD_PIN_JTMS_OUT].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[BOARD_PIN_JTMS].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_JTMS_OUT].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     HPM_IOC->PAD[BOARD_PIN_JTMS_DIR].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     HPM_IOC->PAD[BOARD_PIN_nRESET].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     HPM_IOC->PAD[BOARD_PIN_JTDO].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
@@ -618,7 +620,7 @@ __STATIC_INLINE void DAP_SETUP(void)
         IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
         IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
         IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
-    HPM_IOC->PAD[BOARD_PIN_JTMS_IN].PAD_CTL =
+    HPM_IOC->PAD[BOARD_PIN_JTMS].PAD_CTL =
         IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
         IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
         IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
@@ -628,16 +630,16 @@ __STATIC_INLINE void DAP_SETUP(void)
         IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
         IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
         IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
-    HPM_IOC->PAD[BOARD_PIN_JTMS_OUT].PAD_CTL =
-        IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
-        IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
-        IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
-        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
-        IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
-        IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
-        IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
-        IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
-        IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
+    // HPM_IOC->PAD[BOARD_PIN_JTMS_OUT].PAD_CTL =
+    //     IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
+    //     IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
+    //     IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
+    //     IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+    //     IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
+    //     IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
+    //     IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
+    //     IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
+    //     IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
     HPM_IOC->PAD[BOARD_PIN_JTMS_DIR].PAD_CTL =
         IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
         IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k

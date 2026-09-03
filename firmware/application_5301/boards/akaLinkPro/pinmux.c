@@ -78,8 +78,8 @@ void init_uart0_pins(void)
 void init_button_pins(void)
 {
     /* Button */
-    HPM_IOC->PAD[IOC_PAD_PA03].FUNC_CTL = IOC_PA03_FUNC_CTL_GPIO_A_03;
-    HPM_IOC->PAD[IOC_PAD_PA03].PAD_CTL = IOC_PAD_PAD_CTL_HYS_SET(1) | IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
+    HPM_IOC->PAD[IOC_PAD_PA10].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[IOC_PAD_PA10].PAD_CTL = IOC_PAD_PAD_CTL_HYS_SET(1) | IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
 }
 
 /**
@@ -107,8 +107,8 @@ void init_usb0_pins(void)
  */
 void init_uart3_pins_as_uart(void)
 {
-    HPM_IOC->PAD[IOC_PAD_PB15].FUNC_CTL = IOC_PB15_FUNC_CTL_UART3_TXD;
-    HPM_IOC->PAD[IOC_PAD_PB14].FUNC_CTL = IOC_PB14_FUNC_CTL_UART3_RXD;
+    // HPM_IOC->PAD[IOC_PAD_PB15].FUNC_CTL = IOC_PB15_FUNC_CTL_UART3_TXD;
+    // HPM_IOC->PAD[IOC_PAD_PB14].FUNC_CTL = IOC_PB14_FUNC_CTL_UART3_RXD;
 }
 
 /*
@@ -117,31 +117,31 @@ void init_uart3_pins_as_uart(void)
  */
 void init_uart3_pin_as_gpio_low(void)
 {
-    HPM_IOC->PAD[BOARD_PIN_UART_TXD].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
-    HPM_IOC->PAD[BOARD_PIN_UART_TXD].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_TXD].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_TXD].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
 
-    HPM_IOC->PAD[BOARD_PIN_UART_RXD].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
-    HPM_IOC->PAD[BOARD_PIN_UART_RXD].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_RXD].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_RXD].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
 
-    HPM_IOC->PAD[BOARD_PIN_UART_RTS].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
-    HPM_IOC->PAD[BOARD_PIN_UART_RTS].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_RTS].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_RTS].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
 
-    HPM_IOC->PAD[BOARD_PIN_UART_DTR].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
-    HPM_IOC->PAD[BOARD_PIN_UART_DTR].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_DTR].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    // HPM_IOC->PAD[BOARD_PIN_UART_DTR].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
 
-    gpiom_config_pin_to_gpio0(BOARD_PIN_UART_TXD);
-    gpiom_config_pin_to_gpio0(BOARD_PIN_UART_RXD);
-    gpiom_config_pin_to_gpio0(BOARD_PIN_UART_RTS);
-    gpiom_config_pin_to_gpio0(BOARD_PIN_UART_DTR);
+    // gpiom_config_pin_to_gpio0(BOARD_PIN_UART_TXD);
+    // gpiom_config_pin_to_gpio0(BOARD_PIN_UART_RXD);
+    // gpiom_config_pin_to_gpio0(BOARD_PIN_UART_RTS);
+    // gpiom_config_pin_to_gpio0(BOARD_PIN_UART_DTR);
 
-    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_TXD), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_TXD));
-    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_RTS), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_RTS));
-    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_DTR), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_DTR));
-    gpio_set_pin_input(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_RXD), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_RXD));
+    // gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_TXD), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_TXD));
+    // gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_RTS), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_RTS));
+    // gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_DTR), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_DTR));
+    // gpio_set_pin_input(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_RXD), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_RXD));
 
-    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_TXD), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_TXD), 0);
-    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_RTS), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_RTS), 0);
-    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_DTR), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_DTR), 0);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_TXD), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_TXD), 0);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_RTS), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_RTS), 0);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_UART_DTR), GPIO_GET_PIN_INDEX(BOARD_PIN_UART_DTR), 0);
 }
 
 /*
@@ -150,14 +150,14 @@ void init_uart3_pin_as_gpio_low(void)
  */
 void init_unused_pin_as_input(void)
 {
-    init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_PORTEN);
-    init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_PWM);
-    init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_CS1);
-    init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_CS2);
-    init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_PEN);
-    init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_VREF);
-    init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_TVCC);
-    init_unused_pin_as_input_no_pull(BOARD_PIN_UNUSED_JTCK);
+    // init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_PORTEN);
+    // init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_PWM);
+    // init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_CS1);
+    // init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_CS2);
+    // init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_PEN);
+    // init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_VREF);
+    // init_unused_pin_as_input_pull_down(BOARD_PIN_UNUSED_TVCC);
+    // init_unused_pin_as_input_no_pull(BOARD_PIN_UNUSED_JTCK);
 }
 
 /**

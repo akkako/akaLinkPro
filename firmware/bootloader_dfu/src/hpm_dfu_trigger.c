@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include "board.h"
-#include "boot_log.h"
 #include "hpm_common.h"
 #include "hpm_soc.h"
 #include "hpm_l1c_drv.h"
@@ -71,7 +70,7 @@ void hpm_dfu_jump_to_app(void)
 {
     uint32_t entry = USBD_DFU_APP_DEFAULT_ADD + 4;
 
-    BOOT_PRINTF("[BOOT] Jumping to application at 0x%08lx\r\n",
+    printf("[BOOT] Jumping to application at 0x%08lx\r\n",
                 (unsigned long)USBD_DFU_APP_DEFAULT_ADD);
     disable_global_irq(CSR_MSTATUS_MIE_MASK);
     fencei();
@@ -88,22 +87,22 @@ void hpm_dfu_check_bootloader_request(void)
 {
     extern bool boot_port_board_read_bootpin(void);
     if (boot_port_board_read_bootpin()) {
-        BOOT_PRINTF("[BOOT] Boot pin active, staying in bootloader\r\n");
+        printf("[BOOT] Boot pin active, staying in bootloader\r\n");
         /* Clear any stale DFU trigger so the next reset boots APP */
         (void)hpm_dfu_check_and_clear_trigger();
         return;
     }
     if (hpm_dfu_check_and_clear_trigger()) {
-        BOOT_PRINTF("[BOOT] DFU trigger from APP, staying in bootloader\r\n");
+        printf("[BOOT] DFU trigger from APP, staying in bootloader\r\n");
         return;
     }
     if (*(volatile uint32_t *)USBD_DFU_APP_DEFAULT_ADD == BOARD_DFU_SIGNATURE) {
-        BOOT_PRINTF("[BOOT] Valid APP, jumping...\r\n");
+        printf("[BOOT] Valid APP, jumping...\r\n");
         extern void boot_port_board_deinit(void);
         boot_port_board_deinit();
         hpm_dfu_jump_to_app();
     }
-    BOOT_PRINTF("[BOOT] No valid application, staying in bootloader\r\n");
+    printf("[BOOT] No valid application, staying in bootloader\r\n");
 }
 
 /*---------------------------------------------------------------

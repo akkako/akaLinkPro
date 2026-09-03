@@ -49,7 +49,7 @@ void boot_port_board_deinit(void)
 void boot_port_board_init_bootpin(void)
 {
 #ifdef BOARD_APP_GPIO_CTRL
-    board_init_gpio_pins();
+    init_dfu_pins();
 #endif
 }
 

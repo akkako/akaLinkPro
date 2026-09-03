@@ -11,7 +11,7 @@
 | DBG_JTCK | PA06    | JTAG         | Debug port                      |                        |
 | DBG_JTMS | PA07    | JTAG         | Debug port                      |                        |
 | JTDI_TXD | PA08    | UART2.TXD    | VCOM port                       |                        |
-| JTDI_RXD | PA09    | UART2.RXD    | VCOM port                       |                        |
+| JTDO_RXD | PA09    | UART2.RXD    | VCOM port                       |                        |
 | DFU_PIN  | PA10    | GPIO0 Input | DFU mode entry detect           | Pull-down GPIO0 Input |
 | USB_D+   | PA24    | USB          | USB communication pin           |                        |
 | USB_D-   | PA25    | USB          | USB communication pin           |                        |

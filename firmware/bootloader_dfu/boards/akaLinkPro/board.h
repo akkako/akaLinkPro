@@ -86,7 +86,7 @@
 /* User button */
 #define BOARD_APP_GPIO_CTRL HPM_GPIO0
 #define BOARD_APP_GPIO_INDEX GPIO_DI_GPIOA
-#define BOARD_APP_GPIO_PIN 3
+#define BOARD_APP_GPIO_PIN 10
 #define BOARD_APP_GPIO_IRQ IRQn_GPIO0_A
 #define BOARD_BTN_PRESSED_VALUE 1
 
@@ -111,8 +111,6 @@ extern "C" {
 #endif /* __cplusplus */
 
 typedef void (*board_timer_cb)(void);
-
-void board_init_gpio_pins(void);
 
 void board_init_usb(USB_Type *ptr);
 

@@ -11,7 +11,6 @@
 #include "hpm_soc.h"
 #include "hpm_l1c_drv.h"
 #include "hpm_ppor_drv.h"
-#include "ws2812.h"
 #ifdef HPM_BCFG_BASE
 #include "hpm_bgpr_drv.h"
 #endif
@@ -71,8 +70,6 @@ void hpm_dfu_reboot_to_dfu(void)
 void hpm_dfu_jump_to_app(void)
 {
     uint32_t entry = USBD_DFU_APP_DEFAULT_ADD + 4;
-
-    WS2812_TurnOff();
 
     BOOT_PRINTF("[BOOT] Jumping to application at 0x%08lx\r\n",
                 (unsigned long)USBD_DFU_APP_DEFAULT_ADD);

@@ -17,14 +17,40 @@
 #include "hpm_gpio_drv.h"
 #include "hpm_gpiom_drv.h"
 
-#define TCK_SPI2_CLK IOC_PAD_PB11
-#define TDO_SPI2_MISO IOC_PAD_PB12
-#define TDI_SPI2_MOSI IOC_PAD_PB13
-#define TRST IOC_PAD_PB14
-#define SRST IOC_PAD_PB15
-#define TMS_O_SPI1_MOSI IOC_PAD_PA29
-#define TMS_I_SPI1_MISO IOC_PAD_PA28
-#define SWD_DIO_DIR IOC_PAD_PA30
+// Miscellaneous
+#define DFU_PIN IOC_PAD_PA10
+#define LED1_PIN IOC_PAD_PB11
+#define LED2_PIN IOC_PAD_PB12
+#define SEL0_PIN IOC_PAD_PB08
+#define SEL1_PIN IOC_PAD_PB09
+
+// power
+#define BUS5V_EN_PIN IOC_PAD_PB13
+#define ADC_VREF_PIN IOC_PAD_PB10
+
+// UART0
+#define ISP_TX_PIN IOC_PAD_PA00
+#define ISP_RX_PIN IOC_PAD_PA01
+
+// UART3
+#define AUX_RX_PIN IOC_PAD_PB14
+#define AUX_TX_PIN IOC_PAD_PB15
+
+// UART2/SWJ
+#define JTDI_TXD_PIN IOC_PAD_PA08
+#define JTDI_RXD_PIN IOC_PAD_PA09
+
+// SWJ
+#define JTCK_PIN IOC_PAD_PA27
+#define JTMS_IN_PIN IOC_PAD_PA28
+#define JTMS_OUT_PIN IOC_PAD_PA29
+#define JTMS_DIR_PIN IOC_PAD_PA30
+#define JTRST_PIN IOC_PAD_PA31
+#define nRESET_PIN IOC_PAD_PA26
+
+// USB
+#define USB_DP_PIN IOC_PAD_PA24
+#define USB_DN_PIN IOC_PAD_PA25
 
 void init_py_pins_as_pgpio(void)
 {
@@ -39,137 +65,167 @@ void init_py_pins_as_pgpio(void)
 
 void init_gpio_swj_pins(void)
 {
-    HPM_IOC->PAD[TCK_SPI2_CLK].FUNC_CTL = IOC_PB11_FUNC_CTL_GPIO_B_11;
-    HPM_IOC->PAD[TCK_SPI2_CLK].PAD_CTL = IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
+    // set alternate function as gpio
+    HPM_IOC->PAD[JTDI_TXD_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[JTDI_RXD_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[JTCK_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[JTMS_IN_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[JTMS_OUT_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[JTMS_DIR_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[JTRST_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[nRESET_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
 
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOB, 11, gpiom_core0_fast);
-    gpio_set_pin_output(HPM_FGPIO, GPIO_OE_GPIOB, 11);
-    gpio_write_pin(HPM_FGPIO, GPIO_DO_GPIOB, 11, 1);
+    // set pad parameter
+    HPM_IOC->PAD[JTDI_TXD_PIN].PAD_CTL = IOC_PAD_PAD_CTL_SR_SET(1) |
+                                         IOC_PAD_PAD_CTL_SPD_SET(3);
 
-    HPM_IOC->PAD[TDO_SPI2_MISO].FUNC_CTL = IOC_PB12_FUNC_CTL_GPIO_B_12;
-    HPM_IOC->PAD[TDO_SPI2_MISO].PAD_CTL = IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
+    // set pin controller
+    gpiom_set_pin_controller(HPM_GPIOM, GPIO_GET_PORT_INDEX(JTDI_TXD_PIN), GPIO_GET_PIN_INDEX(JTDI_TXD_PIN), gpiom_soc_gpio0);
 
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOB, 12, gpiom_core0_fast);
-    gpio_set_pin_input(HPM_FGPIO, GPIO_OE_GPIOB, 12);
+    // set output/input mode
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(JTDI_TXD_PIN), GPIO_GET_PIN_INDEX(JTDI_TXD_PIN));
 
-    HPM_IOC->PAD[TDI_SPI2_MOSI].FUNC_CTL = IOC_PB13_FUNC_CTL_GPIO_B_13;
-    HPM_IOC->PAD[TDI_SPI2_MOSI].PAD_CTL = IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
-
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOB, 13, gpiom_core0_fast);
-    gpio_set_pin_output(HPM_FGPIO, GPIO_OE_GPIOB, 13);
-    gpio_write_pin(HPM_FGPIO, GPIO_DO_GPIOB, 13, 1);
-
-    HPM_IOC->PAD[TRST].FUNC_CTL = IOC_PB14_FUNC_CTL_GPIO_B_14;
-    HPM_IOC->PAD[TRST].PAD_CTL =  IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
-
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOB, 14, gpiom_core0_fast);
-    gpio_set_pin_output(HPM_FGPIO, GPIO_OE_GPIOB, 14);
-    gpio_write_pin(HPM_FGPIO, GPIO_OE_GPIOB, 14, 1);
-
-    HPM_IOC->PAD[SRST].FUNC_CTL = IOC_PB15_FUNC_CTL_GPIO_B_15;
-    HPM_IOC->PAD[SRST].PAD_CTL =  IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
-
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOB, 15, gpiom_core0_fast);
-    gpio_set_pin_output(HPM_FGPIO, GPIO_OE_GPIOB, 15);
-    gpio_write_pin(HPM_FGPIO, GPIO_DO_GPIOB, 15, 1);
-
-    HPM_IOC->PAD[TMS_O_SPI1_MOSI].FUNC_CTL = IOC_PA29_FUNC_CTL_GPIO_A_29;
-    HPM_IOC->PAD[TMS_O_SPI1_MOSI].PAD_CTL =  IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
-
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOA, 29, gpiom_core0_fast);
-    gpio_set_pin_output(HPM_FGPIO, GPIO_OE_GPIOA, 29);
-    gpio_write_pin(HPM_FGPIO, GPIO_DO_GPIOA, 29, 0);
-
-    HPM_IOC->PAD[TMS_I_SPI1_MISO].FUNC_CTL = IOC_PA28_FUNC_CTL_GPIO_A_28;
-    HPM_IOC->PAD[TMS_I_SPI1_MISO].PAD_CTL =  IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
-
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOA, 28, gpiom_core0_fast);
-    gpio_set_pin_input(HPM_FGPIO, GPIO_OE_GPIOA, 28);
-
-    HPM_IOC->PAD[SWD_DIO_DIR].FUNC_CTL = IOC_PA30_FUNC_CTL_GPIO_A_30;
-    HPM_IOC->PAD[SWD_DIO_DIR].PAD_CTL =  IOC_PAD_PAD_CTL_SR_SET(1)|IOC_PAD_PAD_CTL_SPD_SET(3);
-
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOA, 30, gpiom_core0_fast);
-    gpio_set_pin_output(HPM_FGPIO, GPIO_OE_GPIOA, 30);
-    gpio_write_pin(HPM_FGPIO, GPIO_DO_GPIOA, 30, 1);
+    // set pin default state
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(JTDI_TXD_PIN), GPIO_GET_PIN_INDEX(JTDI_TXD_PIN), 1);
 }
 
-
+/**
+ * @brief Init UART pins
+ * @param ptr UART_Type instance
+ */
 void init_uart_pins(UART_Type *ptr)
 {
-    if (ptr == HPM_UART0) {
-        HPM_IOC->PAD[IOC_PAD_PA00].FUNC_CTL = IOC_PA00_FUNC_CTL_UART0_TXD;
-        HPM_IOC->PAD[IOC_PAD_PA01].FUNC_CTL = IOC_PA01_FUNC_CTL_UART0_RXD;
-    } else if (ptr == HPM_UART3) {
-        HPM_IOC->PAD[IOC_PAD_PB15].FUNC_CTL = IOC_PB15_FUNC_CTL_UART3_TXD;
-        HPM_IOC->PAD[IOC_PAD_PB14].FUNC_CTL = IOC_PB14_FUNC_CTL_UART3_RXD;
-    } else {
+    if (ptr == HPM_UART0)
+    {
+        HPM_IOC->PAD[ISP_TX_PIN].FUNC_CTL = IOC_PA00_FUNC_CTL_UART0_TXD;
+        HPM_IOC->PAD[ISP_RX_PIN].FUNC_CTL = IOC_PA01_FUNC_CTL_UART0_RXD;
+    }
+    else if (ptr == HPM_UART2)
+    {
+        HPM_IOC->PAD[JTDI_TXD_PIN].FUNC_CTL = IOC_PA08_FUNC_CTL_UART2_TXD;
+        HPM_IOC->PAD[JTDI_RXD_PIN].FUNC_CTL = IOC_PA09_FUNC_CTL_UART2_RXD;
+    }
+    else if (ptr == HPM_UART3)
+    {
+        HPM_IOC->PAD[AUX_TX_PIN].FUNC_CTL = IOC_PB15_FUNC_CTL_UART3_TXD;
+        HPM_IOC->PAD[AUX_RX_PIN].FUNC_CTL = IOC_PB14_FUNC_CTL_UART3_RXD;
+    }
+    else
+    {
         ;
     }
 }
 
-/* for uart_lin case, need to configure pin as gpio to sent break signal */
-void init_uart_pin_as_gpio(UART_Type *ptr)
+/**
+ * @brief Init LED pins
+ * @param None
+ */
+void init_led_pins(void)
 {
-    /* pull-up */
-    uint32_t pad_ctl = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(1);
+    uint32_t pad_ctl_slow = IOC_PAD_PAD_CTL_HYS_SET(0) |
+                            IOC_PAD_PAD_CTL_PRS_SET(0) |
+                            IOC_PAD_PAD_CTL_PS_SET(0) |
+                            IOC_PAD_PAD_CTL_PE_SET(0) |
+                            IOC_PAD_PAD_CTL_KE_SET(0) |
+                            IOC_PAD_PAD_CTL_OD_SET(0) |
+                            IOC_PAD_PAD_CTL_SR_SET(0) |
+                            IOC_PAD_PAD_CTL_SPD_SET(0) |
+                            IOC_PAD_PAD_CTL_DS_SET(0);
 
-    if (ptr == HPM_UART3) {
-        HPM_IOC->PAD[IOC_PAD_PB15].PAD_CTL = pad_ctl;
-        HPM_IOC->PAD[IOC_PAD_PB14].PAD_CTL = pad_ctl;
-        HPM_IOC->PAD[IOC_PAD_PB15].FUNC_CTL = IOC_PB15_FUNC_CTL_GPIO_B_15;
-        HPM_IOC->PAD[IOC_PAD_PB14].FUNC_CTL = IOC_PB14_FUNC_CTL_GPIO_B_14;
-    }
+    // set alternate function as gpio
+    HPM_IOC->PAD[LED1_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[LED2_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+
+    // set pad parameter
+    HPM_IOC->PAD[LED1_PIN].PAD_CTL = pad_ctl_slow;
+    HPM_IOC->PAD[LED2_PIN].PAD_CTL = pad_ctl_slow;
+
+    // set pin controller
+    gpiom_set_pin_controller(HPM_GPIOM, GPIO_GET_PORT_INDEX(LED1_PIN), GPIO_GET_PIN_INDEX(LED1_PIN), gpiom_soc_gpio0);
+    gpiom_set_pin_controller(HPM_GPIOM, GPIO_GET_PORT_INDEX(LED2_PIN), GPIO_GET_PIN_INDEX(LED2_PIN), gpiom_soc_gpio0);
+
+    // set output/input mode
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(LED1_PIN), GPIO_GET_PIN_INDEX(LED1_PIN));
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(LED2_PIN), GPIO_GET_PIN_INDEX(LED2_PIN));
+
+    // set pin default state
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(LED1_PIN), GPIO_GET_PIN_INDEX(LED1_PIN), 0);
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(LED2_PIN), GPIO_GET_PIN_INDEX(LED2_PIN), 0);
 }
 
-void init_gpio_pins(void)
+/**
+ * @brief Init power control and sense pin
+ * @param None
+ */
+void init_power_pins(void)
 {
-    /* configure pad setting: pull enable and pull down, schmitt trigger enable */
-    /* enable schmitt trigger to eliminate jitter of pin used as button */
+    // set alternate function as gpio
+    HPM_IOC->PAD[BUS5V_EN_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
 
-    /* Button */
-    gpiom_set_pin_controller(HPM_GPIOM, GPIOM_ASSIGN_GPIOA, 3, gpiom_soc_gpio0);
-    uint32_t pad_ctl = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0) | IOC_PAD_PAD_CTL_HYS_SET(1);
-    HPM_IOC->PAD[IOC_PAD_PA03].FUNC_CTL = IOC_PA03_FUNC_CTL_GPIO_A_03;
-    HPM_IOC->PAD[IOC_PAD_PA03].PAD_CTL = pad_ctl;
-    gpio_set_pin_input(BOARD_APP_GPIO_CTRL, BOARD_APP_GPIO_INDEX, BOARD_APP_GPIO_PIN);
+    // set pad parameter
+    HPM_IOC->PAD[BUS5V_EN_PIN].PAD_CTL = IOC_PAD_PAD_CTL_HYS_SET(0) |
+                                         IOC_PAD_PAD_CTL_PRS_SET(0) |
+                                         IOC_PAD_PAD_CTL_PS_SET(0) |
+                                         IOC_PAD_PAD_CTL_PE_SET(0) |
+                                         IOC_PAD_PAD_CTL_KE_SET(0) |
+                                         IOC_PAD_PAD_CTL_OD_SET(0) |
+                                         IOC_PAD_PAD_CTL_SR_SET(0) |
+                                         IOC_PAD_PAD_CTL_SPD_SET(0) |
+                                         IOC_PAD_PAD_CTL_DS_SET(0);
+
+    // set pin controller
+    gpiom_set_pin_controller(HPM_GPIOM, GPIO_GET_PORT_INDEX(BUS5V_EN_PIN), GPIO_GET_PIN_INDEX(BUS5V_EN_PIN), gpiom_soc_gpio0);
+
+    // set output/input mode
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BUS5V_EN_PIN), GPIO_GET_PIN_INDEX(BUS5V_EN_PIN));
+
+    // set pin default state
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BUS5V_EN_PIN), GPIO_GET_PIN_INDEX(BUS5V_EN_PIN), 0);
+
+    // set alternate function as analog
+    HPM_IOC->PAD[BUS5V_EN_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ANALOG_MASK;
 }
 
-void init_butn_pins(void)
+void init_model_sel_pins(void)
 {
-    /* configure pad setting: pull enable and pull up, schmitt trigger enable */
-    /* enable schmitt trigger to eliminate jitter of pin used as button */
+}
 
-    /* Button */
-    uint32_t pad_ctl = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(1) | IOC_PAD_PAD_CTL_HYS_SET(1);
-    HPM_IOC->PAD[IOC_PAD_PA09].FUNC_CTL = IOC_PA09_FUNC_CTL_GPIO_A_09;
-    HPM_IOC->PAD[IOC_PAD_PA09].PAD_CTL = pad_ctl;
+void init_dfu_pins(void)
+{
+    uint32_t pad_ctl = IOC_PAD_PAD_CTL_HYS_SET(1) | // hyster enable
+                       IOC_PAD_PAD_CTL_PRS_SET(0) | // pull res 100k
+                       IOC_PAD_PAD_CTL_PS_SET(0) |  // pull down
+                       IOC_PAD_PAD_CTL_PE_SET(1) |  // pull enable
+                       IOC_PAD_PAD_CTL_KE_SET(0) |
+                       IOC_PAD_PAD_CTL_OD_SET(0) |
+                       IOC_PAD_PAD_CTL_SR_SET(0) |
+                       IOC_PAD_PAD_CTL_SPD_SET(0) |
+                       IOC_PAD_PAD_CTL_DS_SET(0);
+
+    HPM_IOC->PAD[DFU_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[DFU_PIN].PAD_CTL = pad_ctl;
+
+    gpiom_set_pin_controller(HPM_GPIOM, GPIO_GET_PORT_INDEX(DFU_PIN), GPIO_GET_PIN_INDEX(DFU_PIN), gpiom_soc_gpio0);
+    gpio_set_pin_input(HPM_GPIO0, GPIO_GET_PORT_INDEX(DFU_PIN), GPIO_GET_PIN_INDEX(DFU_PIN));
 }
 
 void init_usb_pins(USB_Type *ptr)
 {
-    if (ptr == HPM_USB0) {
-        HPM_IOC->PAD[IOC_PAD_PA24].FUNC_CTL = IOC_PAD_FUNC_CTL_ANALOG_MASK;
-        HPM_IOC->PAD[IOC_PAD_PA25].FUNC_CTL = IOC_PAD_FUNC_CTL_ANALOG_MASK;
+    if (ptr == HPM_USB0)
+    {
+        HPM_IOC->PAD[USB_DP_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ANALOG_MASK;
+        HPM_IOC->PAD[USB_DN_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ANALOG_MASK;
 
         /* USB0_ID */
-        HPM_IOC->PAD[IOC_PAD_PY00].FUNC_CTL = IOC_PY00_FUNC_CTL_USB0_ID;
+        // HPM_IOC->PAD[IOC_PAD_PY00].FUNC_CTL = IOC_PY00_FUNC_CTL_USB0_ID;
         /* USB0_OC */
-        HPM_IOC->PAD[IOC_PAD_PY01].FUNC_CTL = IOC_PY01_FUNC_CTL_USB0_OC;
+        // HPM_IOC->PAD[IOC_PAD_PY01].FUNC_CTL = IOC_PY01_FUNC_CTL_USB0_OC;
         /* USB0_PWR */
-        HPM_IOC->PAD[IOC_PAD_PY02].FUNC_CTL = IOC_PY02_FUNC_CTL_USB0_PWR;
+        // HPM_IOC->PAD[IOC_PAD_PY02].FUNC_CTL = IOC_PY02_FUNC_CTL_USB0_PWR;
 
         /* PY port IO needs to configure PIOC as well */
-        HPM_PIOC->PAD[IOC_PAD_PY00].FUNC_CTL = PIOC_PY00_FUNC_CTL_SOC_GPIO_Y_00;
-        HPM_PIOC->PAD[IOC_PAD_PY01].FUNC_CTL = PIOC_PY01_FUNC_CTL_SOC_GPIO_Y_01;
-        HPM_PIOC->PAD[IOC_PAD_PY02].FUNC_CTL = PIOC_PY02_FUNC_CTL_SOC_GPIO_Y_02;
+        // HPM_PIOC->PAD[IOC_PAD_PY00].FUNC_CTL = PIOC_PY00_FUNC_CTL_SOC_GPIO_Y_00;
+        // HPM_PIOC->PAD[IOC_PAD_PY01].FUNC_CTL = PIOC_PY01_FUNC_CTL_SOC_GPIO_Y_01;
+        // HPM_PIOC->PAD[IOC_PAD_PY02].FUNC_CTL = PIOC_PY02_FUNC_CTL_SOC_GPIO_Y_02;
     }
 }
-
-/* for uart_rx_line_status case, need to a gpio pin to sent break signal */
-void init_uart_break_signal_pin(void)
-{
-    HPM_IOC->PAD[IOC_PAD_PA26].PAD_CTL = IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(1);
-    HPM_IOC->PAD[IOC_PAD_PA26].FUNC_CTL = IOC_PA26_FUNC_CTL_GPIO_A_26;
-}
-

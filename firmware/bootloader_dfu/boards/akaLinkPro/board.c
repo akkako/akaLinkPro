@@ -153,7 +153,7 @@ void board_init(void) {
   board_init_console();
   EWDG_Init();
   init_gpio_swj_pins();
-  init_gpio_pins();
+  init_dfu_pins();
 
   // print info
 #if BOARD_SHOW_CLOCK
@@ -278,11 +278,6 @@ void board_timer_create(uint32_t ms, board_timer_cb cb) {
   gptmr_start_counter(BOARD_CALLBACK_TIMER, BOARD_CALLBACK_TIMER_CH);
 }
 
-void board_init_gpio_pins(void) {
-  init_gpio_pins();
-  gpio_set_pin_input(BOARD_APP_GPIO_CTRL, BOARD_APP_GPIO_INDEX,
-                     BOARD_APP_GPIO_PIN);
-}
 
 void board_init_usb(USB_Type *ptr) {
   if (ptr == HPM_USB0) {

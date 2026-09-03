@@ -16,11 +16,10 @@ extern "C"
     void init_py_pins_as_pgpio(void);
     void init_gpio_swj_pins(void);
     void init_uart_pins(UART_Type *ptr);
-    void init_uart_pin_as_gpio(UART_Type *ptr);
-    void init_gpio_pins(void);
-    void init_butn_pins(void);
+    void init_dfu_pins(void);
     void init_usb_pins(USB_Type *ptr);
-    void init_uart_break_signal_pin(void);
+    void init_led_pins(void);
+    void init_power_pins(void);
 
 #ifdef __cplusplus
 }

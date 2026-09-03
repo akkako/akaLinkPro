@@ -56,7 +56,6 @@ sdk_app_src(src/main.c)
 sdk_app_src(src/dfu_desc.c)
 sdk_app_src(src/hpm_dfu_trigger.c)
 sdk_app_src(src/boot_port_board_hpm.c)
-sdk_app_src(src/ws2812.c)
 
 # CherryUSB DFU — SDK compiles usbd_dfu.c + hpm_dfu_port.c (DfuSe path)
 # Keep include path for usbd_dfu.h / usb_dfu.h headers

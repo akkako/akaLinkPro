@@ -69,7 +69,7 @@ ATTR_RAMFUNC uint8_t SWD_Write(uint32_t request, uint32_t *data)
 {
     uint8_t header = 0x81 | ((request & 0x0F) << 1) | (((request ^ (request >> 1) ^ (request >> 2) ^ (request >> 3)) & 1) << 5);
 
-    uint8_t ack =  SWD_Write_GPIO_ASM_60M(header, data);
+    uint8_t ack =  SWD_Write_GPIO_ASM_SLOW(header, data);
     // printf("ack = 0x%02X\n", ack);
     return ack;
     // return SWD_Write_GPIO_Slow(header, data);

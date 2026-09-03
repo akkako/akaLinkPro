@@ -75,7 +75,7 @@
 
 /// 指示在调试端口上是否支持 JTAG 通信模式。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
-#define DAP_JTAG                0               ///< JTAG 模式：1 = 可用，0 = 不可用。
+#define DAP_JTAG                1               ///< JTAG 模式：1 = 可用，0 = 不可用。
 
 /// 配置连接到调试访问端口的扫描链上 JTAG 设备的最大数量。
 /// 此设置影响调试探针单元的 RAM 需求。有效范围为 1 .. 255。
@@ -287,8 +287,8 @@ __STATIC_INLINE void PORT_JTAG_SETUP(void)
     // gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTDO);
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTDI);
-
-    gpiom_config_pin_to_gpio0(BOARD_PIN_JTMS);
+    gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS);
+    
     gpiom_config_pin_to_gpio0(BOARD_PIN_nRESET);
     gpiom_config_pin_to_gpio0(BOARD_PIN_JTMS_DIR);
     gpiom_config_pin_to_gpio0(BOARD_PIN_JTRST);
@@ -298,8 +298,8 @@ __STATIC_INLINE void PORT_JTAG_SETUP(void)
     // gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_OUT), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_OUT));
     gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
     gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
-
-    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
+    gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
+    
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR));
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
@@ -444,8 +444,8 @@ __STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void)
 {
-    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
     gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1);
 }
 
 /** SWDIO I/O 引脚：切换到输入模式（仅在 SWD 模式下使用）。
@@ -454,8 +454,8 @@ __STATIC_FORCEINLINE void PIN_SWDIO_OUT_ENABLE(void)
 */
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT_DISABLE(void)
 {
-    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 0);
     gpio_set_pin_input(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS));
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 0);
 }
 
 // TDI 引脚 I/O ---------------------------------------------
@@ -674,7 +674,7 @@ __STATIC_INLINE void DAP_SETUP(void)
         IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
         IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
         IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
-        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+        IOC_PAD_PAD_CTL_PE_SET(0) |  // 上拉使能
         IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
         IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
         IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速

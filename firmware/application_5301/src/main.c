@@ -14,21 +14,17 @@
 #include "hpm_interrupt.h"
 #include "usb_config.h"
 #include "hpm_dfu_trigger.h"
-#include "ws2812.h"
 #include "api_param.h"
 #include "usb_composite.h"
 
 int main(void)
 {
     board_init();
-    WS2812_Init();
     api_param_load();
 
     board_init_usb((USB_Type *)CONFIG_HPM_USBD_BASE);
     intc_set_irq_priority(CONFIG_HPM_USBD_IRQn, 2);
     chry_dap_init(0, CONFIG_HPM_USBD_BASE);
-
-    WS2812_SetColor(0xFF / 8);
 
     while (1)
     {

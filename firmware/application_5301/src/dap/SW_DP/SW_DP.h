@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+void SWD_LoadFunction(void);
+
 void SWJ_Sequence_GPIO_Slow(uint32_t count, const uint8_t *data);
 void SWD_Sequence_GPIO_Slow(uint32_t info, const uint8_t *swdo, uint8_t *swdi);
 uint8_t SWD_Write_GPIO_Slow(uint8_t header, uint32_t *data);

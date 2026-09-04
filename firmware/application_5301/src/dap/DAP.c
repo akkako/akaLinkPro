@@ -28,6 +28,7 @@
 #include <string.h>
 #include "DAP_config.h"
 #include "DAP.h"
+#include "SW_DP.h"
 #include "hpm_common.h"
 
 #if (DAP_PACKET_SIZE < 64U)
@@ -1974,6 +1975,7 @@ void DAP_Setup(void)
 
 	// Sets DAP_Data.fast_clock and DAP_Data.clock_delay.
 	Set_Clock_Delay(DAP_DEFAULT_SWJ_CLOCK);
+	SWD_LoadFunction();
 
 	DAP_SETUP(); // Device specific setup
 }

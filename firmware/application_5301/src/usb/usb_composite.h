@@ -67,7 +67,7 @@
  * so USB enumeration / DFU runtime can be brought up independently. Set to 1
  * once the CMSIS-DAP command engine (DAP.c, chry_ringbuffer.c) is added. */
 #ifndef CONFIG_CHERRYDAP_DAP_CMD_ENABLE
-#define CONFIG_CHERRYDAP_DAP_CMD_ENABLE 0
+#define CONFIG_CHERRYDAP_DAP_CMD_ENABLE 1
 #endif
 
 #ifdef __cplusplus

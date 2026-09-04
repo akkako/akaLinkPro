@@ -347,7 +347,7 @@ char serial_number_dynamic[33] = {0}; // Dynamic serial number
 char *string_descriptors[] = {
     (char[]){0x09, 0x04},   /* Langid */
     "ARM",                  /* Manufacturer */
-    "akaLinkIso CMSIS-DAP", /* Product */
+    "CherryUSB CMSIS-DAP", /* Product */
     "Serial Number",        /* Serial Number */
     "akaLinkIso WebUSB",
     "akaLinkIso DFU Runtime",

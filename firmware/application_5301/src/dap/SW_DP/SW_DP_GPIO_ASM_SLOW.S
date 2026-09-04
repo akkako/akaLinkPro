@@ -92,12 +92,12 @@ swj_loop_send_pack_start:
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     srli    a2, a2, 1                   # a2 >>= 1
     andi    t3, a2, 1                   # t3 = a2(val) & 1
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
 .endr
     addi    a3, a3, -1                  # pack_bytes--
     bnez    a3, swj_loop_send_pack_start# 循环向后跳转，BTFN 预测为 Taken
@@ -160,12 +160,12 @@ SWD_Write_GPIO_ASM_SLOW:
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     srli    a0, a0, 1                   # a0 >>= 1
     andi    t3, a0, 1                   # t3 = 包头 LSB
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     .endr
     lw      t6, 0(a1)                   # 读取数据指针指向的 32 位数据
     li      t3, SWDIO_OFFSET
@@ -183,11 +183,11 @@ SWD_Write_GPIO_ASM_SLOW:
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     sw      t1, FGPIO_DO_CLR_OFFSET(t0) # SWDIR 拉低，SWDIO 切换为输入状态
     sw      t3, FGPIO_OE_CLR_OFFSET(t0) # SWDIO 切换为输入状态
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
 
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     cpop    a5, t6                      # 直接计算校验值
     andi    a5, a5, 1                   # 校验值结果保存在 a5 BIT0
 
@@ -218,39 +218,39 @@ SWD_Write_GPIO_ASM_SLOW:
 
     #---------------- bit 0 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     nop
     bexti   a0, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0，并清除其他位赋值给 a0
     
     #---------------- bit 1 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     bexti   a6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0，并清除其他位
     sh1add  a0, a6, a0                  # a0 = (a6 << 1) + a0
 
     #---------------- bit 2 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     bexti   a6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0，并清除其他位
     sh2add  a0, a6, a0                  # a0 = (a6 << 2) + a0
@@ -267,13 +267,13 @@ SWD_Write_GPIO_ASM_SLOW:
 
     #---------------- bit 3 (virtual/trn) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     nop
     nop
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     li      t4, SWDIO_OFFSET
     sw      t4, FGPIO_OE_SET_OFFSET(t0)
@@ -312,12 +312,12 @@ SWD_Write_GPIO_ASM_SLOW:
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     srli    t6, t6, 1                   # a0 >>= 1
     andi    t3, t6, 1                   # t3 = 包头 LSB
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     .endr
 
     #=========== send parity bit ===========
@@ -325,17 +325,17 @@ SWD_Write_GPIO_ASM_SLOW:
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     li      t4, SWDIO_OFFSET
     nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
     nop
     nop
 
     sw      t4, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
-    call    SWD_DP_Delay_Slow
+    jal     SWD_DP_Delay_Slow
 
     lw      ra, 0(sp)
     addi    sp, sp, 4

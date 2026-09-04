@@ -28,34 +28,6 @@ int main(void)
 
     while (1)
     {
-        /* Key detection: check every 100ms, 5 consecutive presses -> boot */
-#if 0
-        uint8_t key = gpio_read_pin(BOARD_APP_GPIO_CTRL,
-                                    BOARD_APP_GPIO_INDEX,
-                                    BOARD_APP_GPIO_PIN);
-        if (key == BOARD_BUTTON_PRESSED_VALUE)
-        {
-            key_press_count++;
-            if (key_press_count >= 30)
-            {
-                printf("\n[KEY] Held 3000ms, entering bootloader...\n");
-                while (gpio_read_pin(BOARD_APP_GPIO_CTRL,
-                                     BOARD_APP_GPIO_INDEX,
-                                     BOARD_APP_GPIO_PIN) == BOARD_BUTTON_PRESSED_VALUE)
-                {
-                    board_delay_ms(10);
-                    WS2812_ShowRainbow();
-                }
-                board_delay_ms(50);
-
-                hpm_dfu_reboot_to_dfu();
-            }
-        }
-        else
-        {
-            key_press_count = 0;
-        }
-#endif
         chry_dap_handle();
         chry_dap_usb2uart_handle();
     }

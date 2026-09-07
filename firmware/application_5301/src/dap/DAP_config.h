@@ -426,6 +426,11 @@ __STATIC_FORCEINLINE void PIN_SWDIO_TMS_CLR(void)
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS), 0);
 }
 
+__STATIC_FORCEINLINE void PIN_SWDIO_TMS_OUT(uint32_t bit)
+{
+    gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS), bit & 0x01);
+}
+
 /** SWDIO I/O 引脚：获取输入（仅在 SWD 模式下使用）。
 \return SWDIO DAP 硬件 I/O 引脚的当前状态。
 */
@@ -604,7 +609,7 @@ CMSIS-DAP 硬件 I/O 和 LED 引脚通过函数 \ref DAP_SETUP 进行初始化�
 __STATIC_INLINE void DAP_SETUP(void)
 {
     // 配置 IOC->PAD[FUNC_CTL] 为 GPIO
-    HPM_IOC->PAD[BOARD_PIN_JTCK].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0) | IOC_PAD_FUNC_CTL_LOOP_BACK_MASK;
+    HPM_IOC->PAD[BOARD_PIN_JTCK].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     HPM_IOC->PAD[BOARD_PIN_JTMS].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     // HPM_IOC->PAD[BOARD_PIN_JTMS_OUT].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     HPM_IOC->PAD[BOARD_PIN_JTMS_DIR].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
@@ -668,7 +673,7 @@ __STATIC_INLINE void DAP_SETUP(void)
         IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
         IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
         IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
-        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+        IOC_PAD_PAD_CTL_PE_SET(0) |  // 上拉关闭
         IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
         IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
         IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
@@ -678,7 +683,7 @@ __STATIC_INLINE void DAP_SETUP(void)
         IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
         IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
         IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
-        IOC_PAD_PAD_CTL_PE_SET(0) |  // 上拉使能
+        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
         IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
         IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
         IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
@@ -688,7 +693,7 @@ __STATIC_INLINE void DAP_SETUP(void)
         IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
         IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
         IOC_PAD_PAD_CTL_PS_SET(1) |  // 上拉
-        IOC_PAD_PAD_CTL_PE_SET(1) |  // 上拉使能
+        IOC_PAD_PAD_CTL_PE_SET(0) |  // 上拉使能
         IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
         IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
         IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速

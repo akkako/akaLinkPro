@@ -1,32 +1,29 @@
     
-.equ FGPIO_BASE,                0x000C0000
-.equ IOA_DI_VAL,                0x000
-.equ IOB_DI_VAL,                0x010
-.equ IOA_DO_VAL,                0x100
-.equ IOA_DO_SET,                0x104
-.equ IOA_DO_CLR,                0x108
-.equ IOA_DO_TOG,                0x10C
-.equ IOB_DO_VAL,                0x110
-.equ IOB_DO_SET,                0x114
-.equ IOB_DO_CLR,                0x118
-.equ IOB_DO_TOG,                0x11C
+.equ FGPIO_BASE,                (0x000C0000)
+.equ FGPIO_DI_VAL_OFFSET,       (0x000)
+.equ FGPIO_DO_VAL_OFFSET,       (0x100)
+.equ FGPIO_DO_SET_OFFSET,       (0x104)
+.equ FGPIO_DO_CLR_OFFSET,       (0x108)
 
 /*
     JTCK        PA27
-    JTMS        PA29
-    JTDI        PB13
-    JTDO        PB12
+    JTMS        PA28
+    JTDI        PA08
+    JTDO        PA09
 */
 
-.equ JTCK_SHIFT,                27
-.equ JTMS_SHIFT,                29
-.equ JTDI_SHIFT,                13
-.equ JTDO_SHIFT,                12
+.equ JTCK_SHIFT,                (27)
+.equ JTMS_SHIFT,                (29)
+.equ JTDI_SHIFT,                (8)
+.equ JTDO_SHIFT,                (9)
 
 .equ JTCK_OFFSET,               (1 << JTCK_SHIFT)
 .equ JTMS_OFFSET,               (1 << JTMS_SHIFT)
 .equ JTDI_OFFSET,               (1 << JTDI_SHIFT)
 .equ JTDO_OFFSET,               (1 << JTDO_SHIFT)
+
+
+
 
 
 .section .fast, "ax"

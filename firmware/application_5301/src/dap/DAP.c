@@ -1200,7 +1200,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 					// Read previous data and post next read
 					do
 					{
-						response_value = JTAG_Transfer(request_value, &data);
+						response_value = JTAG_Read(request_value, &data);
 					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 				}
 				else
@@ -1214,7 +1214,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 					// Read previous data
 					do
 					{
-						response_value = JTAG_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
+						response_value = JTAG_Read(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
 					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 					post_read = 0U;
 				}
@@ -1261,7 +1261,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 				retry = DAP_Data.transfer.retry_count;
 				do
 				{
-					response_value = JTAG_Transfer(request_value, NULL);
+					response_value = JTAG_Read(request_value, NULL);
 				} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 				if (response_value != DAP_TRANSFER_OK)
 				{
@@ -1273,7 +1273,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 					retry = DAP_Data.transfer.retry_count;
 					do
 					{
-						response_value = JTAG_Transfer(request_value, &data);
+						response_value = JTAG_Read(request_value, &data);
 					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 					if (response_value != DAP_TRANSFER_OK)
 					{
@@ -1304,7 +1304,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 					retry = DAP_Data.transfer.retry_count;
 					do
 					{
-						response_value = JTAG_Transfer(request_value, NULL);
+						response_value = JTAG_Read(request_value, NULL);
 					} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 					if (response_value != DAP_TRANSFER_OK)
 					{
@@ -1340,7 +1340,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 				retry = DAP_Data.transfer.retry_count;
 				do
 				{
-					response_value = JTAG_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
+					response_value = JTAG_Write(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
 				} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 				if (response_value != DAP_TRANSFER_OK)
 				{
@@ -1377,7 +1377,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 				retry = DAP_Data.transfer.retry_count;
 				do
 				{
-					response_value = JTAG_Transfer(request_value, &data);
+					response_value = JTAG_Write(request_value, &data);
 				} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 				if (response_value != DAP_TRANSFER_OK)
 				{
@@ -1438,7 +1438,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 			retry = DAP_Data.transfer.retry_count;
 			do
 			{
-				response_value = JTAG_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
+				response_value = JTAG_Read(DP_RDBUFF | DAP_TRANSFER_RnW, &data);
 			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 			if (response_value != DAP_TRANSFER_OK)
 			{
@@ -1456,7 +1456,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Transfer(const uint8_t *request, uint8_t *
 			retry = DAP_Data.transfer.retry_count;
 			do
 			{
-				response_value = JTAG_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, NULL);
+				response_value = JTAG_Read(DP_RDBUFF | DAP_TRANSFER_RnW, NULL);
 			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 		}
 	}
@@ -2043,7 +2043,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_TransferBlock(const uint8_t *request, uint
 		retry = DAP_Data.transfer.retry_count;
 		do
 		{
-			response_value = JTAG_Transfer(request_value, NULL);
+			response_value = JTAG_Read(request_value, NULL);
 		} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 		if (response_value != DAP_TRANSFER_OK)
 		{
@@ -2065,7 +2065,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_TransferBlock(const uint8_t *request, uint
 			retry = DAP_Data.transfer.retry_count;
 			do
 			{
-				response_value = JTAG_Transfer(request_value, &data);
+				response_value = JTAG_Read(request_value, &data);
 			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 			if (response_value != DAP_TRANSFER_OK)
 			{
@@ -2094,7 +2094,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_TransferBlock(const uint8_t *request, uint
 			retry = DAP_Data.transfer.retry_count;
 			do
 			{
-				response_value = JTAG_Transfer(request_value, &data);
+				response_value = JTAG_Write(request_value, &data);
 			} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 			if (response_value != DAP_TRANSFER_OK)
 			{
@@ -2110,7 +2110,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_TransferBlock(const uint8_t *request, uint
 		retry = DAP_Data.transfer.retry_count;
 		do
 		{
-			response_value = JTAG_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, NULL);
+			response_value = JTAG_Read(DP_RDBUFF | DAP_TRANSFER_RnW, NULL);
 
 		} while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_Data.transfer_abort);
 	}

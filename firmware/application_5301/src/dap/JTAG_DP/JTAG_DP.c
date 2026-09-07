@@ -47,7 +47,7 @@ ATTR_RAMFUNC void JTAG_Sequence(uint32_t info, const uint8_t *tdi, uint8_t *tdo)
 //   return: value read
 ATTR_RAMFUNC uint32_t JTAG_ReadIDCode(void)
 {
-    printf("JTAG ReadIDCode\n");
+    // printf("JTAG ReadIDCode\n");
     return JTAG_ReadIDCode_Slow();
 }
 
@@ -56,7 +56,7 @@ ATTR_RAMFUNC uint32_t JTAG_ReadIDCode(void)
 //   return: none
 ATTR_RAMFUNC void JTAG_WriteAbort(uint32_t data)
 {
-    printf("JTAG WriteAbort\n");
+    // printf("JTAG WriteAbort\n");
     JTAG_WriteAbort_Slow(data);
 }
 
@@ -65,18 +65,40 @@ ATTR_RAMFUNC void JTAG_WriteAbort(uint32_t data)
 //   return: none
 ATTR_RAMFUNC void JTAG_IR(uint32_t ir)
 {
-    printf("JTAG IR\n");
+    // printf("JTAG IR\n");
     JTAG_IR_Slow(ir);
 }
 
-// JTAG Transfer I/O
+// JTAG Write
 //   request: A[3:2] RnW APnDP
 //   data:    DATA[31:0]
 //   return:  ACK[2:0]
-ATTR_RAMFUNC uint8_t JTAG_Transfer(uint32_t request, uint32_t *data)
+ATTR_RAMFUNC uint8_t JTAG_Write(uint32_t request, uint32_t *data)
 {
-    printf("JTAG Transfer\n");
-    return JTAG_Transfer_Slow(request, data);
+    // printf("JTAG Write\n");
+    /* Capture Timestamp */
+    if (request & DAP_TRANSFER_TIMESTAMP)
+    {
+        DAP_Data.timestamp = TIMESTAMP_GET();
+    }
+
+    return JTAG_Write_Slow(request, data);
+}
+
+// JTAG Read
+//   request: A[3:2] RnW APnDP
+//   data:    DATA[31:0]
+//   return:  ACK[2:0]
+ATTR_RAMFUNC uint8_t JTAG_Read(uint32_t request, uint32_t *data)
+{
+    // printf("JTAG Read\n");
+    /* Capture Timestamp */
+    if (request & DAP_TRANSFER_TIMESTAMP)
+    {
+        DAP_Data.timestamp = TIMESTAMP_GET();
+    }
+
+    return JTAG_Read_Slow(request, data);
 }
 
 #endif /* (DAP_JTAG != 0) */

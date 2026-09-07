@@ -225,7 +225,8 @@ extern void     JTAG_Sequence   (uint32_t info,  const uint8_t *tdi,  uint8_t *t
 extern void     JTAG_IR         (uint32_t ir);
 extern uint32_t JTAG_ReadIDCode (void);
 extern void     JTAG_WriteAbort (uint32_t data);
-extern uint8_t  JTAG_Transfer   (uint32_t request, uint32_t *data);
+extern uint8_t  JTAG_Write      (uint32_t request, uint32_t *data);
+extern uint8_t  JTAG_Read       (uint32_t request, uint32_t *data);
 extern uint8_t  SWD_Write       (uint32_t request, uint32_t *data);
 extern uint8_t  SWD_Read        (uint32_t request, uint32_t *data);
 

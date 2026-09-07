@@ -570,11 +570,8 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Sequence(const uint8_t *request, uint8_t *
 	uint32_t response_count;
 	uint32_t count;
 
-#if (DAP_JTAG != 0)
 	*response++ = DAP_OK;
-#else
-	*response++ = DAP_ERROR;
-#endif
+
 	request_count = 1U;
 	response_count = 1U;
 
@@ -588,18 +585,14 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Sequence(const uint8_t *request, uint8_t *
 			count = 64U;
 		}
 		count = (count + 7U) / 8U;
-#if (DAP_JTAG != 0)
 		JTAG_Sequence(sequence_info, request, response);
-#endif
 		request += count;
 		request_count += count + 1U;
-#if (DAP_JTAG != 0)
 		if ((sequence_info & JTAG_SEQUENCE_TDO) != 0U)
 		{
 			response += count;
 			response_count += count;
 		}
-#endif
 	}
 
 	return ((request_count << 16) | response_count);
@@ -620,11 +613,8 @@ ATTR_RAMFUNC static uint32_t DAP_CJTAG_Sequence(const uint8_t *request, uint8_t 
 	uint32_t response_count;
 	uint32_t count;
 
-#if (DAP_JTAG != 0)
 	*response++ = DAP_OK;
-#else
-	*response++ = DAP_ERROR;
-#endif
+
 	request_count = 1U;
 	response_count = 1U;
 
@@ -638,18 +628,14 @@ ATTR_RAMFUNC static uint32_t DAP_CJTAG_Sequence(const uint8_t *request, uint8_t 
 			count = 64U;
 		}
 		count = (count + 7U) / 8U;
-#if (DAP_CJTAG != 0)
 		CJTAG_Sequence(sequence_info, request, response);
-#endif
 		request += count;
 		request_count += count + 1U;
-#if (DAP_CJTAG != 0)
 		if ((sequence_info & JTAG_SEQUENCE_TDO) != 0U)
 		{
 			response += count;
 			response_count += count;
 		}
-#endif
 	}
 
 	return ((request_count << 16) | response_count);
@@ -721,13 +707,7 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_Configure(const uint8_t *request, uint8_t 
 #if (DAP_JTAG != 0)
 ATTR_RAMFUNC static uint32_t DAP_JTAG_IDCode(const uint8_t *request, uint8_t *response)
 {
-#if (DAP_JTAG != 0)
 	uint32_t data;
-
-	if (DAP_Data.debug_port != DAP_PORT_JTAG)
-	{
-		goto id_error;
-	}
 
 	// Device index (JTAP TAP)
 	DAP_Data.jtag_dev.index = *request;
@@ -750,11 +730,6 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_IDCode(const uint8_t *request, uint8_t *re
 	*(response + 4) = (uint8_t)(data >> 24);
 
 	return ((1U << 16) | 5U);
-
-id_error:
-#endif
-	*response = DAP_ERROR;
-	return ((1U << 16) | 1U);
 }
 #endif
 
@@ -766,13 +741,7 @@ id_error:
 #if (DAP_CJTAG != 0)
 ATTR_RAMFUNC static uint32_t DAP_CJTAG_IDCode(const uint8_t *request, uint8_t *response)
 {
-#if (DAP_JTAG != 0)
 	uint32_t data;
-
-	if (DAP_Data.debug_port != DAP_PORT_CJTAG)
-	{
-		goto id_error;
-	}
 
 	// Device index (JTAP TAP)
 	DAP_Data.jtag_dev.index = *request;
@@ -781,16 +750,11 @@ ATTR_RAMFUNC static uint32_t DAP_CJTAG_IDCode(const uint8_t *request, uint8_t *r
 		goto id_error;
 	}
 
-#if (DAP_CJTAG != 0)
-	if (DAP_Data.debug_port == DAP_PORT_CJTAG)
-	{
-		// Select CJTAG chain
-		CJTAG_IR(JTAG_IDCODE);
+	// Select CJTAG chain
+	CJTAG_IR(JTAG_IDCODE);
 
-		// Read IDCODE register
-		data = CJTAG_ReadIDCode();
-	}
-#endif
+	// Read IDCODE register
+	data = CJTAG_ReadIDCode();
 
 	// Store Data
 	*(response + 0) = DAP_OK;
@@ -800,11 +764,6 @@ ATTR_RAMFUNC static uint32_t DAP_CJTAG_IDCode(const uint8_t *request, uint8_t *r
 	*(response + 4) = (uint8_t)(data >> 24);
 
 	return ((1U << 16) | 5U);
-
-id_error:
-#endif
-	*response = DAP_ERROR;
-	return ((1U << 16) | 1U);
 }
 #endif
 

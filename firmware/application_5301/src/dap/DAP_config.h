@@ -75,7 +75,11 @@
 
 /// 指示在调试端口上是否支持 JTAG 通信模式。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
-#define DAP_JTAG                1               ///< JTAG 模式：1 = 可用，0 = 不可用。
+#define DAP_JTAG                0               ///< JTAG 模式：1 = 可用，0 = 不可用。
+
+/// 指示在调试端口上是否支持 CJTAG 通信模式。
+/// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
+#define DAP_CJTAG               0               ///< CJTAG 模式: 1 = 可用，0 = 不可用。
 
 /// 配置连接到调试访问端口的扫描链上 JTAG 设备的最大数量。
 /// 此设置影响调试探针单元的 RAM 需求。有效范围为 1 .. 255。

@@ -104,6 +104,7 @@
 #define DAP_PORT_DISABLED               0U      // Port Disabled (I/O pins in High-Z)
 #define DAP_PORT_SWD                    1U      // SWD Port (SWCLK, SWDIO) + nRESET
 #define DAP_PORT_JTAG                   2U      // JTAG Port (TCK, TMS, TDI, TDO, nTRST) + nRESET
+#define DAP_PORT_CJTAG                  3U      // CJTAG Port (TCKC, TMSC) + nRESET
 
 // DAP SWJ Pins
 #define DAP_SWJ_SWCLK_TCK               0       // SWCLK/TCK
@@ -211,6 +212,13 @@ extern "C"
 #endif
 
 // Functions
+
+extern void     CJTAG_Sequence  (uint32_t info, const uint8_t *tdi, uint8_t *tdo);
+extern uint32_t CJTAG_ReadIDCode(void);
+extern void     CJTAG_IR        (uint32_t ir);
+extern uint8_t  CJTAG_Transfer  (uint32_t request, uint32_t *data);
+extern void     CJTAG_WriteAbort(uint32_t data);
+
 extern void     SWJ_Sequence    (uint32_t count, const uint8_t *data);
 extern void     SWD_Sequence    (uint32_t info,  const uint8_t *swdo, uint8_t *swdi);
 extern void     JTAG_Sequence   (uint32_t info,  const uint8_t *tdi,  uint8_t *tdo);

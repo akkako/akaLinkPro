@@ -730,6 +730,10 @@ ATTR_RAMFUNC static uint32_t DAP_JTAG_IDCode(const uint8_t *request, uint8_t *re
 	*(response + 4) = (uint8_t)(data >> 24);
 
 	return ((1U << 16) | 5U);
+
+id_error:
+	*response = DAP_ERROR;
+	return ((1U << 16) | 1U);
 }
 #endif
 
@@ -764,6 +768,10 @@ ATTR_RAMFUNC static uint32_t DAP_CJTAG_IDCode(const uint8_t *request, uint8_t *r
 	*(response + 4) = (uint8_t)(data >> 24);
 
 	return ((1U << 16) | 5U);
+	
+id_error:
+	*response = DAP_ERROR;
+	return ((1U << 16) | 1U);
 }
 #endif
 

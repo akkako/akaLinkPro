@@ -1,33 +1,30 @@
-    
-.equ FGPIO_BASE,                0x000C0000
-.equ FGPIO_DI_VAL_OFFSET,       0x000
-.equ FGPIO_DO_VAL_OFFSET,       0x100
-.equ FGPIO_DO_SET_OFFSET,       0x104
-.equ FGPIO_DO_CLR_OFFSET,       0x108
-.equ FGPIO_OE_VAL_OFFSET,       0x200
-.equ FGPIO_OE_SET_OFFSET,       0x204
-.equ FGPIO_OE_CLR_OFFSET,       0x208
-
 /*
     JTCK        PA27
     JTMS        PA28
     JTMS_DIR    PA30
  */
 
-.equ SWCLK_SHIFT,               27
-.equ SWDIO_SHIFT,               28
-.equ SWDIR_SHIFT,               30
+.equ FGPIO_BASE,                (0x000C0000)
+.equ FGPIO_DI_VAL_OFFSET,       (0x000)
+.equ FGPIO_DO_VAL_OFFSET,       (0x100)
+.equ FGPIO_DO_SET_OFFSET,       (0x104)
+.equ FGPIO_DO_CLR_OFFSET,       (0x108)
+.equ FGPIO_OE_VAL_OFFSET,       (0x200)
+.equ FGPIO_OE_SET_OFFSET,       (0x204)
+.equ FGPIO_OE_CLR_OFFSET,       (0x208)
+
+.equ SWCLK_SHIFT,               (27)
+.equ SWDIO_SHIFT,               (28)
+.equ SWDIR_SHIFT,               (30)
 
 .equ SWCLK_OFFSET,              (1 << SWCLK_SHIFT)
 .equ SWDIO_OFFSET,              (1 << SWDIO_SHIFT)
 .equ SWDIR_OFFSET,              (1 << SWDIR_SHIFT)
 
-.equ ACK_OK_MASK,               1
-.equ ACK_WAIT_MASK,             2
-.equ ACK_FAULT_MASK,            4
-.equ ACK_ERROR_MASK,            8
-
-
+.equ ACK_OK_MASK,               (1)
+.equ ACK_WAIT_MASK,             (2)
+.equ ACK_FAULT_MASK,            (4)
+.equ ACK_ERROR_MASK,            (8)
 
 
 .section .fast, "ax"
@@ -35,9 +32,10 @@
 .global SWJ_Sequence_GPIO_ASM_60M
 .type   SWJ_Sequence_GPIO_ASM_60M, @function
 
-# void SWJ_Sequence_GPIO_ASM_60M(uint32_t count, uint32_t delay, const uint8_t *data)
+# void SWJ_Sequence_GPIO_ASM_60M(uint32_t count, const uint8_t *data, uint32_t delay)
 
 SWJ_Sequence_GPIO_ASM_60M:
+
     # Preload offset value
     li      t0, FGPIO_BASE
     li      t1, SWDIR_OFFSET
@@ -70,17 +68,17 @@ SWJ_Sequence_GPIO_ASM_60M:
     beqz    a3, swj_send_tail_start
 
 swj_loop_send_pack_start:
-    lbu     a2, 0(a1)                   # val = *data
+    lbu     a6, 0(a1)                   # val = *data
     addi    a1, a1, 1                   # data++
 
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 .rept 8
     slli    t3, t3, SWDIO_SHIFT         # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    srli    a2, a2, 1                   # a2 >>= 1
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    srli    a6, a6, 1                   # a6 >>= 1
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
 .endr
@@ -90,15 +88,15 @@ swj_loop_send_pack_start:
 swj_send_tail_start:
     beqz    a4, swj_send_end            # tail_bits == 0 直接返回
 
-    lbu     a2, 0(a1)                   # val = *data
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    lbu     a6, 0(a1)                   # val = *data
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 swj_loop_send_tail_start:
     slli    t3, t3, SWDIO_SHIFT         # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    srli    a2, a2, 1                   # a2 >>= 1
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    srli    a6, a6, 1                   # a6 >>= 1
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
     addi    a4, a4, -1                  # tail_bits--
@@ -113,7 +111,7 @@ swj_send_end:
 .global SWD_Write_GPIO_ASM_60M
 .type   SWD_Write_GPIO_ASM_60M, @function
 
-// uint8_t SWD_Write_GPIO_ASM_60M(uint8_t header, uint32_t *data);
+// uint8_t SWD_Write_GPIO_ASM_60M(uint8_t header, uint32_t *data, uint32_t delay);
 
 SWD_Write_GPIO_ASM_60M:
     # Disable all interrupt
@@ -128,6 +126,7 @@ SWD_Write_GPIO_ASM_60M:
     # Used register:
     # a0 -- header
     # a1 -- data pointer
+    # a2 -- delay (no use)
     # t0 -- FGPIO_BASE
     # t1 -- SWDIR_OFFSET
     # t2 -- SWCLK_OFFSET
@@ -332,7 +331,7 @@ SWD_Write_GPIO_ASM_60M:
 .global SWD_Read_GPIO_ASM_60M
 .type   SWD_Read_GPIO_ASM_60M, @function
 
-// uint8_t SWD_Read_GPIO_ASM_60M(uint8_t header, uint32_t *data);
+// uint8_t SWD_Read_GPIO_ASM_60M(uint8_t header, uint32_t *data, uint32_t delay);
 
 SWD_Read_GPIO_ASM_60M:
     # Disable all interrupt
@@ -347,6 +346,7 @@ SWD_Read_GPIO_ASM_60M:
     # 本阶段使用的寄存器：
     # a0 -- header
     # a1 -- data pointer
+    # a2 -- delay(no use)
     # t0 -- FGPIO_BASE
     # t1 -- SWDIR_OFFSET
     # t2 -- SWCLK_OFFSET

@@ -394,6 +394,8 @@ swd_sequence_ptr seq_func = NULL;
 swd_write_ptr write_func = NULL;
 swd_read_ptr read_func = NULL;
 
+uint32_t delay_test = 1;
+
 void SWD_LoadFunction(void)
 {
     // memcpy(swd_ops, swd_func_slow, sizeof(swd_func_slow));
@@ -423,9 +425,9 @@ void SWD_LoadFunction(void)
  */
 ATTR_RAMFUNC void SWJ_Sequence(uint32_t count, const uint8_t *data)
 {
-    seq_func(count, data);
-    // SWJ_Sequence_GPIO_ASM_60M(count, data);
-    // SWJ_Sequence_GPIO_ASM_60M(count, data);
+    // seq_func(count, data);
+    // SWJ_Sequence_GPIO_ASM_SLOW(count, data, delay_test);
+    SWJ_Sequence_GPIO_ASM_60M(count, data, delay_test);
     // SWJ_Sequence_GPIO_Slow(count, data);
 }
 #endif
@@ -455,8 +457,9 @@ ATTR_RAMFUNC uint8_t SWD_Write(uint32_t request, uint32_t *data)
 {
     uint8_t header = 0x81 | ((request & 0x0F) << 1) | (((request ^ (request >> 1) ^ (request >> 2) ^ (request >> 3)) & 1) << 5);
 
-    uint8_t ack = write_func(header, data);
-    // uint8_t ack = SWD_Write_GPIO_ASM_60M(header, data);
+    // uint8_t ack = write_func(header, data);
+    // uint8_t ack = SWD_Write_GPIO_ASM_SLOW(header, data, delay_test);
+    uint8_t ack = SWD_Write_GPIO_ASM_60M(header, data, delay_test);
     // printf("ack = 0x%02X\n", ack);
     return ack;
     // return SWD_Write_GPIO_Slow(header, data);
@@ -472,8 +475,9 @@ ATTR_RAMFUNC uint8_t SWD_Read(uint32_t request, uint32_t *data)
 {
     uint8_t header = 0x81 | ((request & 0x0F) << 1) | (((request ^ (request >> 1) ^ (request >> 2) ^ (request >> 3)) & 1) << 5);
 
-    uint8_t ack = read_func(header, data);
-    // uint8_t ack = SWD_Read_GPIO_ASM_60M(header, data);
+    // uint8_t ack = read_func(header, data);
+    // uint8_t ack = SWD_Read_GPIO_ASM_SLOW(header, data, delay_test);
+    uint8_t ack = SWD_Read_GPIO_ASM_60M(header, data, delay_test);
     // printf("ack = 0x%02X, data = 0x%08X\n", ack, *data);
     return ack;
     // return SWD_Read_GPIO_Slow(header, data);

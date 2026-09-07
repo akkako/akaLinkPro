@@ -1,31 +1,30 @@
-    
-.equ FGPIO_BASE,                0x000C0000
-.equ FGPIO_DI_VAL_OFFSET,       0x000
-.equ FGPIO_DO_VAL_OFFSET,       0x100
-.equ FGPIO_DO_SET_OFFSET,       0x104
-.equ FGPIO_DO_CLR_OFFSET,       0x108
-.equ FGPIO_OE_VAL_OFFSET,       0x200
-.equ FGPIO_OE_SET_OFFSET,       0x204
-.equ FGPIO_OE_CLR_OFFSET,       0x208
-
 /*
     JTCK        PA27
     JTMS        PA28
     JTMS_DIR    PA30
  */
 
-.equ SWCLK_SHIFT,               27
-.equ SWDIO_SHIFT,               28
-.equ SWDIR_SHIFT,               30
+.equ FGPIO_BASE,                (0x000C0000)
+.equ FGPIO_DI_VAL_OFFSET,       (0x000)
+.equ FGPIO_DO_VAL_OFFSET,       (0x100)
+.equ FGPIO_DO_SET_OFFSET,       (0x104)
+.equ FGPIO_DO_CLR_OFFSET,       (0x108)
+.equ FGPIO_OE_VAL_OFFSET,       (0x200)
+.equ FGPIO_OE_SET_OFFSET,       (0x204)
+.equ FGPIO_OE_CLR_OFFSET,       (0x208)
+
+.equ SWCLK_SHIFT,               (27)
+.equ SWDIO_SHIFT,               (28)
+.equ SWDIR_SHIFT,               (30)
 
 .equ SWCLK_OFFSET,              (1 << SWCLK_SHIFT)
 .equ SWDIO_OFFSET,              (1 << SWDIO_SHIFT)
 .equ SWDIR_OFFSET,              (1 << SWDIR_SHIFT)
 
-.equ ACK_OK_MASK,               1
-.equ ACK_WAIT_MASK,             2
-.equ ACK_FAULT_MASK,            4
-.equ ACK_ERROR_MASK,            8
+.equ ACK_OK_MASK,               (1)
+.equ ACK_WAIT_MASK,             (2)
+.equ ACK_FAULT_MASK,            (4)
+.equ ACK_ERROR_MASK,            (8)
 
 
 .section .fast, "ax"
@@ -34,10 +33,28 @@
 .type   SWD_DP_Delay_Slow, @function
 
 SWD_DP_Delay_Slow:
-.rept 10
+    // beqz    a2, 2f
+    mv      a7, a2
+1:
+    addi    a7, a7, -1
     c.nop
-.endr
+    c.nop
+    c.nop
+    bnez    a7, 1b
+2:
     ret
+
+
+// .macro DELAY_BLOCK
+//     mv      a7, a2
+// 1:
+//     addi    a7, a7, -1
+//     bnez    a7, 1b
+// .endm
+
+.macro DELAY_BLOCK
+    jal     SWD_DP_Delay_Slow
+.endm
 
 
 .section .fast, "ax"
@@ -45,7 +62,7 @@ SWD_DP_Delay_Slow:
 .global SWJ_Sequence_GPIO_ASM_SLOW
 .type   SWJ_Sequence_GPIO_ASM_SLOW, @function
 
-# void SWJ_Sequence_GPIO_ASM_SLOW(uint32_t count, uint32_t delay, const uint8_t *data)
+# void SWJ_Sequence_GPIO_ASM_SLOW(uint32_t count, const uint8_t *data, uint32_t delay)
 
 SWJ_Sequence_GPIO_ASM_SLOW:
     addi    sp, sp, -4
@@ -83,21 +100,21 @@ SWJ_Sequence_GPIO_ASM_SLOW:
     beqz    a3, swj_send_tail_start
 
 swj_loop_send_pack_start:
-    lbu     a2, 0(a1)                   # val = *data
+    lbu     a6, 0(a1)                   # val = *data
     addi    a1, a1, 1                   # data++
 
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 .rept 8
     slli    t3, t3, SWDIO_SHIFT         # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    jal     SWD_DP_Delay_Slow
-    srli    a2, a2, 1                   # a2 >>= 1
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    DELAY_BLOCK
+    srli    a6, a6, 1                   # a6 >>= 1
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
 .endr
     addi    a3, a3, -1                  # pack_bytes--
     bnez    a3, swj_loop_send_pack_start# 循环向后跳转，BTFN 预测为 Taken
@@ -105,17 +122,19 @@ swj_loop_send_pack_start:
 swj_send_tail_start:
     beqz    a4, swj_send_end            # tail_bits == 0 直接返回
 
-    lbu     a2, 0(a1)                   # val = *data
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    lbu     a6, 0(a1)                   # val = *data
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 swj_loop_send_tail_start:
     slli    t3, t3, SWDIO_SHIFT         # t3 = 数据偏移到 SWDO 数据位
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    srli    a2, a2, 1                   # a2 >>= 1
-    andi    t3, a2, 1                   # t3 = a2(val) & 1
+    DELAY_BLOCK
+    srli    a6, a6, 1                   # a6 >>= 1
+    andi    t3, a6, 1                   # t3 = a6(val) & 1
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
+    DELAY_BLOCK
     addi    a4, a4, -1                  # tail_bits--
     bnez    a4, swj_loop_send_tail_start# 循环向后跳转，BTFN 预测为 Taken
 
@@ -130,11 +149,11 @@ swj_send_end:
 .global SWD_Write_GPIO_ASM_SLOW
 .type   SWD_Write_GPIO_ASM_SLOW, @function
 
-// uint8_t SWD_Write_GPIO_ASM_SLOW(uint8_t header, uint32_t *data);
+// uint8_t SWD_Write_GPIO_ASM_SLOW(uint8_t header, uint32_t *data, uint32_t delay);
 
 SWD_Write_GPIO_ASM_SLOW:
     # Disable all interrupt
-    csrrci  zero, mstatus, 8
+    // csrrci  zero, mstatus, 8
     addi    sp, sp, -4
     sw      ra, 0(sp)
 
@@ -147,6 +166,7 @@ SWD_Write_GPIO_ASM_SLOW:
     # Used register:
     # a0 -- header
     # a1 -- data pointer
+    # a2 -- delay
     # t0 -- FGPIO_BASE
     # t1 -- SWDIR_OFFSET
     # t2 -- SWCLK_OFFSET
@@ -160,12 +180,12 @@ SWD_Write_GPIO_ASM_SLOW:
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
     srli    a0, a0, 1                   # a0 >>= 1
     andi    t3, a0, 1                   # t3 = 包头 LSB
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
     .endr
     lw      t6, 0(a1)                   # 读取数据指针指向的 32 位数据
     li      t3, SWDIO_OFFSET
@@ -183,11 +203,11 @@ SWD_Write_GPIO_ASM_SLOW:
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
     sw      t1, FGPIO_DO_CLR_OFFSET(t0) # SWDIR 拉低，SWDIO 切换为输入状态
     sw      t3, FGPIO_OE_CLR_OFFSET(t0) # SWDIO 切换为输入状态
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
 
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
     cpop    a5, t6                      # 直接计算校验值
     andi    a5, a5, 1                   # 校验值结果保存在 a5 BIT0
 
@@ -218,40 +238,34 @@ SWD_Write_GPIO_ASM_SLOW:
 
     #---------------- bit 0 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT0)
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     nop
     bexti   a0, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0，并清除其他位赋值给 a0
     
     #---------------- bit 1 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     nop
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT1)
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     bexti   a6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0，并清除其他位
     sh1add  a0, a6, a0                  # a0 = (a6 << 1) + a0
 
     #---------------- bit 2 ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     li      t3, ACK_OK_MASK             # ACK_OK (预加载比较值)
     lw      a6, FGPIO_DI_VAL_OFFSET(t0) # 读取 DI.VALUE 到 a6 (BIT2)
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     bexti   a6, a6, SWDIO_SHIFT         # 将 SWDI 数据移到 BIT0，并清除其他位
     sh2add  a0, a6, a0                  # a0 = (a6 << 2) + a0
 
@@ -267,14 +281,12 @@ SWD_Write_GPIO_ASM_SLOW:
 
     #---------------- bit 3 (virtual/trn) ----------------
     sw      t2, FGPIO_DO_CLR_OFFSET(t0) # --- SWCLK 拉低
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     nop
     nop
     
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    jal     SWD_DP_Delay_Slow
-    nop
+    DELAY_BLOCK
     li      t4, SWDIO_OFFSET
     sw      t4, FGPIO_OE_SET_OFFSET(t0)
 
@@ -312,12 +324,12 @@ SWD_Write_GPIO_ASM_SLOW:
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
     srli    t6, t6, 1                   # a0 >>= 1
     andi    t3, t6, 1                   # t3 = 包头 LSB
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高，同时保持 SWDIO 数据
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
     .endr
 
     #=========== send parity bit ===========
@@ -325,23 +337,23 @@ SWD_Write_GPIO_ASM_SLOW:
     or      t3, t3, t1                  # t3 = DO[0].VALUE 预设值
 
     sw      t3, FGPIO_DO_VAL_OFFSET(t0) # --- SWCLK 拉低，同时输出 SWDIO 数据
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
     li      t4, SWDIO_OFFSET
     nop
 
     sw      t2, FGPIO_DO_SET_OFFSET(t0) # --- SWCLK 拉高
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
     nop
     nop
 
     sw      t4, FGPIO_DO_SET_OFFSET(t0) # --- SWDIO 拉高
-    jal     SWD_DP_Delay_Slow
+    DELAY_BLOCK
 
     lw      ra, 0(sp)
     addi    sp, sp, 4
     # Enable all interrupt and exit
     
-    csrrsi  zero, mstatus, 8
+    // csrrsi  zero, mstatus, 8
     ret
 
 .lable_w_ack_not_ok:
@@ -359,7 +371,7 @@ SWD_Write_GPIO_ASM_SLOW:
 
     lw      ra, 0(sp)
     addi    sp, sp, 4
-    csrrsi  zero, mstatus, 8
+    // csrrsi  zero, mstatus, 8
     ret
 
 
@@ -370,7 +382,7 @@ SWD_Write_GPIO_ASM_SLOW:
 .global SWD_Read_GPIO_ASM_SLOW
 .type   SWD_Read_GPIO_ASM_SLOW, @function
 
-// uint8_t SWD_Read_GPIO_ASM_SLOW(uint8_t header, uint32_t *data);
+// uint8_t SWD_Read_GPIO_ASM_SLOW(uint8_t header, uint32_t *data, uint32_t delay);
 
 SWD_Read_GPIO_ASM_SLOW:
     # Disable all interrupt
@@ -385,6 +397,7 @@ SWD_Read_GPIO_ASM_SLOW:
     # 本阶段使用的寄存器：
     # a0 -- header
     # a1 -- data pointer
+    # a2 -- delay
     # t0 -- FGPIO_BASE
     # t1 -- SWDIR_OFFSET
     # t2 -- SWCLK_OFFSET

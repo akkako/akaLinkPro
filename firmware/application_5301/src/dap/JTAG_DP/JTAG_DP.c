@@ -57,7 +57,9 @@ ATTR_RAMFUNC uint32_t JTAG_ReadIDCode(void)
 ATTR_RAMFUNC void JTAG_WriteAbort(uint32_t data)
 {
     // printf("JTAG WriteAbort\n");
-    JTAG_WriteAbort_Slow(data);
+    uint32_t bypass_before = DAP_Data.jtag_dev.index;
+    uint32_t bypass_after = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
+    JTAG_WriteAbort_Slow(data, bypass_before, bypass_after);
 }
 
 // JTAG Set IR
@@ -75,14 +77,26 @@ ATTR_RAMFUNC void JTAG_IR(uint32_t ir)
 //   return:  ACK[2:0]
 ATTR_RAMFUNC uint8_t JTAG_Write(uint32_t request, uint32_t *data)
 {
-    // printf("JTAG Write\n");
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 1);
+    
+    uint32_t bypass_before = DAP_Data.jtag_dev.index;
+    uint32_t bypass_after = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
+    uint8_t ack;
+
+    asm("fence");
+
+    ack = JTAG_Write_GPIO_ASM_45M(request, data, bypass_before, bypass_after);
+    // uint8_t ack = JTAG_Write_Slow(request, data, bypass_before, bypass_after);
+
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 0);
+
     /* Capture Timestamp */
     if (request & DAP_TRANSFER_TIMESTAMP)
     {
         DAP_Data.timestamp = TIMESTAMP_GET();
     }
 
-    return JTAG_Write_Slow(request, data);
+    return ack;
 }
 
 // JTAG Read
@@ -97,8 +111,10 @@ ATTR_RAMFUNC uint8_t JTAG_Read(uint32_t request, uint32_t *data)
     {
         DAP_Data.timestamp = TIMESTAMP_GET();
     }
+    uint32_t bypass_before = DAP_Data.jtag_dev.index;
+    uint32_t bypass_after = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
 
-    return JTAG_Read_Slow(request, data);
+    return JTAG_Read_Slow(request, data, bypass_before, bypass_after);
 }
 
 #endif /* (DAP_JTAG != 0) */

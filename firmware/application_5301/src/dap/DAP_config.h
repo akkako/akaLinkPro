@@ -286,6 +286,11 @@ DAP 硬件 I/O 引脚访问函数
 */
 __STATIC_INLINE void PORT_JTAG_SETUP(void)
 {
+    gpiom_config_pin_to_gpio0(IOC_PAD_PA10);
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10));
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 0);
+
+
     // 设置 IO 由 FGPIO 驱动
     gpiom_config_pin_to_fgpio(BOARD_PIN_JTCK);
     // gpiom_config_pin_to_fgpio(BOARD_PIN_JTMS_OUT);
@@ -608,6 +613,19 @@ CMSIS-DAP 硬件 I/O 和 LED 引脚通过函数 \ref DAP_SETUP 进行初始化�
 */
 __STATIC_INLINE void DAP_SETUP(void)
 {
+    HPM_IOC->PAD[IOC_PAD_PA10].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[IOC_PAD_PA10].PAD_CTL =
+        IOC_PAD_PAD_CTL_HYS_SET(0) | // 施密特触发器 失效
+        IOC_PAD_PAD_CTL_PRS_SET(0) | // 上下拉强度 100k
+        IOC_PAD_PAD_CTL_PS_SET(0) |  // 下拉
+        IOC_PAD_PAD_CTL_PE_SET(1) |  // 下拉使能
+        IOC_PAD_PAD_CTL_KE_SET(0) |  // 保持能力 失效
+        IOC_PAD_PAD_CTL_OD_SET(0) |  // 开漏输出 失效
+        IOC_PAD_PAD_CTL_SR_SET(1) |  // 压摆率 快速
+        IOC_PAD_PAD_CTL_SPD_SET(3) | // 最快压摆率
+        IOC_PAD_PAD_CTL_DS_SET(4);   // 驱动能力 39 ohm(3.3V)
+
+
     // 配置 IOC->PAD[FUNC_CTL] 为 GPIO
     HPM_IOC->PAD[BOARD_PIN_JTCK].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     HPM_IOC->PAD[BOARD_PIN_JTMS].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);

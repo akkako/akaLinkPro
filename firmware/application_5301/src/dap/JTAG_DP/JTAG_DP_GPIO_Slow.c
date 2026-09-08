@@ -75,8 +75,8 @@ static inline uint32_t JTAG_CYCLE_TDIO(uint32_t tdi)
     PIN_TCK_CLR();
     PIN_DELAY();
     PIN_DELAY();
-    tdo = PIN_TDO_IN();
     PIN_TCK_SET();
+    tdo = PIN_TDO_IN();
     PIN_DELAY();
     return tdo;
 }
@@ -219,7 +219,7 @@ ATTR_RAMFUNC uint32_t JTAG_ReadIDCode_Slow(void)
 // JTAG Write ABORT register
 //   data:   value to write
 //   return: none
-ATTR_RAMFUNC void JTAG_WriteAbort_Slow(uint32_t data)
+ATTR_RAMFUNC void JTAG_WriteAbort_Slow(uint32_t data, uint32_t bypass_before, uint32_t bypass_after)
 {
     uint32_t n;
 
@@ -245,21 +245,18 @@ ATTR_RAMFUNC void JTAG_WriteAbort_Slow(uint32_t data)
         data >>= 1;
     }
     n = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
-    if (n)
+
+    if (!n)
+        goto no_bypass;
+
+    JTAG_CYCLE_TDI(data); /* Set D31 */
+    for (--n; n; n--)
     {
-        JTAG_CYCLE_TDI(data); /* Set D31 */
-        for (--n; n; n--)
-        {
-            JTAG_CYCLE_TCK(); /* Bypass after data */
-        }
-        PIN_TMS_SET();
-        JTAG_CYCLE_TCK(); /* Bypass & Exit1-DR */
+        JTAG_CYCLE_TCK(); /* Bypass after data */
     }
-    else
-    {
-        PIN_TMS_SET();
-        JTAG_CYCLE_TDI(data); /* Set D31 & Exit1-DR */
-    }
+no_bypass:
+    PIN_TMS_SET();
+    JTAG_CYCLE_TCK(); /* Bypass & Exit1-DR */
 
     JTAG_CYCLE_TCK(); /* Update-DR */
     PIN_TMS_CLR();
@@ -267,16 +264,11 @@ ATTR_RAMFUNC void JTAG_WriteAbort_Slow(uint32_t data)
     PIN_TDI_OUT(1U);
 }
 
-// JTAG Read
-//   request: A[3:2] RnW APnDP
-//   data:    DATA[31:0]
-//   return:  ACK[2:0]
-ATTR_RAMFUNC uint8_t JTAG_Read_Slow(uint32_t request, uint32_t *data)
+ATTR_RAMFUNC uint8_t JTAG_Read_Slow(uint32_t request, uint32_t *data, uint32_t bypass_before, uint32_t bypass_after)
 {
     uint32_t ack;
     uint32_t bit;
     uint32_t val;
-    uint32_t n;
 
     PIN_TMS_SET();
     JTAG_CYCLE_TCK(); /* Select-DR-Scan */
@@ -284,7 +276,7 @@ ATTR_RAMFUNC uint8_t JTAG_Read_Slow(uint32_t request, uint32_t *data)
     JTAG_CYCLE_TCK(); /* Capture-DR */
     JTAG_CYCLE_TCK(); /* Shift-DR */
 
-    for (n = DAP_Data.jtag_dev.index; n; n--)
+    for (uint32_t n = bypass_before; n; n--)
     {
         JTAG_CYCLE_TCK(); /* Bypass before data */
     }
@@ -306,17 +298,17 @@ ATTR_RAMFUNC uint8_t JTAG_Read_Slow(uint32_t request, uint32_t *data)
 
     /* Read Transfer */
     val = 0U;
-    for (n = 31U; n; n--)
+    for (uint32_t n = 31U; n; n--)
     {
         bit = JTAG_CYCLE_TDO(); /* Get D0..D30 */
         val |= bit << 31;
         val >>= 1;
     }
-    n = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
-    if (n)
+
+    if (bypass_after != 0)
     {
         bit = JTAG_CYCLE_TDO(); /* Get D31 */
-        for (--n; n; n--)
+        for (--bypass_after; bypass_after; bypass_after--)
         {
             JTAG_CYCLE_TCK(); /* Bypass after data */
         }
@@ -350,24 +342,19 @@ exit:
     return ((uint8_t)ack);
 }
 
-// JTAG Write
-//   request: A[3:2] RnW APnDP
-//   data:    DATA[31:0]
-//   return:  ACK[2:0]
-ATTR_RAMFUNC uint8_t JTAG_Write_Slow(uint32_t request, uint32_t *data)
+ATTR_RAMFUNC uint8_t JTAG_Write_Slow(uint32_t request, uint32_t *data, uint32_t bypass_before, uint32_t bypass_after)
 {
     uint32_t ack;
     uint32_t bit;
     uint32_t val;
-    uint32_t n;
-
+    
     PIN_TMS_SET();
     JTAG_CYCLE_TCK(); /* Select-DR-Scan */
     PIN_TMS_CLR();
     JTAG_CYCLE_TCK(); /* Capture-DR */
     JTAG_CYCLE_TCK(); /* Shift-DR */
 
-    for (n = DAP_Data.jtag_dev.index; n; n--)
+    for (uint32_t n = bypass_before; n; n--)
     {
         JTAG_CYCLE_TCK(); /* Bypass before data */
     }
@@ -389,16 +376,16 @@ ATTR_RAMFUNC uint8_t JTAG_Write_Slow(uint32_t request, uint32_t *data)
 
     /* Write Transfer */
     val = *data;
-    for (n = 31U; n; n--)
+    for (uint32_t n = 31U; n; n--)
     {
         JTAG_CYCLE_TDI(val); /* Set D0..D30 */
         val >>= 1;
     }
-    n = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
-    if (n)
+
+    if (bypass_after != 0)
     {
         JTAG_CYCLE_TDI(val); /* Set D31 */
-        for (--n; n; n--)
+        for (--bypass_after; bypass_after; bypass_after--)
         {
             JTAG_CYCLE_TCK(); /* Bypass after data */
         }

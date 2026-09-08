@@ -1,5 +1,5 @@
-@REM @set "HPM_TOOLCHAIN_PATH=D:\_tools\hpm_sdk"
-@set "HPM_TOOLCHAIN_PATH=C:\hpm"
+@set "HPM_TOOLCHAIN_PATH=D:\_tools\hpm_sdk"
+@REM @set "HPM_TOOLCHAIN_PATH=C:\hpm"
 
 @set "PATH=%HPM_TOOLCHAIN_PATH%\tools\python3;%HPM_TOOLCHAIN_PATH%\tools\cmake\bin;%HPM_TOOLCHAIN_PATH%\tools\ninja;%PATH%"
 @set "HPM_SDK_BASE=%HPM_TOOLCHAIN_PATH%\hpm_sdk"

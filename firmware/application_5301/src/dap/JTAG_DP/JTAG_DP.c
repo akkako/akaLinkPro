@@ -77,18 +77,18 @@ ATTR_RAMFUNC void JTAG_IR(uint32_t ir)
 //   return:  ACK[2:0]
 ATTR_RAMFUNC uint8_t JTAG_Write(uint32_t request, uint32_t *data)
 {
-    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 1);
-    
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 1);
+
     uint32_t bypass_before = DAP_Data.jtag_dev.index;
     uint32_t bypass_after = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
     uint8_t ack;
 
     asm("fence");
 
-    ack = JTAG_Write_GPIO_ASM_45M(request, data, bypass_before, bypass_after);
-    // uint8_t ack = JTAG_Write_Slow(request, data, bypass_before, bypass_after);
+    // ack = JTAG_Write_GPIO_ASM_45M(request, data, bypass_before, bypass_after);
+    ack = JTAG_Write_Slow(request, data, bypass_before, bypass_after);
 
-    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 0);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 0);
 
     /* Capture Timestamp */
     if (request & DAP_TRANSFER_TIMESTAMP)
@@ -105,16 +105,27 @@ ATTR_RAMFUNC uint8_t JTAG_Write(uint32_t request, uint32_t *data)
 //   return:  ACK[2:0]
 ATTR_RAMFUNC uint8_t JTAG_Read(uint32_t request, uint32_t *data)
 {
-    // printf("JTAG Read\n");
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 1);
+
+    uint32_t bypass_before = DAP_Data.jtag_dev.index;
+    uint32_t bypass_after = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
+    uint8_t ack;
+
+    asm("fence");
+
+    // ack = JTAG_Read_GPIO_ASM_45M(request, data, bypass_before, bypass_after);
+    ack = JTAG_Read_Slow(request, data, bypass_before, bypass_after);
+
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(IOC_PAD_PA10), GPIO_GET_PIN_INDEX(IOC_PAD_PA10), 0);
+
+    // printf("ack: %d, data: 0x%08x\r\n", ack, *data);
+
     /* Capture Timestamp */
     if (request & DAP_TRANSFER_TIMESTAMP)
     {
         DAP_Data.timestamp = TIMESTAMP_GET();
     }
-    uint32_t bypass_before = DAP_Data.jtag_dev.index;
-    uint32_t bypass_after = DAP_Data.jtag_dev.count - DAP_Data.jtag_dev.index - 1U;
-
-    return JTAG_Read_Slow(request, data, bypass_before, bypass_after);
+    return ack;
 }
 
 #endif /* (DAP_JTAG != 0) */

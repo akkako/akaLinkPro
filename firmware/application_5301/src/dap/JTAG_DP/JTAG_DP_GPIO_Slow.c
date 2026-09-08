@@ -112,21 +112,33 @@ ATTR_RAMFUNC void JTAG_Sequence_Slow(uint32_t delay, uint32_t info, const uint8_
         n = 64U;
     }
 
-    while (n)
+    if (info & JTAG_SEQUENCE_TDO)
     {
-        i_val = *tdi++;
-        o_val = 0U;
-        for (k = 8U; k && n; k--, n--)
+        while (n)
         {
-            bit = JTAG_CYCLE_TDIO(i_val);
-            i_val >>= 1;
-            o_val >>= 1;
-            o_val |= bit << 7;
-        }
-        o_val >>= k;
-        if (info & JTAG_SEQUENCE_TDO)
-        {
+            i_val = *tdi++;
+            o_val = 0U;
+            for (k = 8U; k && n; k--, n--)
+            {
+                bit = JTAG_CYCLE_TDIO(i_val);
+                i_val >>= 1;
+                o_val >>= 1;
+                o_val |= bit << 7;
+            }
+            o_val >>= k;
             *tdo++ = (uint8_t)o_val;
+        }
+    }
+    else
+    {
+        while (n)
+        {
+            i_val = *tdi++;
+            for (k = 8U; k && n; k--, n--)
+            {
+                bit = JTAG_CYCLE_TDIO(i_val);
+                i_val >>= 1;
+            }
         }
     }
 }
@@ -347,7 +359,7 @@ ATTR_RAMFUNC uint8_t JTAG_Write_Slow(uint32_t request, uint32_t *data, uint32_t 
     uint32_t ack;
     uint32_t bit;
     uint32_t val;
-    
+
     PIN_TMS_SET();
     JTAG_CYCLE_TCK(); /* Select-DR-Scan */
     PIN_TMS_CLR();

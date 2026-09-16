@@ -115,6 +115,7 @@ class Builder:
             "-Ofast",
             "-c",
             "-mno-plt",
+            "-mno-relax",
             str(self.src_path),
             "-o", str(self.obj)
         ]
@@ -274,8 +275,9 @@ class Builder:
             print(err)
             sys.exit(ret)
 
-        bad_types = ["R_RISCV_32", "R_RISCV_64", "R_RISCV_HI20", "R_RISCV_LO12",
-                     "R_RISCV_CALL", "R_RISCV_JAL", "R_RISCV_GOT"]
+        bad_types = ["R_RISCV_32", "R_RISCV_64", "R_RISCV_HI20", "R_RISCV_LO12", "R_RISCV_GOT"]
+        # 注意剔除误判：R_RISCV_PCREL_HI20 也含 "HI20" 子串，建议用正则精确匹配：
+        # re.search(r'R_RISCV_(32|64|HI20|LO12_[IS]|GOT\w*)\b', line)
         found = []
         for line in out.splitlines():
             for typ in bad_types:

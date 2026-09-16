@@ -17,9 +17,9 @@ uint8_t SWD_Read_GPIO_Slow(uint8_t header, uint32_t *data);
 // uint8_t SWD_Write_GPIO_ASM_36M(uint8_t header, uint32_t *data);
 // uint8_t SWD_Read_GPIO_ASM_36M(uint8_t header, uint32_t *data);
 
-// void SWJ_Sequence_GPIO_ASM_45M(uint32_t count, const uint8_t *data);
-// uint8_t SWD_Write_GPIO_ASM_45M(uint8_t header, uint32_t *data);
-// uint8_t SWD_Read_GPIO_ASM_45M(uint8_t header, uint32_t *data);
+void SWJ_Sequence_GPIO_ASM_45M(uint32_t count, const uint8_t *data, uint32_t delay);
+uint8_t SWD_Write_GPIO_ASM_45M(uint8_t header, uint32_t *data, uint32_t delay);
+uint8_t SWD_Read_GPIO_ASM_45M(uint8_t header, uint32_t *data, uint32_t delay);
 
 void SWJ_Sequence_GPIO_ASM_60M(uint32_t count, const uint8_t *data, uint32_t delay);
 uint8_t SWD_Write_GPIO_ASM_60M(uint8_t header, uint32_t *data, uint32_t delay);

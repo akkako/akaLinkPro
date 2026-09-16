@@ -62,6 +62,7 @@ sdk_app_src(src/api/api_param.c)
 
 sdk_app_src(src/dap/DAP.c)
 sdk_app_src(src/dap/SWO.c)
+sdk_app_src(src/dap/SW_DP/SW_SPEED_CALC.c)
 sdk_app_src(src/dap/SW_DP/SW_DP.c)
 sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_Slow.c)
 # sdk_app_src(src/dap/SW_DP/SW_DP_GPIO_Fast.c)

@@ -59,29 +59,29 @@ static const char DAP_FW_Ver[] = DAP_FW_VER;
 //   clock:    requested SWJ frequency in Hertz
 static void Set_Clock_Delay(uint32_t clock)
 {
-	uint32_t delay;
-
-	if (clock >= MAX_SWJ_CLOCK(DELAY_FAST_CYCLES))
+	if (DAP_Data.debug_port == DAP_PORT_SWD)
 	{
-		DAP_Data.fast_clock = 1U;
-		DAP_Data.clock_delay = 1U;
-	}
-	else
-	{
-		DAP_Data.fast_clock = 0U;
-
-		delay = ((CPU_CLOCK / 2U) + (clock - 1U)) / clock;
-		if (delay > IO_PORT_WRITE_CYCLES)
+		uint32_t delay = swd_speed_calc(clock);
+		if (delay % 1000 > 500)
 		{
-			delay -= IO_PORT_WRITE_CYCLES;
-			delay = (delay + (DELAY_SLOW_CYCLES - 1U)) / DELAY_SLOW_CYCLES;
+			delay = delay / 1000 + 1;
 		}
 		else
 		{
-			delay = 1U;
+			delay = delay / 1000;
 		}
-
 		DAP_Data.clock_delay = delay;
+		printf("Set swd clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
+	}
+	else if (DAP_Data.debug_port == DAP_PORT_JTAG)
+	{
+		DAP_Data.clock_delay = clock / 1000;
+		printf("Set jtag clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
+	}
+	else if (DAP_Data.debug_port == DAP_PORT_CJTAG)
+	{
+		DAP_Data.clock_delay = clock / 1000;
+		printf("Set cjtag clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
 	}
 }
 
@@ -768,7 +768,7 @@ ATTR_RAMFUNC static uint32_t DAP_CJTAG_IDCode(const uint8_t *request, uint8_t *r
 	*(response + 4) = (uint8_t)(data >> 24);
 
 	return ((1U << 16) | 5U);
-	
+
 id_error:
 	*response = DAP_ERROR;
 	return ((1U << 16) | 1U);

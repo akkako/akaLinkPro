@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+uint32_t swd_speed_calc(uint32_t xq);
 void SWD_LoadFunction(void);
 
 void SWJ_Sequence_GPIO_Slow(uint32_t count, const uint8_t *data);

@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 uint32_t swd_speed_calc(uint32_t xq);
-void SWD_LoadFunction(void);
 
 void SWJ_Sequence_GPIO_Slow(uint32_t count, const uint8_t *data);
 void SWD_Sequence_GPIO_Slow(uint32_t info, const uint8_t *swdo, uint8_t *swdi);
@@ -28,5 +27,13 @@ uint8_t SWD_Read_GPIO_ASM_60M(uint8_t header, uint32_t *data, uint32_t delay);
 void SWJ_Sequence_GPIO_ASM_SLOW(uint32_t count, const uint8_t *data, uint32_t delay);
 uint8_t SWD_Write_GPIO_ASM_SLOW(uint8_t header, uint32_t *data, uint32_t delay);
 uint8_t SWD_Read_GPIO_ASM_SLOW(uint8_t header, uint32_t *data, uint32_t delay);
+
+void SWD_DynamicLoad_Slow(void);
+void SWD_DynamicLoad_60M(void);
+void SWD_DynamicLoad_45M(void);
+void SWD_DynamicLoad_36M(void);
+void SWD_DynamicLoad_30M(void);
+void SWD_DynamicLoad_20M(void);
+void SWD_DynamicLoad_18M(void);
 
 #endif

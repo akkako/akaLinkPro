@@ -47,10 +47,6 @@
 #define LIKELY(x) __builtin_expect(!!(x), 1)
 #define UNLIKELY(x) __builtin_expect(!!(x), 0)
 
-// Clock Macros
-#define MAX_SWJ_CLOCK(delay_cycles) \
-	((CPU_CLOCK / 2U) / (IO_PORT_WRITE_CYCLES + delay_cycles))
-
 DAP_Data_t DAP_Data; // DAP Data
 
 static const char DAP_FW_Ver[] = DAP_FW_VER;
@@ -61,16 +57,56 @@ static void Set_Clock_Delay(uint32_t clock)
 {
 	if (DAP_Data.debug_port == DAP_PORT_SWD)
 	{
-		uint32_t delay = swd_speed_calc(clock);
-		if (delay % 1000 > 500)
+		// 60M ASM Opt
+		if (clock >= 60000000)
 		{
-			delay = delay / 1000 + 1;
+			DAP_Data.clock_delay = 1;
+			SWD_DynamicLoad_60M();
 		}
+		// 45M ASM Opt
+		else if (clock >= 45000000)
+		{
+			DAP_Data.clock_delay = 1;
+			SWD_DynamicLoad_45M();
+		}
+		// 36M ASM Opt
+		else if (clock >= 36000000)
+		{
+			DAP_Data.clock_delay = 1;
+			SWD_DynamicLoad_36M();
+		}
+		// 30M ASM Opt
+		else if (clock >= 30000000)
+		{
+			DAP_Data.clock_delay = 1;
+			SWD_DynamicLoad_30M();
+		}
+		// 20M ASM Opt
+		else if (clock >= 20000000)
+		{
+			DAP_Data.clock_delay = 1;
+			SWD_DynamicLoad_20M();
+		}
+		// 18M ASM Opt
+		else if (clock >= 18000000)
+		{
+			DAP_Data.clock_delay = 1;
+			SWD_DynamicLoad_18M();
+		}
+		// 10k - 16M ASM Opt
 		else
 		{
-			delay = delay / 1000;
+			uint32_t delay = swd_speed_calc(clock);
+			if (delay % 1000 > 500)
+			{
+				delay = delay / 1000 + 1;
+			}
+			else
+			{
+				delay = delay / 1000;
+			}
+			DAP_Data.clock_delay = delay;
 		}
-		DAP_Data.clock_delay = delay;
 		printf("Set swd clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
 	}
 	else if (DAP_Data.debug_port == DAP_PORT_JTAG)
@@ -298,8 +334,8 @@ static uint32_t DAP_SWJ_Pins(const uint8_t *request, uint8_t *response)
 	uint32_t wait;
 	uint32_t timestamp;
 
-	value = (uint32_t) * (request + 0);
-	select = (uint32_t) * (request + 1);
+	value = (uint32_t)*(request + 0);
+	select = (uint32_t)*(request + 1);
 	wait = (uint32_t)(*(request + 2) << 0) |
 		   (uint32_t)(*(request + 3) << 8) |
 		   (uint32_t)(*(request + 4) << 16) |
@@ -802,9 +838,9 @@ ATTR_RAMFUNC static uint32_t DAP_TransferConfigure(const uint8_t *request, uint8
 {
 
 	DAP_Data.transfer.idle_cycles = *(request + 0);
-	DAP_Data.transfer.retry_count = (uint16_t) * (request + 1) |
+	DAP_Data.transfer.retry_count = (uint16_t)*(request + 1) |
 									(uint16_t)(*(request + 2) << 8);
-	DAP_Data.transfer.match_retry = (uint16_t) * (request + 3) |
+	DAP_Data.transfer.match_retry = (uint16_t)*(request + 3) |
 									(uint16_t)(*(request + 4) << 8);
 
 	*response = DAP_OK;
@@ -2602,7 +2638,7 @@ void DAP_Setup(void)
 
 	// Sets DAP_Data.fast_clock and DAP_Data.clock_delay.
 	Set_Clock_Delay(DAP_DEFAULT_SWJ_CLOCK);
-	SWD_LoadFunction();
+	SWD_DynamicLoad_Slow();
 
 	DAP_SETUP(); // Device specific setup
 }

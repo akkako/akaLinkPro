@@ -55,53 +55,52 @@ static const char DAP_FW_Ver[] = DAP_FW_VER;
 //   clock:    requested SWJ frequency in Hertz
 static void Set_Clock_Delay(uint32_t clock)
 {
-		// 60M ASM Opt
-		if (clock >= 60000000)
+	// 60M ASM Opt
+	if (clock >= 60000000)
+	{
+		DAP_Data.clock_delay = 1;
+		SWD_DynamicLoad_60M();
+	}
+	// 45M ASM Opt
+	else if (clock < 60000000 && clock >= 45000000)
+	{
+		DAP_Data.clock_delay = 1;
+		SWD_DynamicLoad_45M();
+	}
+	// 36M ASM Opt
+	else if (clock < 45000000 && clock >= 36000000)
+	{
+		DAP_Data.clock_delay = 1;
+		SWD_DynamicLoad_36M();
+	}
+	// 30M ASM Opt
+	else if (clock < 36000000 && clock >= 30000000)
+	{
+		DAP_Data.clock_delay = 1;
+		SWD_DynamicLoad_30M();
+	}
+	// 20M ASM Opt
+	else if (clock < 30000000 && clock >= 20000000)
+	{
+		DAP_Data.clock_delay = 1;
+		SWD_DynamicLoad_20M();
+	}
+	// 10k - 16M ASM Opt
+	else
+	{
+		SWD_DynamicLoad_Slow();
+		uint32_t delay = swd_speed_calc(clock);
+		if (delay % 1000 > 500)
 		{
-			DAP_Data.clock_delay = 1;
-			SWD_DynamicLoad_60M();
+			delay = delay / 1000 + 1;
 		}
-		// 45M ASM Opt
-		else if (clock < 60000000 && clock >= 45000000)
-		{
-			DAP_Data.clock_delay = 1;
-			SWD_DynamicLoad_45M();
-		}
-		// 36M ASM Opt
-		else if (clock < 45000000 && clock >= 36000000)
-		{
-			DAP_Data.clock_delay = 1;
-			SWD_DynamicLoad_36M();
-		}
-		// 30M ASM Opt
-		else if (clock < 36000000 && clock >= 30000000)
-		{
-			DAP_Data.clock_delay = 1;
-			SWD_DynamicLoad_30M();
-		}
-		// 20M ASM Opt
-		else if (clock < 30000000 && clock >= 20000000)
-		{
-			DAP_Data.clock_delay = 1;
-			SWD_DynamicLoad_20M();
-		}
-		// 10k - 16M ASM Opt
 		else
 		{
-			SWD_DynamicLoad_Slow();
-			uint32_t delay = swd_speed_calc(clock);
-			if (delay % 1000 > 500)
-			{
-				delay = delay / 1000 + 1;
-			}
-			else
-			{
-				delay = delay / 1000;
-			}
-			DAP_Data.clock_delay = delay;
+			delay = delay / 1000;
 		}
-		printf("Set clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
-
+		DAP_Data.clock_delay = delay;
+	}
+	printf("Set clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
 }
 
 // Get DAP Information
@@ -317,8 +316,8 @@ static uint32_t DAP_SWJ_Pins(const uint8_t *request, uint8_t *response)
 	uint32_t wait;
 	uint32_t timestamp;
 
-	value = (uint32_t)*(request + 0);
-	select = (uint32_t)*(request + 1);
+	value = (uint32_t) * (request + 0);
+	select = (uint32_t) * (request + 1);
 	wait = (uint32_t)(*(request + 2) << 0) |
 		   (uint32_t)(*(request + 3) << 8) |
 		   (uint32_t)(*(request + 4) << 16) |
@@ -821,9 +820,9 @@ ATTR_RAMFUNC static uint32_t DAP_TransferConfigure(const uint8_t *request, uint8
 {
 
 	DAP_Data.transfer.idle_cycles = *(request + 0);
-	DAP_Data.transfer.retry_count = (uint16_t)*(request + 1) |
+	DAP_Data.transfer.retry_count = (uint16_t) * (request + 1) |
 									(uint16_t)(*(request + 2) << 8);
-	DAP_Data.transfer.match_retry = (uint16_t)*(request + 3) |
+	DAP_Data.transfer.match_retry = (uint16_t) * (request + 3) |
 									(uint16_t)(*(request + 4) << 8);
 
 	*response = DAP_OK;

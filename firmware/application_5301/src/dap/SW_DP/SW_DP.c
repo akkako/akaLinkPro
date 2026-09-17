@@ -1462,10 +1462,6 @@ void SWD_DynamicLoad_20M(void)
 ATTR_RAMFUNC void SWJ_Sequence(uint32_t count, const uint8_t *data)
 {
     seq_func(count, data, DAP_Data.clock_delay);
-    // SWJ_Sequence_GPIO_ASM_SLOW(count, data, DAP_Data.clock_delay);
-    // SWJ_Sequence_GPIO_ASM_60M(count, data, DAP_Data.clock_delay);
-    // SWJ_Sequence_GPIO_ASM_20M(count, data, DAP_Data.clock_delay);
-    // SWJ_Sequence_GPIO_Slow(count, data);
 }
 #endif
 

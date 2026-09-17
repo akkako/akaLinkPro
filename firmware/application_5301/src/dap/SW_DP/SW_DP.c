@@ -1495,12 +1495,11 @@ ATTR_RAMFUNC uint8_t SWD_Write(uint32_t request, uint32_t *data)
     uint8_t header = 0x81 | ((request & 0x0F) << 1) | (((request ^ (request >> 1) ^ (request >> 2) ^ (request >> 3)) & 1) << 5);
 
     uint8_t ack = write_func(header, data, DAP_Data.clock_delay);
-    // uint8_t ack = SWD_Write_GPIO_ASM_SLOW(header, data, DAP_Data.clock_delay);
-    // uint8_t ack = SWD_Write_GPIO_ASM_60M(header, data, DAP_Data.clock_delay);
-    // uint8_t ack = SWD_Write_GPIO_ASM_20M(header, data, DAP_Data.clock_delay);
-    // printf("ack = 0x%02X\n", ack);
+    if (request & DAP_TRANSFER_TIMESTAMP)
+    {
+        DAP_Data.timestamp = TIMESTAMP_GET();
+    }
     return ack;
-    // return SWD_Write_GPIO_Slow(header, data);
 }
 
 /**
@@ -1514,10 +1513,9 @@ ATTR_RAMFUNC uint8_t SWD_Read(uint32_t request, uint32_t *data)
     uint8_t header = 0x81 | ((request & 0x0F) << 1) | (((request ^ (request >> 1) ^ (request >> 2) ^ (request >> 3)) & 1) << 5);
 
     uint8_t ack = read_func(header, data, DAP_Data.clock_delay);
-    // uint8_t ack = SWD_Read_GPIO_ASM_SLOW(header, data, DAP_Data.clock_delay);
-    // uint8_t ack = SWD_Read_GPIO_ASM_60M(header, data, DAP_Data.clock_delay);
-    // uint8_t ack = SWD_Read_GPIO_ASM_20M(header, data, DAP_Data.clock_delay);
-    // printf("ack = 0x%02X, data = 0x%08X\n", ack, *data);
+    if (request & DAP_TRANSFER_TIMESTAMP)
+    {
+        DAP_Data.timestamp = TIMESTAMP_GET();
+    }
     return ack;
-    // return SWD_Read_GPIO_Slow(header, data);
 }

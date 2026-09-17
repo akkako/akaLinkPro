@@ -55,8 +55,6 @@ static const char DAP_FW_Ver[] = DAP_FW_VER;
 //   clock:    requested SWJ frequency in Hertz
 static void Set_Clock_Delay(uint32_t clock)
 {
-	if (DAP_Data.debug_port == DAP_PORT_SWD)
-	{
 		// 60M ASM Opt
 		if (clock >= 60000000)
 		{
@@ -102,18 +100,8 @@ static void Set_Clock_Delay(uint32_t clock)
 			}
 			DAP_Data.clock_delay = delay;
 		}
-		printf("Set swd clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
-	}
-	else if (DAP_Data.debug_port == DAP_PORT_JTAG)
-	{
-		DAP_Data.clock_delay = clock / 1000;
-		printf("Set jtag clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
-	}
-	else if (DAP_Data.debug_port == DAP_PORT_CJTAG)
-	{
-		DAP_Data.clock_delay = clock / 1000;
-		printf("Set cjtag clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
-	}
+		printf("Set clock: %d, %d\r\n", clock, DAP_Data.clock_delay);
+
 }
 
 // Get DAP Information

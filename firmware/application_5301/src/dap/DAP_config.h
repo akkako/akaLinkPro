@@ -125,7 +125,7 @@
 #define SWO_STREAM              0               ///< SWO 流式跟踪：1 = 可用，0 = 不可用。
 
 /// 测试域定时器的时钟频率。定时器值通过 \ref TIMESTAMP_GET 返回。
-#define TIMESTAMP_CLOCK         0U      ///< 时间戳时钟（单位：Hz，0 = 不支持时间戳）。
+#define TIMESTAMP_CLOCK         24000000U      ///< 时间戳时钟（单位：Hz，0 = 不支持时间戳）。
 
 /// 指示是否支持通过 USB COM 端口进行 UART 通信。
 /// 该信息由命令 \ref DAP_Info 作为 <b>Capabilities</b> 的一部分返回。
@@ -588,8 +588,8 @@ __STATIC_INLINE void LED_RUNNING_OUT(uint32_t bit) {}
 */
 __STATIC_INLINE uint32_t TIMESTAMP_GET(void)
 {
-    // return (DWT->CYCCNT);
-    return (0U);
+    #define MCHTMR_MTIME_LO  (*(volatile uint32_t *)(HPM_MCHTMR_BASE + 0x00))
+    return MCHTMR_MTIME_LO;
 }
 
 ///@}

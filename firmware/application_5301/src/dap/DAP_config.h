@@ -92,7 +92,7 @@
 /// 调试访问端口上 SWD 和 JTAG 模式的默认通信速度。
 /// 用于初始化默认的 SWD/JTAG 时钟频率。
 /// 命令 \ref DAP_SWJ_Clock 可用于覆盖此默认设置。
-#define DAP_DEFAULT_SWJ_CLOCK   1000000U        ///< 默认 SWD/JTAG 时钟频率（单位：Hz）。
+#define DAP_DEFAULT_SWJ_CLOCK   4000000U        ///< 默认 SWD/JTAG 时钟频率（单位：Hz）。
 
 /// 命令和响应数据的最大包大小。
 /// 此配置设置用于优化与调试器的通信性能，并取决于 USB 外设。典型值为：全速 USB HID 或 WinUSB 使用 64、

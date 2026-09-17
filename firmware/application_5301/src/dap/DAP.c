@@ -64,31 +64,31 @@ static void Set_Clock_Delay(uint32_t clock)
 			SWD_DynamicLoad_60M();
 		}
 		// 45M ASM Opt
-		else if (clock >= 45000000)
+		else if (clock < 60000000 && clock >= 45000000)
 		{
 			DAP_Data.clock_delay = 1;
 			SWD_DynamicLoad_45M();
 		}
 		// 36M ASM Opt
-		else if (clock >= 36000000)
+		else if (clock < 45000000 && clock >= 36000000)
 		{
 			DAP_Data.clock_delay = 1;
 			SWD_DynamicLoad_36M();
 		}
 		// 30M ASM Opt
-		else if (clock >= 30000000)
+		else if (clock < 36000000 && clock >= 30000000)
 		{
 			DAP_Data.clock_delay = 1;
 			SWD_DynamicLoad_30M();
 		}
 		// 20M ASM Opt
-		else if (clock >= 20000000)
+		else if (clock < 30000000 && clock >= 20000000)
 		{
 			DAP_Data.clock_delay = 1;
 			SWD_DynamicLoad_20M();
 		}
 		// 18M ASM Opt
-		else if (clock >= 18000000)
+		else if (clock < 20000000 && clock >= 18000000)
 		{
 			DAP_Data.clock_delay = 1;
 			SWD_DynamicLoad_18M();
@@ -96,6 +96,7 @@ static void Set_Clock_Delay(uint32_t clock)
 		// 10k - 16M ASM Opt
 		else
 		{
+			SWD_DynamicLoad_Slow();
 			uint32_t delay = swd_speed_calc(clock);
 			if (delay % 1000 > 500)
 			{

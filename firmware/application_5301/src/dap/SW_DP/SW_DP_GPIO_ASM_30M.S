@@ -29,12 +29,12 @@
 
 .section .fast, "ax"
 .align  2
-.global SWJ_Sequence_GPIO_ASM_36M
-.type   SWJ_Sequence_GPIO_ASM_36M, @function
+.global SWJ_Sequence_GPIO_ASM_30M
+.type   SWJ_Sequence_GPIO_ASM_30M, @function
 
-# void SWJ_Sequence_GPIO_ASM_36M(uint32_t count, const uint8_t *data, uint32_t delay)
+# void SWJ_Sequence_GPIO_ASM_30M(uint32_t count, const uint8_t *data, uint32_t delay)
 
-SWJ_Sequence_GPIO_ASM_36M:
+SWJ_Sequence_GPIO_ASM_30M:
 
     # Preload offset value
     li      t0, FGPIO_BASE
@@ -116,12 +116,12 @@ swj_send_end:
 
 .section .fast, "ax"
 .align  2
-.global SWD_Write_GPIO_ASM_36M
-.type   SWD_Write_GPIO_ASM_36M, @function
+.global SWD_Write_GPIO_ASM_30M
+.type   SWD_Write_GPIO_ASM_30M, @function
 
-// uint8_t SWD_Write_GPIO_ASM_36M(uint8_t header, uint32_t *data, uint32_t delay);
+// uint8_t SWD_Write_GPIO_ASM_30M(uint8_t header, uint32_t *data, uint32_t delay);
 
-SWD_Write_GPIO_ASM_36M:
+SWD_Write_GPIO_ASM_30M:
     # Disable all interrupt
     csrrci  zero, mstatus, 8
 
@@ -356,12 +356,12 @@ SWD_Write_GPIO_ASM_36M:
 
 .section .fast, "ax"
 .align  2
-.global SWD_Read_GPIO_ASM_36M
-.type   SWD_Read_GPIO_ASM_36M, @function
+.global SWD_Read_GPIO_ASM_30M
+.type   SWD_Read_GPIO_ASM_30M, @function
 
-// uint8_t SWD_Read_GPIO_ASM_36M(uint8_t header, uint32_t *data, uint32_t delay);
+// uint8_t SWD_Read_GPIO_ASM_30M(uint8_t header, uint32_t *data, uint32_t delay);
 
-SWD_Read_GPIO_ASM_36M:
+SWD_Read_GPIO_ASM_30M:
     # Disable all interrupt
     csrrci  zero, mstatus, 8
 

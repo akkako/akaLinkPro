@@ -87,12 +87,6 @@ static void Set_Clock_Delay(uint32_t clock)
 			DAP_Data.clock_delay = 1;
 			SWD_DynamicLoad_20M();
 		}
-		// 18M ASM Opt
-		else if (clock < 20000000 && clock >= 18000000)
-		{
-			DAP_Data.clock_delay = 1;
-			SWD_DynamicLoad_18M();
-		}
 		// 10k - 16M ASM Opt
 		else
 		{

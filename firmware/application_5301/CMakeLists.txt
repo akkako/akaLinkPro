@@ -40,8 +40,12 @@ sdk_ld_options("--specs=nano.specs")
 # CherryUSB config — pick up local usb_config.h
 sdk_compile_definitions(-D__INCLUDE_CHERRYUSB_CONFIG_H__)
 
-# Use SDK's flash_dfu.ld — reserve 128K for bootloader
-sdk_linker_global_symbols("_dfu_bl_length=0x20000")
+# Reserve the first 128K of flash for the bootloader when using the DFU layout
+# (flash_dfu => APP linked at 0x80020000). A flash_xip build links at
+# 0x80000000 and must not reserve anything.
+if(NOT HPM_BUILD_TYPE STREQUAL "flash_xip")
+    sdk_linker_global_symbols("_dfu_bl_length=0x20000")
+endif()
 
 # sdk_compile_definitions(-DCONFIG_NDEBUG_CONSOLE=1)
 
@@ -76,3 +80,15 @@ sdk_app_src(src/dap/JTAG_DP/JTAG_DP_GPIO_Slow.c)
 sdk_app_src(src/dap/JTAG_DP/JTAG_DP_GPIO_ASM_45M.S)
 
 # generate_ide_projects()
+
+# Also emit an Intel HEX image (absolute addresses) so the application can be
+# flashed directly with J-Link (loadfile), independent of the DFU bootloader.
+set(ELF ${CMAKE_BINARY_DIR}/output/${APP_NAME}.elf)
+set(HEX ${CMAKE_BINARY_DIR}/output/${APP_NAME}.hex)
+
+add_custom_command(OUTPUT ${HEX}
+    COMMAND ${CMAKE_OBJCOPY} -O ihex -S ${ELF} ${HEX}
+    DEPENDS ${ELF}
+    COMMENT "Generating ${APP_NAME}.hex"
+)
+add_custom_target(hex_artifacts ALL DEPENDS ${HEX})

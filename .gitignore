@@ -3,6 +3,8 @@
 
 # firmware build
 build
+build_xip
+build_dfu
 .vscode
 
 # kicad

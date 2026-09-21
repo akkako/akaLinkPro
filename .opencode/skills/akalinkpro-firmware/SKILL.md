@@ -31,10 +31,8 @@ firmware/
   application_5301/                 主固件 (CMSIS-DAP)
     CMakeLists.txt                  自定义链接脚本 linker/flash_dfu_app.ld；POST_BUILD 调用 pack.py
     linker/flash_dfu_app.ld         预留 256B APP 头，入口 0x80020100（CUSTOM_GCC_LINKER_FILE）
-    build.bat                       原 DFU 构建 -> ./build，末尾 dfu-util（用 _pack.bin）
-    build_zcc.bat                   ZCC 工具链 DFU 构建
     build_dfu.bat                   构建到 ./build_dfu（不调用 dfu-util）
-    program.bat                     仅执行 dfu-util（用 _pack.bin）
+    program.bat                     对 build_dfu 产物执行 dfu-util 烧录（用 _pack.bin）
     flash_jlink.bat                 build_dfu + JLink 烧录 APP（用 _pack.hex）
     gdb_server.bat                  启动 JLinkGDBServerCL（VSCode 调试用）
     Flash_Memory_Map.md             Flash 布局（含元数据/ EasyFlash）
@@ -114,8 +112,8 @@ firmware\application_5301\build_dfu.bat
 - Boot：`build_xip\output\akaLinkPro_Boot_pack.hex`（含 `0x8001F000` 信息块）
 
 其它入口：
-- `bootloader_dfu\build.bat` / `application_5301\build.bat`（`./build`，末尾 dfu-util，用 `_pack.bin`）
-- `application_5301\build_zcc.bat`（ZCC 工具链）
+- `bootloader_dfu\build.bat`（`./build`）
+- `application_5301\build_dfu.bat` + `program.bat`（构建后用 dfu-util 烧录 `_pack.bin`）
 
 ---
 
@@ -153,11 +151,13 @@ Sleep 200
 Exit
 ```
 
-### 5.2 DFU 烧录（原流程）
+### 5.2 DFU 烧录
 
 ```bat
-firmware\application_5301\build.bat
-:: 等价于 cmake 构建 + dfu-util -a 0 -E 1 -s 0x80020000:leave -D build\output\akaLinkPro_App_pack.bin
+firmware\application_5301\build_dfu.bat   :: 先构建到 build_dfu\
+firmware\application_5301\program.bat     :: 再 dfu-util 下载
+:: program.bat 等价于:
+:: dfu-util -a 0 -E 1 -s 0x80020000:leave -D build_dfu\output\akaLinkPro_App_pack.bin
 ```
 
 APP 自带 DFU runtime 接口，`dfu-util` 会先发 `DFU_DETACH` 触发重启进入 bootloader，再传输。
@@ -360,9 +360,9 @@ SWD 目标可为 STM32F1 等；本板 SWD 实跑 20/36/45/60MHz。
 
 1. `firmware\application_5301\build_dfu.bat` 与 `firmware\bootloader_dfu\build_xip.bat` 能过，
    且输出 `[pack app]` / `[pack boot]`（含 ver/len/crc/time）。
-2. 烧录**打包镜像**后设备枚举正常（APP：`VID_0D28 PID_0204`；校验失败停留：`PID_0205` DFU）。
+2. 烧录**打包镜像**后设备枚举正常（APP：`VID_0D28 PID_0204`；校验失败/升级模式：`PID_0207` 复合 DFU+MSC）。
 3. 破坏 APP 头后复位应停留 Bootloader（完整性保护生效）。
 4. VSCode F5 能在 `main` 命中断点。
 5. 串口回环（RXD-TXD 短接）在 SWD/空闲下能通过，JTAG 下无回显。
 6. HID `0x12`–`0x17` 返回 `version.json` 中配置的版本/时间。
-7. `build.bat` / `program.bat` 已刻意改为使用 `_pack.bin`；`build_zcc.bat` 行为未改，勿破坏。
+7. APP 已移除 `build.bat` / `build_zcc.bat`：统一用 `build_dfu.bat` 构建，`program.bat`（dfu-util）或 `flash_jlink.bat`（J-Link）烧录；均使用 `_pack` 产物。

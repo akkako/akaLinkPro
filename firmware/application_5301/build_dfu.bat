@@ -5,7 +5,7 @@
 @REM Links the APP at 0x80000000 + 0x20000 = 0x80020000 (right after the 128K
 @REM bootloader) using SDK flash_dfu.ld. Output can be either:
 @REM   - flashed by J-Link directly at 0x80020000 (see flash_jlink.bat), or
-@REM   - transferred by dfu-util (see build.bat).
+@REM   - transferred by dfu-util (see program.bat).
 @REM No dfu-util call here, so this is safe to use for J-Link one-click flash.
 @REM ---------------------------------------------------------------------------
 @set "HPM_TOOLCHAIN_PATH=D:\_tools\hpm_sdk"

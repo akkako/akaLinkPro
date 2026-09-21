@@ -4,15 +4,24 @@
  */
 #include "usbd_core.h"
 #include "usbd_dfu.h"
+#include "usbd_msc.h"
 #include "usb_dfu.h"
 #include "board.h"
 #include "usb_config.h"
 #include <stdio.h>
 #include "hpm_otp_drv.h"
+#include "vfat.h"
 
 #define USBD_VID 0x0D28
-#define USBD_PID 0x0205
+/* Composite DFU+MSC uses a dedicated PID (0x0207) so Windows does not reuse a
+ * stale device-level WinUSB binding (0x0205 was DFU-only). WinUSB for the DFU
+ * interface is auto-installed via the MS OS 2.0 descriptors below. */
+#define USBD_PID 0x0207
 #define USBD_MAX_POWER 250
+
+/* MSC interface endpoints. */
+#define MSC_IN_EP  0x81
+#define MSC_OUT_EP 0x02
 
 #if defined(CONFIG_USB_DEVICE_FS) || defined(CONFIG_USB_DEVICE_FORCE_FULL_SPEED)
 #undef CONFIG_USB_HS
@@ -20,21 +29,43 @@
 #define CONFIG_USB_HS
 #endif
 
+#ifdef CONFIG_USB_HS
+#define MSC_MAX_MPS 512
+#else
+#define MSC_MAX_MPS 64
+#endif
+
+/* Microsoft OS 2.0 / WinUSB: let Windows auto-bind WinUSB to the DFU interface
+ * (interface 0) so libusb / dfu-util can claim it, while MSC stays on usbstor. */
+#define WINUSB_VENDOR_CODE 0x20
+
+const uint8_t WINUSB_WCIDDescriptor[] = {
+    USB_MSOSV2_COMP_ID_SET_HEADER_DESCRIPTOR_INIT(10 + USB_MSOSV2_COMP_ID_FUNCTION_WINUSB_MULTI_DESCRIPTOR_LEN),
+    USB_MSOSV2_COMP_ID_FUNCTION_WINUSB_MULTI_DESCRIPTOR_INIT(0x00),
+};
+
+const struct usb_msosv2_descriptor msosv2_desc = {
+    .vendor_code = WINUSB_VENDOR_CODE,
+    .compat_id = WINUSB_WCIDDescriptor,
+    .compat_id_len = sizeof(WINUSB_WCIDDescriptor),
+};
+
 /* DFU functional descriptor is 9 bytes */
 #define DFU_DESC_TOTAL_LEN (9 + 9)
-#define USB_CONFIG_SIZE (9 + DFU_DESC_TOTAL_LEN)
+#define USB_CONFIG_SIZE (9 + DFU_DESC_TOTAL_LEN + MSC_DESCRIPTOR_LEN)
 
 static char flash_internal_desc_str[128] = {0};
 static char device_serial_number_str[33] = {0};
 
 /* ========== Device Descriptor ========== */
 static const uint8_t device_descriptor[] = {
-    USB_DEVICE_DESCRIPTOR_INIT(USB_2_0, 0x00, 0x00, 0x00, USBD_VID, USBD_PID, 0x0200, 0x01)};
+    /* bcdUSB must be 0x0210 for Microsoft OS 2.0 descriptors. */
+    USB_DEVICE_DESCRIPTOR_INIT(USB_2_1, 0x00, 0x00, 0x00, USBD_VID, USBD_PID, 0x0200, 0x01)};
 
 /* ========== Config Descriptor (DFU-only, single alt setting) ========== */
 static const uint8_t config_descriptor[] = {
-    USB_CONFIG_DESCRIPTOR_INIT(USB_CONFIG_SIZE, 0x01, 0x01, USB_CONFIG_BUS_POWERED, USBD_MAX_POWER),
-    /* DFU Interface 0, Alt 0, DFU Mode */
+    USB_CONFIG_DESCRIPTOR_INIT(USB_CONFIG_SIZE, 0x02, 0x01, USB_CONFIG_BUS_POWERED, USBD_MAX_POWER),
+    /* Interface 0: DFU, Alt 0, DFU Mode */
     0x09, 0x04, 0x00, 0x00, 0x00,
     0xFE, 0x01, 0x02, /* class=APP_SPECIFIC, subclass=DFU, protocol=DFU_MODE */
     0x04,             /* iInterface = 4 -> DfuSe memory layout string */
@@ -44,6 +75,8 @@ static const uint8_t config_descriptor[] = {
     0xFF, 0x00, /* wDetachTimeout = 255ms */
     0x00, 0x10, /* wTransferSize = 4096 */
     0x1A, 0x01, /* bcdDFU = 1.1a */
+    /* Interface 1: MSC (virtual U-disk) */
+    MSC_DESCRIPTOR_INIT(0x01, MSC_OUT_EP, MSC_IN_EP, MSC_MAX_MPS, 0x00),
 };
 
 /* ========== String Descriptors ========== */
@@ -107,12 +140,8 @@ static const uint8_t *device_quality_descriptor_cb(uint8_t speed)
 
 /* ========== BOS Descriptor (USB 2.0 Extension) ========== */
 static const uint8_t bos_descriptor_data[] = {
-    /* BOS Header */
-    0x05,
-    USB_DESCRIPTOR_TYPE_BINARY_OBJECT_STORE,
-    0x0C,
-    0x00,
-    0x01,
+    /* BOS Header + USB 2.0 Extension + WinUSB platform capability */
+    USB_BOS_HEADER_DESCRIPTOR_INIT(5 + 7 + USB_BOS_CAP_PLATFORM_WINUSB_DESCRIPTOR_LEN, 2),
     /* USB 2.0 Extension Capability */
     0x07,
     0x10,
@@ -121,6 +150,8 @@ static const uint8_t bos_descriptor_data[] = {
     0x00,
     0x00,
     0x00,
+    /* WinUSB platform capability (points to the MSOSV2 descriptor set) */
+    USB_BOS_CAP_PLATFORM_WINUSB_DESCRIPTOR_INIT(WINUSB_VENDOR_CODE, sizeof(WINUSB_WCIDDescriptor)),
 };
 
 static const struct usb_bos_descriptor bos_descriptor = {
@@ -135,7 +166,7 @@ const struct usb_descriptor dfu_descriptor = {
     .device_quality_descriptor_callback = device_quality_descriptor_cb,
     .other_speed_descriptor_callback = config_descriptor_cb,
     .string_descriptor_callback = string_descriptor_cb,
-    .msosv2_descriptor = NULL,
+    .msosv2_descriptor = &msosv2_desc,
     .bos_descriptor = &bos_descriptor,
 };
 
@@ -180,6 +211,7 @@ static void get_device_serial_number(void)
 }
 
 static struct usbd_interface intf0;
+static struct usbd_interface intf1;
 
 void dfu_boot_init(uint8_t busid, uintptr_t reg_base)
 {
@@ -196,7 +228,11 @@ void dfu_boot_init(uint8_t busid, uintptr_t reg_base)
 
     get_device_serial_number();
 
+    /* Build the virtual U-disk contents before USB comes up. */
+    vfat_init();
+
     usbd_desc_register(busid, &dfu_descriptor);
     usbd_add_interface(busid, usbd_dfu_init_intf(&intf0));
+    usbd_add_interface(busid, usbd_msc_init_intf(busid, &intf1, MSC_OUT_EP, MSC_IN_EP));
     usbd_initialize(busid, reg_base, usbd_event_handler);
 }

@@ -46,7 +46,9 @@ firmware/
     CMakeLists.txt                  链接 flash_xip.ld，128K flash；POST_BUILD 调用 pack.py
     build.bat / build_xip.bat       ./build / ./build_xip（JLink 流程）
     flash_jlink.bat                 build_xip + JLink 烧录 bootloader（用 _pack.hex）
-    src/  main.c, dfu_desc.c, hpm_dfu_trigger.c, boot_port_board_hpm.c, dfu_flash_port.c
+    src/  main.c, dfu_desc.c, hpm_dfu_trigger.c, boot_port_board_hpm.c, dfu_flash_port.c,
+          vfat.c/.h（虚拟 FAT16 U 盘）, msc_if.c（MSC 回调）
+    Bootloader_USB_Upgrade_Plan.md  U 盘升级方案
 ```
 
 构建产物目录 `build` / `build_xip` / `build_dfu` 均已在 `.gitignore` 中忽略。
@@ -205,7 +207,9 @@ cppdbg 通过 `localhost:2331` 连接，执行 `monitor reset -> load -> monitor
 ## 7. 验证设备状态
 
 APP 运行时的 USB 描述符：`VID_0D28 & PID_0204`，接口 MI_00=CMSIS-DAP、MI_01=CDC(COM)、MI_03=HID、MI_04=WebUSB、MI_05=DFU Runtime。
-Bootloader DFU 模式：`VID_0D28 & PID_0205`（仅 DFU）。
+Bootloader 模式：`VID_0D28 & PID_0207`（**复合设备 DFU + MSC**），MI_00=DFU（WinUSB，支持 dfu-util）、MI_01=MSC（U 盘）。
+- 说明：0x0205 是旧 DFU-only PID，0x0206 在开发期被 Windows 缓存了旧 OS 描述符，故最终复合 PID 用 **0x0207**。
+- WinUSB 由 **MS OS 2.0 描述符（WCID）** 自动安装到 DFU 接口，`dfu-util` 无需再手动绑驱动。
 
 ```powershell
 Get-PnpDevice -PresentOnly | Where-Object { $_.InstanceId -match 'VID_0D28' } |
@@ -226,6 +230,26 @@ mem8 0x8001F000 64     // Bootloader 信息块："BLI1" + BL 版本 + 时间 + �
 mem8 0x800FE000 16     // EasyFlash 扇区头，含 "EF40" (45 46 34 30)
 Exit
 ```
+
+---
+
+## 7.1 Bootloader U 盘升级（MSC + 虚拟 FAT）
+
+Bootloader 进入 DFU/升级模式时同时枚举一个 **MSC U 盘**（128MB FAT16，卷标 `AKALINKPRO`），
+由 `bootloader_dfu/src/vfat.c` 提供（RAM 元数据 + APP flash 数据区，实际可写上限 = APP 区 `0x80020000..0x800FE000`，**不会碰尾部 EasyFlash**）：
+
+| 文件 | 内容 |
+| --- | --- |
+| `INFO.TXT` | SN(OTP UID) / HWVER / BLVER / FWVER / DESC / CRC 状态 |
+| `AKALINK.URL` | Internet Shortcut → `https://akkako.github.io/akaLinkPro/` |
+| `AKALINK.HTM` | 同 URL 的 HTML meta 跳转（跨平台） |
+
+- **拖拽升级**：把打包镜像改名（任意 `*.BIN`，如 `FIRMWARE.BIN`）拖入 U 盘 → 数据按 FAT 链写入
+  APP 区 → 写满后延时 1s 复位 → Bootloader 校验（签名+长度+CRC32）通过则运行 APP，失败继续留在 U 盘。
+- **镜像必须是打包镜像** `akaLinkPro_App_pack.bin`（含 256B 头），与 J-Link/dfu-util 一致。
+- 只写属于该 `*.BIN` 的簇（会跳过 Windows 自动创建的 `System Volume Information`）。
+- 进入升级模式：APP 的 `CMD_ENTER_DFU(0xFF)`、按住 boot 键、或 APP 校验失败时自动停留。
+- 相关文档：`bootloader_dfu/Bootloader_USB_Upgrade_Plan.md`。
 
 ---
 

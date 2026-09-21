@@ -14,6 +14,9 @@ extern "C" {
 /* Check + clear DFU trigger from retention register */
 bool hpm_dfu_check_and_clear_trigger(void);
 
+/* Verify the APP header (signature + length + CRC32). */
+bool hpm_dfu_app_valid(void);
+
 /* Write trigger magic and reset — call from APP */
 void hpm_dfu_reboot_to_dfu(void) __attribute__((noreturn));
 

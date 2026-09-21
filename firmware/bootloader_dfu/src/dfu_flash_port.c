@@ -16,6 +16,7 @@
 #include "hpm_l1c_drv.h"
 #include "hpm_ppor_drv.h"
 #include "usb_dfu.h"
+#include "dfu_flash_port.h"
 
 #ifndef USBD_DFU_APP_DEFAULT_ADD
 #define USBD_DFU_APP_DEFAULT_ADD 0x80020000
@@ -175,4 +176,39 @@ void usbd_dfu_reset(void)
     ppor_sw_reset(HPM_PPOR, 24);
     while (1) {
     }
+}
+
+/* ---------------------------------------------------------------- *
+ * Shared low-level access for the virtual-FAT MSC upgrade path
+ * ---------------------------------------------------------------- */
+
+hpm_stat_t boot_flash_read(uint32_t addr, void *buf, uint32_t size)
+{
+    uint32_t a0 = HPM_L1C_CACHELINE_ALIGN_DOWN(addr);
+    uint32_t a1 = HPM_L1C_CACHELINE_ALIGN_UP(addr + size);
+
+    l1c_dc_invalidate(a0, a1 - a0);
+    memcpy(buf, (const void *)addr, size);
+    return status_success;
+}
+
+hpm_stat_t boot_flash_erase(uint32_t addr, uint32_t size)
+{
+    dfu_flash_init();
+    if (!s_dfu_xpi_nor_initialized) {
+        return status_fail;
+    }
+    return rom_xpi_nor_erase((XPI_Type *)DFU_XPI_NOR_BASE, xpi_xfer_channel_auto,
+                             &s_dfu_xpi_nor_config, addr - (uint32_t)BOARD_FLASH_BASE_ADDRESS, size);
+}
+
+hpm_stat_t boot_flash_program(uint32_t addr, const void *buf, uint32_t size)
+{
+    dfu_flash_init();
+    if (!s_dfu_xpi_nor_initialized) {
+        return status_fail;
+    }
+    return rom_xpi_nor_program((XPI_Type *)DFU_XPI_NOR_BASE, xpi_xfer_channel_auto,
+                               &s_dfu_xpi_nor_config, (const uint32_t *)buf,
+                               addr - (uint32_t)BOARD_FLASH_BASE_ADDRESS, size);
 }

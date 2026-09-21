@@ -56,7 +56,7 @@ static uint32_t app_crc32(uint32_t crc, const uint8_t *buf, uint32_t len)
 }
 
 /* Verify the APP header (signature + length + CRC32). */
-static bool app_image_valid(void)
+bool hpm_dfu_app_valid(void)
 {
     const volatile uint32_t *hdr = (const volatile uint32_t *)APP_BASE;
     uint32_t len;
@@ -158,7 +158,7 @@ void hpm_dfu_check_bootloader_request(void)
         printf("[BOOT] DFU trigger from APP, staying in bootloader\r\n");
         return;
     }
-    if (app_image_valid()) {
+    if (hpm_dfu_app_valid()) {
         printf("[BOOT] Valid APP (signature + length + CRC32), jumping...\r\n");
         extern void boot_port_board_deinit(void);
         boot_port_board_deinit();

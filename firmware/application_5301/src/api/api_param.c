@@ -5,12 +5,9 @@
 #include "board.h"
 
 #include <string.h>
-#include <stddef.h>
 #include "hpm_common.h"
-#include "hpm_romapi.h"
-#include "hpm_l1c_drv.h"
 #include "hpm_ppor_drv.h"
-#include "hpm_crc32.h"
+#include "easyflash.h"
 
 #define BOOTLOADER_START_ADDR (0x00000000)
 #define BOOTLOADER_VER_STR_ADDR "1.0"
@@ -42,35 +39,25 @@
 #define CMD_ENTER_DFU (0xFF)
 
 #define PARAM_MAGIC_NUMBER (0x0D000721UL)
-#define PARAM_STORE_MAGIC (0x30444150UL) /* "PAD0" */
-#define PARAM_STORE_VERSION (1UL)
-
-/* Two 4K sectors reserved at the tail of the APP flash region (never in the
- * bootloader region). The config is written ping-pong between them with an
- * increasing sequence number: a power loss during a save always leaves the
- * previous copy intact, so at least one slot is valid. */
-#define PARAM_SECTOR_SIZE (0x1000UL)
-#define PARAM_SLOT0_ADDR (BOARD_FLASH_BASE_ADDRESS + BOARD_FLASH_SIZE - (2UL * PARAM_SECTOR_SIZE))
-#define PARAM_SLOT1_ADDR (BOARD_FLASH_BASE_ADDRESS + BOARD_FLASH_SIZE - PARAM_SECTOR_SIZE)
+/* EasyFlash ENV key that stores the whole api_param_t blob. */
+#define API_PARAM_ENV_KEY "cfg"
 
 #define VREF_MV_MIN (1800U)
 #define VREF_MV_MAX (5000U)
 
-typedef struct {
-    uint32_t magic;
-    uint32_t crc; /* CRC32 over version .. end of struct */
-    uint32_t version;
-    uint32_t seq;
-    api_param_t param;
-} param_store_t;
+const api_param_t g_param_default = {
+    .magic_number = PARAM_MAGIC_NUMBER,
+    .output_mode = 0,
+    .usb5v_out_mode = 1, /* level-shifter supply, on by default */
+    .clock_accel_mode = 0,
+    .led1_mode = LED_MODE_POWER, /* LED1: debugger power, always on */
+    .led2_mode = LED_MODE_VREF,  /* LED2: external reference detection */
+    .vref_mv = 3300,
+};
 
 api_param_t g_param;
 
 static volatile uint8_t s_save_pending;
-static xpi_nor_config_t s_nor_config;
-static uint8_t s_nor_ready;
-static uint8_t s_active_slot; /* 0/1: slot that currently holds the newest copy */
-static uint32_t s_seq;        /* sequence number of the active slot */
 
 static uint16_t clamp_vref(uint16_t v)
 {
@@ -94,67 +81,6 @@ static uint8_t clamp_led_mode(uint8_t m)
     return m;
 }
 
-static hpm_stat_t param_flash_init(void)
-{
-    if (s_nor_ready)
-    {
-        return status_success;
-    }
-
-    xpi_nor_config_option_t option;
-    option.header.U = BOARD_APP_XPI_NOR_CFG_OPT_HDR;
-    option.option0.U = BOARD_APP_XPI_NOR_CFG_OPT_OPT0;
-    option.option1.U = BOARD_APP_XPI_NOR_CFG_OPT_OPT1;
-
-    hpm_stat_t status = rom_xpi_nor_auto_config((XPI_Type *)BOARD_APP_XPI_NOR_XPI_BASE,
-                                                &s_nor_config, &option);
-    if (status == status_success)
-    {
-        s_nor_ready = 1;
-    }
-    return status;
-}
-
-static uint8_t param_store_valid(const param_store_t *store)
-{
-    uint32_t crc;
-
-    if ((store->magic != PARAM_STORE_MAGIC) || (store->version != PARAM_STORE_VERSION))
-    {
-        return 0;
-    }
-    crc = crc32((const uint8_t *)&store->version,
-                sizeof(*store) - offsetof(param_store_t, version));
-    return (crc == store->crc) ? 1U : 0U;
-}
-
-static void param_flash_read(uint32_t addr, void *buf, uint32_t size)
-{
-    uint32_t aligned_start = HPM_L1C_CACHELINE_ALIGN_DOWN(addr);
-    uint32_t aligned_end = HPM_L1C_CACHELINE_ALIGN_UP(addr + size);
-
-    l1c_dc_invalidate(aligned_start, aligned_end - aligned_start);
-    memcpy(buf, (const void *)addr, size);
-}
-
-static hpm_stat_t param_flash_write(uint32_t addr, const void *buf, uint32_t size)
-{
-    uint32_t offset = addr - BOARD_FLASH_BASE_ADDRESS;
-    XPI_Type *base = (XPI_Type *)BOARD_APP_XPI_NOR_XPI_BASE;
-
-    hpm_stat_t status = rom_xpi_nor_erase(base, xpi_xfer_channel_auto,
-                                          &s_nor_config, offset, PARAM_SECTOR_SIZE);
-    if (status != status_success)
-    {
-        return status;
-    }
-
-    status = rom_xpi_nor_program(base, xpi_xfer_channel_auto, &s_nor_config,
-                                 (const uint32_t *)buf, offset, size);
-    fencei();
-    return status;
-}
-
 void api_param_apply(void)
 {
     board_set_5v_output(g_param.usb5v_out_mode ? 1U : 0U);
@@ -162,78 +88,39 @@ void api_param_apply(void)
 
 void api_param_load(void)
 {
-    static param_store_t s0;
-    static param_store_t s1;
-    uint8_t v0;
-    uint8_t v1;
+    uint8_t loaded = 0U;
 
-    param_flash_read(PARAM_SLOT0_ADDR, &s0, sizeof(s0));
-    param_flash_read(PARAM_SLOT1_ADDR, &s1, sizeof(s1));
-    v0 = param_store_valid(&s0);
-    v1 = param_store_valid(&s1);
+    if (easyflash_init() == EF_NO_ERR)
+    {
+        size_t saved_len = 0U;
+        size_t read_len = ef_get_env_blob(API_PARAM_ENV_KEY, &g_param, sizeof(g_param), &saved_len);
+        if ((read_len == sizeof(g_param)) && (g_param.magic_number == PARAM_MAGIC_NUMBER))
+        {
+            loaded = 1U;
+        }
+    }
 
-    if (v0 && (!v1 || (s0.seq >= s1.seq)))
+    if (!loaded)
     {
-        g_param = s0.param;
-        s_active_slot = 0U;
-        s_seq = s0.seq;
+        g_param = g_param_default;
+        api_param_save();
     }
-    else if (v1)
-    {
-        g_param = s1.param;
-        s_active_slot = 1U;
-        s_seq = s1.seq;
-    }
-    else
-    {
-        g_param.magic_number = PARAM_MAGIC_NUMBER;
-        g_param.output_mode = 0;
-        g_param.usb5v_out_mode = 1; /* level-shifter supply, on by default */
-        g_param.clock_accel_mode = 0;
-        g_param.led1_mode = LED_MODE_POWER; /* LED1: debugger power, always on */
-        g_param.led2_mode = LED_MODE_VREF;  /* LED2: external reference detection */
-        g_param.vref_mv = 3300;
-        s_active_slot = 0U;
-        s_seq = 0U;
-        api_param_save(); /* stores into slot 1 */
-    }
+
+    /* Sanitize values coming from flash. */
+    g_param.led1_mode = clamp_led_mode(g_param.led1_mode);
+    g_param.led2_mode = clamp_led_mode(g_param.led2_mode);
+    g_param.vref_mv = clamp_vref(g_param.vref_mv);
 
     api_param_apply();
 }
 
 void api_param_save(void)
 {
-    static param_store_t store;
-    uint8_t slot;
-    uint32_t addr;
-    hpm_stat_t status;
-
-    if (param_flash_init() != status_success)
+    if (easyflash_init() != EF_NO_ERR)
     {
         return;
     }
-
-    /* Ping-pong: always write the slot other than the active one so the current
-     * copy survives an interrupted save. */
-    slot = s_active_slot ^ 1U;
-    addr = (slot == 0U) ? PARAM_SLOT0_ADDR : PARAM_SLOT1_ADDR;
-
-    store.magic = PARAM_STORE_MAGIC;
-    store.version = PARAM_STORE_VERSION;
-    store.seq = s_seq + 1U;
-    store.param = g_param;
-    store.crc = crc32((const uint8_t *)&store.version,
-                      sizeof(store) - offsetof(param_store_t, version));
-
-    uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
-    status = param_flash_write(addr, &store, sizeof(store));
-    restore_global_irq(level);
-
-    if (status == status_success)
-    {
-        s_active_slot = slot;
-        s_seq = store.seq;
-    }
+    (void)ef_set_env_blob(API_PARAM_ENV_KEY, &g_param, sizeof(g_param));
 }
 
 void api_param_request_save(void)

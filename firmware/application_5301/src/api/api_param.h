@@ -15,6 +15,9 @@ typedef struct _appiparam_t {
 
 extern api_param_t g_param;
 
+/* Factory defaults (single source of truth, also used by the EasyFlash port). */
+extern const api_param_t g_param_default;
+
 #ifdef __cplusplus
 extern "C" {
 #endif

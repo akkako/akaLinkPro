@@ -31,6 +31,10 @@ extern "C"
     void led_state_notify_uart_tx(uint32_t bytes);
     void led_state_notify_uart_rx(uint32_t bytes);
 
+    /* Last measured external reference voltage in mV (already x2, undoing the
+     * 10k/10k divider). Returns 0 until the first ADC sample is available. */
+    uint16_t led_state_get_external_mv(void);
+
 #ifdef __cplusplus
 }
 #endif

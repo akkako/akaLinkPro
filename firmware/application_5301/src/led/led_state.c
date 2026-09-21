@@ -44,6 +44,7 @@ static uint8_t s_rx_hold;
 static uint32_t s_tick;
 static uint8_t s_vref_on;
 static uint8_t s_adc_ready;
+static volatile uint16_t s_external_mv;
 
 static void led_write(uint16_t pin, uint8_t on)
 {
@@ -74,6 +75,11 @@ void led_state_notify_uart_rx(uint32_t bytes)
     {
         s_rx_activity++;
     }
+}
+
+uint16_t led_state_get_external_mv(void)
+{
+    return s_external_mv;
 }
 
 static void led_adc_init(void)
@@ -131,6 +137,7 @@ static void led_vref_update(void)
 
     /* result / 65535 * 3.3V, then x2 to undo the 10k/10k divider. */
     ext_mv = (uint32_t)raw * (LED_ADC_FULL_SCALE_MV * 2U) / 65535U;
+    s_external_mv = (uint16_t)ext_mv;
 
     if (set_mv < 1800U)
     {

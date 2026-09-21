@@ -48,8 +48,12 @@ sdk_compile_definitions(-D__INCLUDE_CHERRYUSB_CONFIG_H__)
 # Reserve the first 128K of flash for the bootloader when using the DFU layout
 # (flash_dfu => APP linked at 0x80020000). A flash_xip build links at
 # 0x80000000 and must not reserve anything.
+#
+# Also shrink _flash_size by 8K (0x2000) so the APP flash region ends at
+# 0x800FE000: the last two 4K sectors (0x800FE000/0x800FF000) are reserved for
+# the parameter store and must never be claimed by APP code/data.
 if(NOT HPM_BUILD_TYPE STREQUAL "flash_xip")
-    sdk_linker_global_symbols("_dfu_bl_length=0x20000")
+    sdk_linker_global_symbols("_dfu_bl_length=0x20000" "_flash_size=0xFE000")
 endif()
 
 # sdk_compile_definitions(-DCONFIG_NDEBUG_CONSOLE=1)

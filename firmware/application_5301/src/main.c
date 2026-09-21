@@ -38,6 +38,7 @@ int main(void)
     {
         chry_dap_handle();
         chry_dap_usb2uart_handle();
+        api_param_poll();
     }
     return 0;
 }

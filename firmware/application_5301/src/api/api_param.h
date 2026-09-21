@@ -21,6 +21,15 @@ extern "C" {
 
 extern void api_param_load (void);
 extern void api_param_save (void);
+
+/* Request a deferred save from interrupt context; api_param_poll() (main loop)
+ * performs the actual flash write outside of the USB ISR. */
+extern void api_param_request_save (void);
+extern void api_param_poll (void);
+
+/* Apply the RAM configuration to the hardware (5V output, ...). */
+extern void api_param_apply (void);
+
 extern void api_param_proc_hid (uint8_t *req_hid, uint8_t *res_hid);
 
 #ifdef __cplusplus

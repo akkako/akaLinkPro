@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>akaLink Pro 配置工具</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg-primary:#1a1a2e;--bg-secondary:#16213e;--bg-panel:rgba(255,255,255,0.05);--bg-item:rgba(0,0,0,0.2);--text-primary:#e0e0e0;--text-secondary:#8892b0;--accent-color:#00d4ff;--accent-gradient-start:#00d4ff;--accent-gradient-end:#0099cc;--border-color:rgba(255,255,255,0.1);--border-hover:rgba(0,212,255,0.3);--success-color:#2ecc71;--error-color:#e74c3c;--warning-color:#f39c12;--shadow-color:rgba(0,0,0,0.3)}
+body:not(.dark-theme){--bg-primary:#f0f2f5;--bg-secondary:#e4e7eb;--bg-panel:rgba(255,255,255,0.8);--bg-item:rgba(0,0,0,0.03);--text-primary:#2d3748;--text-secondary:#718096;--accent-color:#3182ce;--accent-gradient-start:#4299e1;--accent-gradient-end:#3182ce;--border-color:rgba(0,0,0,0.1);--border-hover:rgba(66,153,225,0.5);--success-color:#38a169;--error-color:#e53e3e;--warning-color:#dd6b20;--shadow-color:rgba(0,0,0,0.1)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:linear-gradient(135deg,var(--bg-primary) 0%,var(--bg-secondary) 100%);color:var(--text-primary);line-height:1.6;min-height:100vh}
+.container{max-width:900px;margin:0 auto;padding:15px}
+.header{background:var(--bg-panel);backdrop-filter:blur(10px);border:1px solid var(--border-color);padding:15px 20px;border-radius:10px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.header-left{display:flex;align-items:baseline;gap:10px}
+.header h1{font-size:22px;color:var(--accent-color);font-weight:600;letter-spacing:0.5px}
+.subtitle{font-size:13px;color:var(--text-secondary)}
+.device-status{display:flex;align-items:center;gap:10px}
+#connectionStatus{padding:6px 12px;border-radius:5px;font-weight:500;font-size:13px;transition:all .3s ease}
+.status-disconnected{background-color:rgba(229,62,62,0.15);color:var(--error-color);border:1px solid rgba(229,62,62,0.3)}
+.status-connected{background-color:rgba(56,161,105,0.15);color:var(--success-color);border:1px solid rgba(56,161,105,0.3);animation:pulse 2s infinite}
+.panel{background:var(--bg-panel);backdrop-filter:blur(10px);border:1px solid var(--border-color);padding:15px 20px;border-radius:10px;margin-bottom:12px;transition:transform .2s ease,box-shadow .2s ease;animation:fadeIn .25s ease}
+.panel:hover{box-shadow:0 4px 20px var(--shadow-color)}
+.panel h2{font-size:14px;color:var(--accent-color);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-color);font-weight:600}
+.btn{padding:8px 16px;border:none;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all .2s ease;display:inline-flex;align-items:center;gap:5px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-primary{background:linear-gradient(135deg,var(--accent-gradient-start) 0%,var(--accent-gradient-end) 100%);color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 3px 10px rgba(66,153,225,0.3)}
+.btn-secondary{background:rgba(0,0,0,0.05);color:var(--text-primary);border:1px solid var(--border-color)}
+.btn-secondary:hover:not(:disabled){background:rgba(0,0,0,0.08);transform:translateY(-1px)}
+.btn-warning{background:linear-gradient(135deg,#ed8936 0%,#dd6b20 100%);color:#fff}
+.btn-warning:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 3px 10px rgba(237,137,54,0.3)}
+.btn-large{padding:12px 20px;font-size:14px}
+.btn-small{padding:5px 12px;font-size:12px}
+.device-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.info-item{display:flex;flex-direction:column;background:var(--bg-item);padding:10px 12px;border-radius:6px}
+.info-item label{font-size:10px;color:var(--text-secondary);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.5px}
+.info-item span{font-size:13px;color:var(--text-primary);font-weight:500;font-family:'Consolas','Monaco',monospace}
+.config-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.config-item{background:var(--bg-item);padding:12px;border-radius:6px;border:1px solid var(--border-color);transition:border-color .3s ease}
+.config-item:hover{border-color:var(--border-hover)}
+.config-label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);margin-bottom:8px}
+.tooltip-icon{width:14px;height:14px;background:rgba(66,153,225,0.15);color:var(--accent-color);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;cursor:help}
+.config-control select,.config-control input{width:100%;padding:8px 10px;border:1px solid var(--border-color);border-radius:5px;font-size:13px;background:var(--bg-panel);color:var(--text-primary);transition:all .2s ease}
+.config-control select{cursor:pointer}
+.config-control select:focus,.config-control input:focus{outline:none;border-color:var(--accent-color);box-shadow:0 0 0 2px rgba(66,153,225,0.15)}
+.config-control select:disabled,.config-control input:disabled{opacity:.5;cursor:not-allowed}
+.config-control select option{background:var(--bg-primary);color:var(--text-primary)}
+.config-notice{margin-top:12px;padding:10px 12px;background:rgba(237,137,54,0.1);border:1px solid rgba(237,137,54,0.3);border-radius:6px;display:flex;align-items:center;gap:8px;color:var(--warning-color);font-size:12px}
+.notice-icon{width:18px;height:18px;background:var(--warning-color);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:11px}
+.actions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.log-output{background:var(--bg-item);border:1px solid var(--border-color);border-radius:6px;padding:12px;min-height:120px;max-height:200px;overflow-y:auto;font-family:'Consolas','Monaco',monospace;font-size:11px;line-height:1.4}
+.log-entry{margin-bottom:4px;padding:3px 0;border-left:2px solid transparent;padding-left:8px}
+.log-entry.info{color:var(--text-secondary);border-left-color:var(--accent-color)}
+.log-entry.success{color:var(--success-color);border-left-color:var(--success-color)}
+.log-entry.error{color:var(--error-color);border-left-color:var(--error-color)}
+.log-entry.warning{color:var(--warning-color);border-left-color:var(--warning-color)}
+.log-actions{margin-top:8px;display:flex;justify-content:flex-end}
+.log-output::-webkit-scrollbar{width:6px}
+.log-output::-webkit-scrollbar-track{background:var(--bg-item);border-radius:3px}
+.log-output::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:3px}
+.log-output::-webkit-scrollbar-thumb:hover{background:var(--text-secondary)}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000}
+.modal-content{background:linear-gradient(135deg,var(--bg-primary) 0%,var(--bg-secondary) 100%);border:1px solid var(--border-color);border-radius:10px;padding:20px;max-width:360px;width:90%;box-shadow:0 15px 50px var(--shadow-color)}
+.modal-content h3{color:var(--accent-color);margin-bottom:12px;font-size:16px}
+.modal-content p{color:var(--text-secondary);margin-bottom:16px;line-height:1.5;font-size:13px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.theme-toggle{position:fixed;top:15px;left:50%;transform:translateX(-50%);background:var(--bg-panel);border:1px solid var(--border-color);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:all .3s ease;backdrop-filter:blur(10px);z-index:1000;overflow:hidden}
+.theme-toggle:hover{transform:translateX(-50%) scale(1.1);box-shadow:0 4px 15px var(--shadow-color)}
+.theme-toggle:active{transform:translateX(-50%) scale(0.95)}
+.theme-toggle span{display:inline-block;transition:transform .3s ease}
+.theme-toggle:hover span{transform:rotate(15deg)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+@media(max-width:768px){.container{padding:10px}.header{flex-direction:column;gap:12px;text-align:center}.header-left{flex-direction:column;align-items:center;gap:4px}.device-info-grid{grid-template-columns:repeat(2,1fr)}.config-grid{grid-template-columns:1fr}.actions-grid{grid-template-columns:1fr}.theme-toggle{top:10px;width:36px;height:36px;font-size:16px}}
+@media(max-width:600px){.device-info-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" title="切换主题"><span id="themeIcon">🌙</span></button>
+<div class="container">
+<header class="header">
+<div class="header-left"><h1>akaLink Pro</h1><span class="subtitle">配置工具</span></div>
+<div class="device-status">
+<span id="connectionStatus" class="status-disconnected">未连接</span>
+<button id="connectBtn" class="btn btn-primary">连接设备</button>
+<button id="disconnectBtn" class="btn btn-secondary" disabled>断开连接</button>
+</div>
+</header>
+<section class="panel device-info-panel">
+<h2>设备信息</h2>
+<div class="device-info-grid" id="deviceInfo">
+<div class="info-item"><label>型号:</label><span id="deviceModel">--</span></div>
+<div class="info-item"><label>序列号:</label><span id="deviceSN">--</span></div>
+<div class="info-item"><label>目标电压:</label><span id="targetVoltage">--</span></div>
+<div class="info-item"><label>硬件版本:</label><span id="deviceHWVersion">--</span></div>
+<div class="info-item"><label>固件版本:</label><span id="deviceFWVersion">--</span></div>
+<div class="info-item"><label>Bootloader 版本:</label><span id="deviceBLVersion">--</span></div>
+<div class="info-item"><label>硬件生产日期:</label><span id="deviceHWProdTime">--</span></div>
+<div class="info-item"><label>固件编译时间:</label><span id="deviceFWCompileTime">--</span></div>
+<div class="info-item"><label>Bootloader 编译时间:</label><span id="deviceBLCompileTime">--</span></div>
+</div>
+</section>
+<section class="panel config-panel">
+<h2>设备配置</h2>
+<div class="config-grid">
+<div class="config-item" title="选择调试接口模式：SWD+VCOM 使用UART功能；SWD+JTAG 使用JTAG功能">
+<label class="config-label">输出模式<span class="tooltip-icon">?</span></label>
+<div class="config-control"><select id="outputMode" disabled><option value="0">SWD + VCOM (UART)</option><option value="1">SWD + JTAG</option></select></div>
+</div>
+<div class="config-item" title="开启5V输出可为外接隔离器模块或目标板供电；关闭后板载电平转换可能无法工作">
+<label class="config-label">5V输出<span class="tooltip-icon">?</span></label>
+<div class="config-control"><select id="v5Mode" disabled><option value="0">关闭</option><option value="1">开启</option></select></div>
+</div>
+<div class="config-item" title="关闭：适用于OpenOCD；开启(x10)：适用于Keil MDK">
+<label class="config-label">时钟加速模式<span class="tooltip-icon">?</span></label>
+<div class="config-control"><select id="clockMode" disabled><option value="0">关闭 (OpenOCD)</option><option value="1">开启 x10 (Keil)</option></select></div>
+</div>
+<div class="config-item" title="LED1（蓝色，PB11）显示功能选择">
+<label class="config-label">LED1 显示模式<span class="tooltip-icon">?</span></label>
+<div class="config-control"><select id="led1Mode" disabled>
+<option value="1">1 - DAP RUNNING (亮/灭)</option>
+<option value="2">2 - DAP CONNECT (亮/灭)</option>
+<option value="3">3 - DAP 状态 (闪烁/常亮)</option>
+<option value="4">4 - 调试器电源 (常亮)</option>
+<option value="5">5 - 外部参考电压</option>
+<option value="6">6 - CDC 串口 TX</option>
+<option value="7">7 - CDC 串口 RX</option>
+<option value="8">8 - CDC 串口 TX/RX</option>
+<option value="9">9 - 常灭</option>
+</select></div>
+</div>
+<div class="config-item" title="LED2（黄色，PB12）显示功能选择">
+<label class="config-label">LED2 显示模式<span class="tooltip-icon">?</span></label>
+<div class="config-control"><select id="led2Mode" disabled>
+<option value="1">1 - DAP RUNNING (亮/灭)</option>
+<option value="2">2 - DAP CONNECT (亮/灭)</option>
+<option value="3">3 - DAP 状态 (闪烁/常亮)</option>
+<option value="4">4 - 调试器电源 (常亮)</option>
+<option value="5">5 - 外部参考电压</option>
+<option value="6">6 - CDC 串口 TX</option>
+<option value="7">7 - CDC 串口 RX</option>
+<option value="8">8 - CDC 串口 TX/RX</option>
+<option value="9">9 - 常灭</option>
+</select></div>
+</div>
+<div class="config-item" title="LED 模式5 的外部参考判定阈值（1800 - 5000 mV）。检测值高于该值的90%点亮，低于85%熄灭">
+<label class="config-label">外部参考设定值 (mV)<span class="tooltip-icon">?</span></label>
+<div class="config-control"><input id="vrefValue" type="number" min="1800" max="5000" step="10" value="3300" disabled></div>
+</div>
+</div>
+<div class="config-notice" id="configNotice" style="display:none"><span class="notice-icon">!</span><span>配置已修改，点击"保存配置"后生效</span></div>
+</section>
+<section class="panel actions-panel">
+<h2>操作</h2>
+<div class="actions-grid">
+<button id="saveConfigBtn" class="btn btn-primary btn-large" disabled>保存配置</button>
+<button id="resetBtn" class="btn btn-secondary btn-large" disabled>复位设备</button>
+<button id="dfuBtn" class="btn btn-warning btn-large" disabled>进入DFU模式</button>
+</div>
+</section>
+<section class="panel log-panel">
+<h2>操作日志</h2>
+<div class="log-output" id="logOutput"><div class="log-entry info">等待连接设备...</div></div>
+<div class="log-actions"><button id="clearLogBtn" class="btn btn-small">清空日志</button></div>
+</section>
+</div>
+<div class="modal" id="confirmModal" style="display:none">
+<div class="modal-content">
+<h3 id="modalTitle">确认</h3>
+<p id="modalMessage">确定要执行此操作吗？</p>
+<div class="modal-actions"><button id="modalCancel" class="btn btn-secondary">取消</button><button id="modalConfirm" class="btn btn-primary">确定</button></div>
+</div>
+</div>
+<script>
+/* ------------------------------------------------------------------ *
+ * Custom HID 协议常量（与 Custom HID Protocol.md 一致）
+ *   request  Report ID 0x01 / response Report ID 0x02
+ *   Byte[0]=ReportID Byte[1]=DataLength(含cmd) Byte[2]=Command
+ *
+ * GET_CONFIG  0x01 -> [output, v5, clock, led1, led2, vrefL, vrefH] (len 0x07)
+ * SET_CONFIG  0x02 <- [output, v5, clock, led1, led2, vrefL, vrefH] (len 0x07)
+ * GET_VOLTAGE 0x03 -> [lo, hi] (mV)
+ * SAVE_CONFIG 0x04
+ * 信息类      0x10..0x17
+ * RESET 0xFE / ENTER_DFU 0xFF
+ * ------------------------------------------------------------------ */
+const CMD = {
+  GET_CONFIG: 0x01, SET_CONFIG: 0x02, GET_VOLTAGE: 0x03, SAVE_CONFIG: 0x04,
+  GET_MODEL: 0x10, GET_SERIAL: 0x11, GET_HWVER: 0x12, GET_FWVER: 0x13,
+  GET_BLVER: 0x14, GET_HW_PROD_DATE: 0x15, GET_FW_COMPILE_DATE: 0x16,
+  GET_BL_COMPILE_DATE: 0x17, RESET_DEVICE: 0xFE, ENTER_DFU: 0xFF
+};
+const VREF_MIN = 1800;
+const VREF_MAX = 5000;
+
+function isWebHIDSupported() { return 'hid' in navigator; }
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+function formatTime(date) { return date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }); }
+
+function createHIDPacket(reportId, dataLength, commandType, data = null) {
+  const packet = new Uint8Array(64);
+  packet[0] = reportId;
+  packet[1] = dataLength;
+  packet[2] = commandType;
+  if (data) packet.set(data, 3);
+  return packet;
+}
+
+function parseString(data, cmd) {
+  if (data.length < 2 || data[1] !== cmd) return null;
+  const chars = [];
+  for (let i = 2; i < data.length && data[i] !== 0; i++) chars.push(String.fromCharCode(data[i]));
+  return chars.join('');
+}
+
+function parseConfigData(data) {
+  if (data.length < 7 || data[1] !== CMD.GET_CONFIG) return null;
+  return {
+    outputMode: data[2],
+    v5Mode: data[3],
+    clockMode: data[4],
+    led1Mode: data[5],
+    led2Mode: data[6],
+    vref: (data[8] << 8) | data[7]
+  };
+}
+
+function parseVoltageData(data) {
+  if (data.length < 4 || data[1] !== CMD.GET_VOLTAGE) return null;
+  return (data[3] << 8) | data[2];
+}
+
+function isResponseSuccess(data, expectedCmd) {
+  return data.length >= 2 && data[1] === expectedCmd;
+}
+
+class DeviceManager {
+  constructor() {
+    this.device = null;
+    this.onConnectCallback = null;
+    this.onDisconnectCallback = null;
+    this.pendingResponse = null;
+    this.responseTimeout = 5000;
+    this.boundHandleInputReport = this.handleInputReport.bind(this);
+    this.boundHandleDisconnect = this.handleDisconnect.bind(this);
+  }
+
+  setOnConnect(cb) { this.onConnectCallback = cb; }
+  setOnDisconnect(cb) { this.onDisconnectCallback = cb; }
+  isSupported() { return isWebHIDSupported(); }
+
+  async requestDevice() {
+    if (!this.isSupported()) throw new Error('当前浏览器不支持 WebHID API');
+    if (this.device) await this.disconnect();
+    const devices = await navigator.hid.requestDevice({ filters: [] });
+    if (devices.length === 0) throw new Error('未选择任何设备');
+    this.device = devices[0];
+    if (this.device.opened) {
+      try { await this.device.close(); await sleep(100); } catch (e) {}
+    }
+    await this.device.open();
+    await sleep(100);
+    this.device.addEventListener('inputreport', this.boundHandleInputReport);
+    navigator.hid.addEventListener('disconnect', this.boundHandleDisconnect);
+    if (this.onConnectCallback) this.onConnectCallback(this.device);
+    return this.device;
+  }
+
+  async setDevice(device) {
+    if (!device || !device.opened) return;
+    if (this.device) await this.disconnect();
+    this.device = device;
+    await sleep(100);
+    this.device.addEventListener('inputreport', this.boundHandleInputReport);
+    navigator.hid.addEventListener('disconnect', this.boundHandleDisconnect);
+    if (this.onConnectCallback) this.onConnectCallback(this.device);
+  }
+
+  async disconnect() {
+    if (this.device) {
+      const wasConnected = this.device.opened;
+      const deviceToClose = this.device;
+      deviceToClose.removeEventListener('inputreport', this.boundHandleInputReport);
+      this.device = null;
+      navigator.hid.removeEventListener('disconnect', this.boundHandleDisconnect);
+      if (this.pendingResponse) {
+        this.pendingResponse.reject(new Error('设备已断开连接'));
+        this.pendingResponse = null;
+      }
+      try { if (wasConnected && deviceToClose) await deviceToClose.close(); } catch (e) {}
+      if (this.onDisconnectCallback) this.onDisconnectCallback();
+    }
+  }
+
+  handleInputReport(event) {
+    const data = new Uint8Array(event.data.buffer);
+    if (this.pendingResponse) {
+      const pending = this.pendingResponse;
+      this.pendingResponse = null;
+      pending.resolve(data);
+    }
+  }
+
+  handleDisconnect(event) {
+    if (!this.device) return;
+    const isSameDevice = event.device.productId === this.device.productId && event.device.vendorId === this.device.vendorId;
+    const isSameSerial = !event.device.serialNumber || !this.device.serialNumber || event.device.serialNumber === this.device.serialNumber;
+    if (isSameDevice && isSameSerial) {
+      this.device = null;
+      navigator.hid.removeEventListener('disconnect', this.boundHandleDisconnect);
+      if (this.onDisconnectCallback) this.onDisconnectCallback();
+    }
+  }
+
+  async sendAndWaitResponse(data, timeout = this.responseTimeout) {
+    if (!this.device || !this.device.opened) throw new Error('设备未连接');
+    if (this.pendingResponse) {
+      this.pendingResponse.reject(new Error('新的请求覆盖了旧请求'));
+      this.pendingResponse = null;
+    }
+    const responsePromise = new Promise((resolve, reject) => {
+      this.pendingResponse = { resolve, reject };
+      setTimeout(() => {
+        if (this.pendingResponse) {
+          this.pendingResponse = null;
+          reject(new Error('设备响应超时'));
+        }
+      }, timeout);
+    });
+    await this.sendOutputReport(data);
+    return responsePromise;
+  }
+
+  async sendOutputReport(data, reportId = 0) {
+    if (!this.device) throw new Error('设备未连接');
+    if (!this.device.opened) throw new Error('设备连接已断开，请重新连接');
+    try {
+      const reportInfo = this.getDeviceReportInfo();
+      if (reportId === 0 && reportInfo) reportId = reportInfo.outputReportId;
+      let reportSize = 64;
+      if (reportInfo) reportSize = reportInfo.outputReportSize;
+      const sendData = data.slice(1);
+      let paddedData = sendData;
+      if (sendData.length < reportSize - 1) {
+        paddedData = new Uint8Array(reportSize - 1);
+        paddedData.set(sendData);
+      } else if (sendData.length > reportSize - 1) {
+        paddedData = sendData.slice(0, reportSize - 1);
+      }
+      await this.device.sendReport(reportId, paddedData);
+    } catch (error) {
+      if (error.name === 'NotAllowedError' || error.name === 'NotFoundError') {
+        this.device = null;
+        if (this.onDisconnectCallback) this.onDisconnectCallback();
+      }
+      throw new Error('发送失败');
+    }
+  }
+
+  getDeviceReportInfo() {
+    const fallback = { outputReportId: 0, outputReportSize: 64, inputReportId: 0, inputReportSize: 64 };
+    if (!this.device || !this.device.collections) return fallback;
+    const collections = this.device.collections;
+    if (collections.length > 0) {
+      const c = collections[0];
+      const r = { outputReportId: 0, outputReportSize: 64, inputReportId: 0, inputReportSize: 64 };
+      if (c.outputReports && c.outputReports.length > 0) {
+        const o = c.outputReports[0];
+        r.outputReportId = o.reportId || 0;
+        if (o.items && o.items.length > 0) {
+          const bits = o.items.reduce((s, i) => s + ((i.reportCount || 1) * (i.reportSize || 8)), 0);
+          r.outputReportSize = Math.ceil(bits / 8);
+        }
+      }
+      if (c.inputReports && c.inputReports.length > 0) {
+        const inp = c.inputReports[0];
+        r.inputReportId = inp.reportId || 0;
+        if (inp.items && inp.items.length > 0) {
+          const bits = inp.items.reduce((s, i) => s + ((i.reportCount || 1) * (i.reportSize || 8)), 0);
+          r.inputReportSize = Math.ceil(bits / 8);
+        }
+      }
+      return r;
+    }
+    return fallback;
+  }
+
+  async getPairedDevices() {
+    if (!this.isSupported()) return [];
+    try { return await navigator.hid.getDevices(); } catch (e) { return []; }
+  }
+
+  async getConfig() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_CONFIG);
+    const response = await this.sendAndWaitResponse(packet);
+    const config = parseConfigData(response);
+    if (!config) throw new Error('获取配置失败');
+    return config;
+  }
+
+  async setConfig(config) {
+    const data = new Uint8Array([
+      config.outputMode, config.v5Mode, config.clockMode,
+      config.led1Mode, config.led2Mode,
+      config.vref & 0xFF, (config.vref >> 8) & 0xFF
+    ]);
+    const packet = createHIDPacket(0x01, 0x07, CMD.SET_CONFIG, data);
+    const response = await this.sendAndWaitResponse(packet);
+    return isResponseSuccess(response, CMD.SET_CONFIG);
+  }
+
+  async getVoltage() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_VOLTAGE);
+    const response = await this.sendAndWaitResponse(packet);
+    const voltage = parseVoltageData(response);
+    if (voltage === null) throw new Error('获取电压失败');
+    return voltage;
+  }
+
+  async saveConfig() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.SAVE_CONFIG);
+    const response = await this.sendAndWaitResponse(packet);
+    return isResponseSuccess(response, CMD.SAVE_CONFIG);
+  }
+
+  async getModel() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_MODEL);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_MODEL);
+    if (!v) throw new Error('获取型号失败');
+    return v;
+  }
+
+  async getSN() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_SERIAL);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_SERIAL);
+    if (!v) throw new Error('获取序列号失败');
+    return v;
+  }
+
+  async getHWVersion() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_HWVER);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_HWVER);
+    if (!v) throw new Error('获取硬件版本失败');
+    return v;
+  }
+
+  async getFWVersion() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_FWVER);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_FWVER);
+    if (!v) throw new Error('获取固件版本失败');
+    return v;
+  }
+
+  async getBLVersion() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_BLVER);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_BLVER);
+    if (!v) throw new Error('获取Bootloader版本失败');
+    return v;
+  }
+
+  async getHWProdDate() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_HW_PROD_DATE);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_HW_PROD_DATE);
+    if (!v) throw new Error('获取硬件生产日期失败');
+    return v;
+  }
+
+  async getFWCompileTime() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_FW_COMPILE_DATE);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_FW_COMPILE_DATE);
+    if (!v) throw new Error('获取固件编译时间失败');
+    return v;
+  }
+
+  async getBLCompileTime() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.GET_BL_COMPILE_DATE);
+    const response = await this.sendAndWaitResponse(packet);
+    const v = parseString(response, CMD.GET_BL_COMPILE_DATE);
+    if (!v) throw new Error('获取Bootloader编译时间失败');
+    return v;
+  }
+
+  async resetDevice() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.RESET_DEVICE);
+    await this.sendOutputReport(packet);
+    await sleep(100);
+    this.device = null;
+    if (this.onDisconnectCallback) this.onDisconnectCallback();
+  }
+
+  async enterDFU() {
+    const packet = createHIDPacket(0x01, 0x01, CMD.ENTER_DFU);
+    await this.sendOutputReport(packet);
+    await sleep(100);
+    this.device = null;
+    if (this.onDisconnectCallback) this.onDisconnectCallback();
+  }
+}
+
+class akaLinkConfigApp {
+  constructor() {
+    if (!isWebHIDSupported()) { this.showBrowserNotSupported(); return; }
+    this.deviceManager = new DeviceManager();
+    this.currentConfig = null;
+    this.originalConfig = null;
+    this.isConfigModified = false;
+    this.voltageTimer = null;
+    this.bindElements();
+    this.bindEvents();
+    this.setupCallbacks();
+    this.restorePairedDevices();
+  }
+
+  bindElements() {
+    this.connectBtn = document.getElementById('connectBtn');
+    this.disconnectBtn = document.getElementById('disconnectBtn');
+    this.connectionStatus = document.getElementById('connectionStatus');
+    this.deviceModel = document.getElementById('deviceModel');
+    this.deviceSN = document.getElementById('deviceSN');
+    this.targetVoltage = document.getElementById('targetVoltage');
+    this.deviceHWVersion = document.getElementById('deviceHWVersion');
+    this.deviceFWVersion = document.getElementById('deviceFWVersion');
+    this.deviceBLVersion = document.getElementById('deviceBLVersion');
+    this.deviceHWProdTime = document.getElementById('deviceHWProdTime');
+    this.deviceFWCompileTime = document.getElementById('deviceFWCompileTime');
+    this.deviceBLCompileTime = document.getElementById('deviceBLCompileTime');
+    this.outputMode = document.getElementById('outputMode');
+    this.v5Mode = document.getElementById('v5Mode');
+    this.clockMode = document.getElementById('clockMode');
+    this.led1Mode = document.getElementById('led1Mode');
+    this.led2Mode = document.getElementById('led2Mode');
+    this.vrefValue = document.getElementById('vrefValue');
+    this.configNotice = document.getElementById('configNotice');
+    this.saveConfigBtn = document.getElementById('saveConfigBtn');
+    this.resetBtn = document.getElementById('resetBtn');
+    this.dfuBtn = document.getElementById('dfuBtn');
+    this.logOutput = document.getElementById('logOutput');
+    this.clearLogBtn = document.getElementById('clearLogBtn');
+    this.confirmModal = document.getElementById('confirmModal');
+    this.modalTitle = document.getElementById('modalTitle');
+    this.modalMessage = document.getElementById('modalMessage');
+    this.modalCancel = document.getElementById('modalCancel');
+    this.modalConfirm = document.getElementById('modalConfirm');
+  }
+
+  bindEvents() {
+    this.connectBtn.addEventListener('click', () => this.handleConnect());
+    this.disconnectBtn.addEventListener('click', () => this.handleDisconnect());
+    [this.outputMode, this.v5Mode, this.clockMode, this.led1Mode, this.led2Mode]
+      .forEach(el => el.addEventListener('change', () => this.onConfigChanged()));
+    this.vrefValue.addEventListener('input', () => this.onConfigChanged());
+    this.saveConfigBtn.addEventListener('click', () => this.handleSaveConfig());
+    this.resetBtn.addEventListener('click', () => this.handleReset());
+    this.dfuBtn.addEventListener('click', () => this.handleDFU());
+    this.clearLogBtn.addEventListener('click', () => this.clearLog());
+    this.modalCancel.addEventListener('click', () => this.hideModal());
+  }
+
+  setupCallbacks() {
+    this.deviceManager.setOnConnect(() => {
+      this.log('已连接', 'success');
+      this.updateConnectionStatus(true);
+      this.readDeviceInfo();
+      this.startVoltageUpdate();
+    });
+    this.deviceManager.setOnDisconnect(() => {
+      this.log('已断开', 'warning');
+      this.stopVoltageUpdate();
+      this.updateConnectionStatus(false);
+      this.clearDeviceInfo();
+    });
+  }
+
+  startVoltageUpdate() {
+    this.stopVoltageUpdate();
+    this.voltageTimer = setInterval(() => this.readVoltage(), 4000);
+  }
+
+  stopVoltageUpdate() {
+    if (this.voltageTimer) {
+      clearInterval(this.voltageTimer);
+      this.voltageTimer = null;
+    }
+  }
+
+  async restorePairedDevices() {
+    try {
+      const devices = await this.deviceManager.getPairedDevices();
+      for (const device of devices) {
+        if (device.opened) {
+          await this.deviceManager.setDevice(device);
+          this.log('已恢复连接', 'success');
+          break;
+        }
+      }
+    } catch (e) {}
+  }
+
+  async handleConnect() {
+    try { await this.deviceManager.requestDevice(); }
+    catch (e) { this.log('连接失败: ' + e.message, 'error'); }
+  }
+
+  async handleDisconnect() {
+    try { await this.deviceManager.disconnect(); }
+    catch (e) { this.log('断开失败: ' + e.message, 'error'); }
+  }
+
+  readConfigFromUI() {
+    let vref = parseInt(this.vrefValue.value, 10);
+    if (isNaN(vref)) vref = 3300;
+    vref = Math.min(VREF_MAX, Math.max(VREF_MIN, vref));
+    return {
+      outputMode: parseInt(this.outputMode.value, 10),
+      v5Mode: parseInt(this.v5Mode.value, 10),
+      clockMode: parseInt(this.clockMode.value, 10),
+      led1Mode: parseInt(this.led1Mode.value, 10),
+      led2Mode: parseInt(this.led2Mode.value, 10),
+      vref: vref
+    };
+  }
+
+  async handleSaveConfig() {
+    if (!this.isConfigModified) { this.log('配置未修改', 'info'); return; }
+    try {
+      const config = this.readConfigFromUI();
+      this.vrefValue.value = config.vref;
+      await this.deviceManager.setConfig(config);
+      await this.deviceManager.saveConfig();
+      this.log('配置已保存', 'success');
+      this.originalConfig = { ...config };
+      this.isConfigModified = false;
+      this.updateConfigNotice();
+      this.readVoltage();
+    } catch (e) { this.log('保存失败: ' + e.message, 'error'); }
+  }
+
+  handleReset() {
+    this.showModal('确认复位', '确定要复位设备吗？', async () => {
+      this.hideModal();
+      try { await this.deviceManager.resetDevice(); this.log('已复位', 'success'); }
+      catch (e) { this.log('复位失败: ' + e.message, 'error'); }
+    });
+  }
+
+  handleDFU() {
+    this.showModal('确认进入DFU', '确定要进入DFU模式吗？', async () => {
+      this.hideModal();
+      try { await this.deviceManager.enterDFU(); this.log('已进入DFU', 'success'); }
+      catch (e) { this.log('进入DFU失败: ' + e.message, 'error'); }
+    });
+  }
+
+  onConfigChanged() {
+    if (!this.originalConfig) return;
+    const currentConfig = this.readConfigFromUI();
+    this.isConfigModified =
+      currentConfig.outputMode !== this.originalConfig.outputMode ||
+      currentConfig.v5Mode !== this.originalConfig.v5Mode ||
+      currentConfig.clockMode !== this.originalConfig.clockMode ||
+      currentConfig.led1Mode !== this.originalConfig.led1Mode ||
+      currentConfig.led2Mode !== this.originalConfig.led2Mode ||
+      currentConfig.vref !== this.originalConfig.vref;
+    this.updateConfigNotice();
+  }
+
+  async readDeviceInfo() {
+    try {
+      this.deviceModel.textContent = await this.deviceManager.getModel();
+      this.deviceSN.textContent = await this.deviceManager.getSN();
+      this.deviceHWVersion.textContent = await this.deviceManager.getHWVersion();
+      this.deviceFWVersion.textContent = await this.deviceManager.getFWVersion();
+      this.deviceBLVersion.textContent = await this.deviceManager.getBLVersion();
+      this.deviceHWProdTime.textContent = await this.deviceManager.getHWProdDate();
+      this.deviceFWCompileTime.textContent = await this.deviceManager.getFWCompileTime();
+      this.deviceBLCompileTime.textContent = await this.deviceManager.getBLCompileTime();
+      const config = await this.deviceManager.getConfig();
+      this.originalConfig = { ...config };
+      this.applyConfigToUI(config);
+      this.readVoltage();
+      this.setConfigControlsEnabled(true);
+    } catch (e) { this.log('读取失败: ' + e.message, 'error'); }
+  }
+
+  async readVoltage() {
+    try {
+      const voltage = await this.deviceManager.getVoltage();
+      this.targetVoltage.textContent = voltage + ' mV (' + (voltage / 1000).toFixed(2) + ' V)';
+    } catch (e) { this.targetVoltage.textContent = '--'; }
+  }
+
+  updateConnectionStatus(connected) {
+    if (connected) {
+      this.connectionStatus.textContent = '已连接';
+      this.connectionStatus.className = 'status-connected';
+      this.connectBtn.disabled = true;
+      this.disconnectBtn.disabled = false;
+      this.saveConfigBtn.disabled = false;
+      this.resetBtn.disabled = false;
+      this.dfuBtn.disabled = false;
+    } else {
+      this.connectionStatus.textContent = '未连接';
+      this.connectionStatus.className = 'status-disconnected';
+      this.connectBtn.disabled = false;
+      this.disconnectBtn.disabled = true;
+      this.saveConfigBtn.disabled = true;
+      this.resetBtn.disabled = true;
+      this.dfuBtn.disabled = true;
+      this.setConfigControlsEnabled(false);
+    }
+  }
+
+  clearDeviceInfo() {
+    this.deviceModel.textContent = '--';
+    this.deviceSN.textContent = '--';
+    this.targetVoltage.textContent = '--';
+    this.deviceHWVersion.textContent = '--';
+    this.deviceFWVersion.textContent = '--';
+    this.deviceBLVersion.textContent = '--';
+    this.deviceHWProdTime.textContent = '--';
+    this.deviceFWCompileTime.textContent = '--';
+    this.deviceBLCompileTime.textContent = '--';
+    this.outputMode.value = '0';
+    this.v5Mode.value = '1';
+    this.clockMode.value = '0';
+    this.led1Mode.value = '4';
+    this.led2Mode.value = '5';
+    this.vrefValue.value = '3300';
+    this.originalConfig = null;
+    this.isConfigModified = false;
+    this.updateConfigNotice();
+  }
+
+  applyConfigToUI(config) {
+    this.outputMode.value = config.outputMode.toString();
+    this.v5Mode.value = config.v5Mode.toString();
+    this.clockMode.value = config.clockMode.toString();
+    this.led1Mode.value = config.led1Mode.toString();
+    this.led2Mode.value = config.led2Mode.toString();
+    this.vrefValue.value = config.vref.toString();
+  }
+
+  setConfigControlsEnabled(enabled) {
+    this.outputMode.disabled = !enabled;
+    this.v5Mode.disabled = !enabled;
+    this.clockMode.disabled = !enabled;
+    this.led1Mode.disabled = !enabled;
+    this.led2Mode.disabled = !enabled;
+    this.vrefValue.disabled = !enabled;
+  }
+
+  updateConfigNotice() {
+    this.configNotice.style.display = this.isConfigModified ? 'flex' : 'none';
+  }
+
+  log(message, type = 'info') {
+    const entry = document.createElement('div');
+    entry.className = 'log-entry ' + type;
+    entry.textContent = '[' + formatTime(new Date()) + '] ' + message;
+    this.logOutput.appendChild(entry);
+    this.logOutput.scrollTop = this.logOutput.scrollHeight;
+  }
+
+  clearLog() {
+    this.logOutput.innerHTML = '<div class="log-entry info">日志已清空</div>';
+  }
+
+  showModal(title, message, onConfirm) {
+    this.modalTitle.textContent = title;
+    this.modalMessage.textContent = message;
+    this.confirmModal.style.display = 'flex';
+    const newConfirmBtn = this.modalConfirm.cloneNode(true);
+    this.modalConfirm.parentNode.replaceChild(newConfirmBtn, this.modalConfirm);
+    this.modalConfirm = newConfirmBtn;
+    this.modalConfirm.addEventListener('click', onConfirm);
+  }
+
+  hideModal() { this.confirmModal.style.display = 'none'; }
+
+  showBrowserNotSupported() {
+    document.body.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;' +
+      'font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;text-align:center;padding:20px;' +
+      'background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#e0e0e0">' +
+      '<h1 style="color:#e74c3c;margin-bottom:20px">浏览器不支持</h1>' +
+      '<p style="color:#8892b0;max-width:600px;line-height:1.6">当前浏览器不支持 WebHID API，请使用 Chrome 89+ 或 Edge 89+。</p></div>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => { window.akaLinkApp = new akaLinkConfigApp(); });
+
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const body = document.body;
+const THEME_KEY = 'akalink-theme';
+function getInitialTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved) return saved;
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  return 'light';
+}
+function applyTheme(theme) {
+  if (theme === 'light') { body.classList.remove('dark-theme'); themeIcon.textContent = '☀️'; }
+  else { body.classList.add('dark-theme'); themeIcon.textContent = '🌙'; }
+  localStorage.setItem(THEME_KEY, theme);
+}
+applyTheme(getInitialTheme());
+themeToggle.addEventListener('click', () => {
+  const isDark = body.classList.contains('dark-theme');
+  applyTheme(isDark ? 'light' : 'dark');
+});
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (!localStorage.getItem(THEME_KEY)) applyTheme(e.matches ? 'dark' : 'light');
+  });
+}
+window.addEventListener('storage', e => { if (e.key === THEME_KEY) applyTheme(e.newValue || 'dark'); });
+</script>
+</body>
+</html>

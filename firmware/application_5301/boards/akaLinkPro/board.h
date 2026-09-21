@@ -61,6 +61,17 @@
 #define BOARD_FLASH_BASE_ADDRESS (0x80000000UL) /* Check */
 #define BOARD_FLASH_SIZE (SIZE_1MB)
 
+/* XPI NOR configuration for ROM API (same as the DFU bootloader). */
+#define BOARD_APP_XPI_NOR_XPI_BASE (HPM_XPI0)
+#define BOARD_APP_XPI_NOR_CFG_OPT_HDR (0xfcf90002U)
+#define BOARD_APP_XPI_NOR_CFG_OPT_OPT0 (0x00000006U)
+#define BOARD_APP_XPI_NOR_CFG_OPT_OPT1 (0x00001000U)
+
+/* Configuration store: the last two 4K sectors of the 1MB QSPI NOR
+ * (0x800FE000 - 0x800FFFFF) are reserved for the APP-owned parameter store.
+ * They sit at the tail of the APP region, never in the bootloader region. */
+#define BOARD_PARAM_RESERVED_SIZE (0x2000UL)
+
 /* gpiom section */
 #define BOARD_APP_GPIOM_BASE HPM_GPIOM
 #define BOARD_APP_GPIOM_USING_CTRL HPM_FGPIO

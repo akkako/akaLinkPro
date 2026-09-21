@@ -54,6 +54,11 @@
 #define BOARD_FLASH_BASE_ADDRESS (0x80000000UL) /* Check */
 #define BOARD_FLASH_SIZE (SIZE_1MB)
 
+/* Last two 4K sectors of the flash are reserved for the APP parameter store.
+ * The DFU upgrade path must never erase or program this area. */
+#define BOARD_PARAM_RESERVED_SIZE (0x2000UL)
+#define BOARD_DFU_WRITABLE_SIZE (BOARD_FLASH_SIZE - BOARD_PARAM_RESERVED_SIZE)
+
 /* gpiom section */
 #define BOARD_APP_GPIOM_BASE HPM_GPIOM
 #define BOARD_APP_GPIOM_USING_CTRL HPM_FGPIO

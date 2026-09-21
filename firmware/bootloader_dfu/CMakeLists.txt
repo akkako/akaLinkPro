@@ -36,6 +36,16 @@ endif()
 find_package(hpm-sdk REQUIRED HINTS $ENV{HPM_SDK_BASE})
 project(akaLinkPro_Boot)
 
+# Replace the SDK's DFU flash port (hpm_dfu_port.c, pulled into the SDK library)
+# with our own src/dfu_flash_port.c, which bounds every DFU erase/program to
+# [APP_DEFAULT_ADD, BOARD_DFU_WRITABLE_END) and therefore can never touch the
+# reserved parameter sectors at the tail of the flash.
+get_target_property(_boot_sdk_srcs ${HPM_SDK_LIB} SOURCES)
+if(_boot_sdk_srcs)
+    list(FILTER _boot_sdk_srcs EXCLUDE REGEX "hpm_dfu_port")
+    set_target_properties(${HPM_SDK_LIB} PROPERTIES SOURCES "${_boot_sdk_srcs}")
+endif()
+
 # Use nano libc (saves ~31KB)
 sdk_ld_options("--specs=nano.specs")
 
@@ -56,6 +66,7 @@ sdk_app_src(src/main.c)
 sdk_app_src(src/dfu_desc.c)
 sdk_app_src(src/hpm_dfu_trigger.c)
 sdk_app_src(src/boot_port_board_hpm.c)
+sdk_app_src(src/dfu_flash_port.c)
 
 # CherryUSB DFU — SDK compiles usbd_dfu.c + hpm_dfu_port.c (DfuSe path)
 # Keep include path for usbd_dfu.h / usb_dfu.h headers

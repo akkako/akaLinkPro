@@ -183,8 +183,11 @@ static struct usbd_interface intf0;
 
 void dfu_boot_init(uint8_t busid, uintptr_t reg_base)
 {
-    /* Build DfuSe interface string at runtime (like SDK sample) */
-    uint32_t dfu_app_size = BOARD_FLASH_SIZE - (USBD_DFU_APP_DEFAULT_ADD - BOARD_FLASH_BASE_ADDRESS);
+    /* Build DfuSe interface string at runtime (like SDK sample).
+     * Exclude the reserved parameter sectors at the tail of flash so dfu-util
+     * never targets them. */
+    uint32_t dfu_app_size = BOARD_FLASH_SIZE - (USBD_DFU_APP_DEFAULT_ADD - BOARD_FLASH_BASE_ADDRESS)
+                          - BOARD_PARAM_RESERVED_SIZE;
     (void)snprintf(flash_internal_desc_str, sizeof(flash_internal_desc_str),
                    "@Internal Flash /0x%08lX/%lu*%luKg",
                    (unsigned long)USBD_DFU_APP_DEFAULT_ADD,

@@ -12,6 +12,7 @@
 #include "usb_composite.h"
 #include "cdc_interface.h"
 #include "led_state.h"
+#include "api_param.h"
 
 #define UART_BASE HPM_UART2
 #define UART_IRQ IRQn_UART2
@@ -310,6 +311,16 @@ static void uartx_mux_to_uart(void)
 void uartx_enter_com_mode(void)
 {
     uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
+
+    /* output_mode 1 = SWD+JTAG: VCOM is unavailable, PA08/09 stay reserved for
+     * JTAG TDI/TDO and must not be muxed to UART2. */
+    if (g_param.output_mode != 0U)
+    {
+        s_uart2_com_mode = 0;
+        restore_global_irq(level);
+        return;
+    }
+
     /* Always re-mux: PORT_SWD_SETUP() parks the pads as GPIO first, even when
      * the software flag already says COM mode. Re-selecting the same UART2
      * function is a no-op and must not touch the FIFOs, otherwise every
@@ -347,9 +358,17 @@ void uartx_io_init(void)
     PIN_UART_DTR = IOC_PAD_PA06;
     PIN_UART_RTS = IOC_PAD_PA07;
 
-    /* Default state: UART2 owns PA08/PA09. */
-    uartx_mux_to_uart();
-    s_uart2_com_mode = 1;
+    /* Default state: in VCOM mode UART2 owns PA08/PA09; in SWD+JTAG mode the
+     * pads are left for JTAG TDI/TDO and the bridge stays disabled. */
+    if (g_param.output_mode == 0U)
+    {
+        uartx_mux_to_uart();
+        s_uart2_com_mode = 1;
+    }
+    else
+    {
+        s_uart2_com_mode = 0;
+    }
 
 #if UART2_DRIVE_DTR_RTS
     HPM_IOC->PAD[PIN_UART_DTR].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);

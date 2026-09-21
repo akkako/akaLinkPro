@@ -30,6 +30,7 @@
 #include "DAP.h"
 #include "SW_DP.h"
 #include "hpm_common.h"
+#include "api_param.h"
 
 #if (DAP_PACKET_SIZE < 64U)
 #error "Minimum Packet Size is 64!"
@@ -142,15 +143,17 @@ static uint8_t DAP_Info(uint8_t id, uint8_t *info)
 		length = DAP_GetProductFirmwareVersionString((char *)info);
 		break;
 	case DAP_ID_CAPABILITIES:
+		/* output_mode 0 = SWD+VCOM (no JTAG), 1 = SWD+JTAG (no VCOM).
+		 * Mask the capability bits accordingly so hosts pick a valid port. */
 		info[0] = ((DAP_SWD != 0) ? (1U << 0) : 0U) |
-				  ((DAP_JTAG != 0) ? (1U << 1) : 0U) |
+				  (((DAP_JTAG != 0) && (g_param.output_mode != 0U)) ? (1U << 1) : 0U) |
 				  ((SWO_UART != 0) ? (1U << 2) : 0U) |
 				  ((SWO_MANCHESTER != 0) ? (1U << 3) : 0U) |
 				  /* Atomic Commands  */ (1U << 4) |
 				  ((TIMESTAMP_CLOCK != 0U) ? (1U << 5) : 0U) |
 				  ((SWO_STREAM != 0U) ? (1U << 6) : 0U);
 
-		info[1] = ((DAP_UART_USB_COM_PORT != 0) ? (1U << 0) : 0U) |
+		info[1] = (((DAP_UART_USB_COM_PORT != 0) && (g_param.output_mode == 0U)) ? (1U << 0) : 0U) |
 				  ((DAP_CJTAG != 0) ? (1U << 1) : 0U);
 		length = 2U;
 		break;
@@ -260,6 +263,13 @@ static uint32_t DAP_Connect(const uint8_t *request, uint8_t *response)
 #endif
 #if (DAP_JTAG != 0)
 	case DAP_PORT_JTAG:
+		/* output_mode 0 = SWD+VCOM: JTAG is unavailable, TDI/TDO carry UART.
+		 * Refuse the port instead of stealing the pins from the COM port. */
+		if (g_param.output_mode == 0U)
+		{
+			port = DAP_PORT_DISABLED;
+			break;
+		}
 		DAP_Data.debug_port = DAP_PORT_JTAG;
 		PORT_JTAG_SETUP();
 		break;
@@ -449,6 +459,20 @@ static uint32_t DAP_SWJ_Clock(const uint8_t *request, uint8_t *response)
 	{
 		*response = DAP_ERROR;
 		return ((4U << 16) | 1U);
+	}
+
+	/* clock_accel_mode: some hosts (e.g. Keil MDK) request 1/10 of the intended
+	 * SWJ frequency, so multiply by 10 before rounding down. */
+	if (g_param.clock_accel_mode != 0U)
+	{
+		if (clock > (0xFFFFFFFFU / 10U))
+		{
+			clock = 0xFFFFFFFFU;
+		}
+		else
+		{
+			clock *= 10U;
+		}
 	}
 
 	Set_Clock_Delay(clock);

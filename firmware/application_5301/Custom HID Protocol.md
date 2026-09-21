@@ -9,6 +9,9 @@ Byte[0x01] = Data Length（包括 Command type 和后面的数据长度）
 Byte[0x02] = Command type
 Byte[0x03-0x3F] = Command data（可选）
 
+- 主机下发 request 使用 Report ID 0x01，设备回应 response 使用 Report ID 0x02。
+- Data Length = Command type 字节数(1) + 后续有效数据字节数。
+
 ## 指令类型
 
 1. 获取配置指令 0x01
@@ -18,28 +21,36 @@ Byte[0x03-0x3F] = Command data（可选）
    Byte[0x02] = 0x01 // Command type
    设备回应 response
    Byte[0x00] = 0x02 // Report ID
-   Byte[0x01] = 0x05 // Data Length
+   Byte[0x01] = 0x07 // Data Length
    Byte[0x02] = 0x01 // Command type
    Byte[0x03] = 输出模式 0x00 - SWD + VCOM; 0x01 - SWD + JTAG
-   Byte[0x04] = SWD模拟模式 0x00 - SPI; 0x01 - GPIO
-   Byte[0x05] = 5V输出模式 0x00 - Disable; 0x01 - Enable
-   Byte[0x06] = 时钟加速模式 0x00 - Disable; 0x01 - Enable
+   Byte[0x04] = 5V输出模式 0x00 - Disable; 0x01 - Enable
+   Byte[0x05] = 时钟加速模式 0x00 - Disable; 0x01 - Enable
+   Byte[0x06] = LED1 显示模式 0x01 - 0x09（见配置说明）
+   Byte[0x07] = LED2 显示模式 0x01 - 0x09（见配置说明）
+   Byte[0x08] = 外部参考设定值 低八位（单位 mV）
+   Byte[0x09] = 外部参考设定值 高八位（单位 mV，范围 1800 - 5000）
    设备回应代表成功
 
 2. 设置配置指令 0x02
    主机发送 request
    Byte[0x00] = 0x01 // Report ID
-   Byte[0x01] = 0x05 // Data Length
+   Byte[0x01] = 0x07 // Data Length
    Byte[0x02] = 0x02 // Command type
    Byte[0x03] = 输出模式 0x00 - SWD + VCOM; 0x01 - SWD + JTAG
-   Byte[0x04] = SWD模拟模式 0x00 - SPI; 0x01 - GPIO
-   Byte[0x05] = 5V输出模式 0x00 - Disable; 0x01 - Enable
-   Byte[0x06] = 时钟加速模式 0x00 - Disable; 0x01 - Enable
+   Byte[0x04] = 5V输出模式 0x00 - Disable; 0x01 - Enable
+   Byte[0x05] = 时钟加速模式 0x00 - Disable; 0x01 - Enable
+   Byte[0x06] = LED1 显示模式 0x01 - 0x09
+   Byte[0x07] = LED2 显示模式 0x01 - 0x09
+   Byte[0x08] = 外部参考设定值 低八位（单位 mV）
+   Byte[0x09] = 外部参考设定值 高八位（单位 mV，范围 1800 - 5000）
    设备回应 response
    Byte[0x00] = 0x02 // Report ID
    Byte[0x01] = 0x01 // Data Length
    Byte[0x02] = 0x02 // Command type
    设备回应代表成功
+   说明：本指令只写入内存并立即生效，掉电不保存；需要掉电保存请随后发送保存配置指令 0x04。
+   越界的 LED 模式会被钳制为 0x09（常灭），越界的外部参考设定值会被钳制到 1800 - 5000。
 
 3. 获取 Target 电压获取指令 0x03
    主机发送 request
@@ -53,6 +64,7 @@ Byte[0x03-0x3F] = Command data（可选）
    Byte[0x03] = 电压数据低八位
    Byte[0x04] = 电压数据高八位（电压单位为mV）
    设备回应代表成功
+   说明：返回 PB10 分压点经 x2 还原后的外部参考电压（ADC 量程 3.3V）。
 
 4. 保存当前配置设置指令 0x04
    主机发送 request
@@ -64,6 +76,7 @@ Byte[0x03-0x3F] = Command data（可选）
    Byte[0x01] = 0x01 // Data Length
    Byte[0x02] = 0x04 // Command type
    设备回应代表成功
+   说明：将当前配置写入 flash 持久化保存，见“配置持久化”章节。
 
 5. 获取型号指令 0x10
    主机发送 request
@@ -166,14 +179,53 @@ Byte[0x03-0x3F] = Command data（可选）
    Byte[0x07] = \0
    设备回应代表成功
 
-10. 设备复位指令 0xFE
+10. 获取硬件生产日期指令 0x15
+   主机发送 request
+   Byte[0x00] = 0x01 // Report ID
+   Byte[0x01] = 0x01 // Data Length
+   Byte[0x02] = 0x15 // Command type
+   设备回应 response
+   Byte[0x00] = 0x02 // Report ID
+   Byte[0x01] = 0x15 // Data Length
+   Byte[0x02] = 0x15 // Command type
+   Byte[0x03-0x15] = 日期字符串（19 字节，如 "2026-08-06"）
+   Byte[0x16] = \0
+   设备回应代表成功
+
+11. 获取固件编译日期指令 0x16
+   主机发送 request
+   Byte[0x00] = 0x01 // Report ID
+   Byte[0x01] = 0x01 // Data Length
+   Byte[0x02] = 0x16 // Command type
+   设备回应 response
+   Byte[0x00] = 0x02 // Report ID
+   Byte[0x01] = 0x15 // Data Length
+   Byte[0x02] = 0x16 // Command type
+   Byte[0x03-0x15] = 日期字符串（19 字节）
+   Byte[0x16] = \0
+   设备回应代表成功
+
+12. 获取Bootloader编译日期指令 0x17
+   主机发送 request
+   Byte[0x00] = 0x01 // Report ID
+   Byte[0x01] = 0x01 // Data Length
+   Byte[0x02] = 0x17 // Command type
+   设备回应 response
+   Byte[0x00] = 0x02 // Report ID
+   Byte[0x01] = 0x15 // Data Length
+   Byte[0x02] = 0x17 // Command type
+   Byte[0x03-0x15] = 日期字符串（19 字节）
+   Byte[0x16] = \0
+   设备回应代表成功
+
+13. 设备复位指令 0xFE
    主机发送 request
    Byte[0x00] = 0x01 // Report ID
    Byte[0x01] = 0x01 // Data Length
    Byte[0x02] = 0xFE // Command type
    设备复位，不会回复，此时连接断开
 
-11. 进入DFU模式设置指令 0xFF
+14. 进入DFU模式设置指令 0xFF
    主机发送 request
    Byte[0x00] = 0x01 // Report ID
    Byte[0x01] = 0x01 // Data Length
@@ -186,17 +238,44 @@ Byte[0x03-0x3F] = Command data（可选）
 0x00 - SWD + VCOM 此时 JTAG 功能不可用，TDI 和 TDO 用于 UART
 0x01 - SWD + JTAG 此时 VCOM 功能不可用，TDI 和 TDO 用于 JTAG
 
-2. SWD模拟模式
-0x00 - SPI 模拟 SWD 时序，能够达到较快速度，可能会出现兼容性问题
-0x01 - GPIO 模拟 SWD 时序，速度较慢，但是较为稳定
-
-3. 5V输出模式
+2. 5V输出模式
 0x00 - 关闭 5V 对外输出
 0x01 - 开启 5V 对外输出，可以用于为外接隔离器模块或目标板供电
+注意：该引脚同时给板载电平转换供电，关闭后 JTAG/SWD 电平转换可能无法工作；出厂默认开启。
 
-4. 时钟加速模式
+3. 时钟加速模式
 0x00 - 关闭时钟加速模式，此时 DAP_SWJ_Clock 指令将按照设定频率向下取整设置 SWD 和 JTAG 输出频率，适用于 openocd 等上位机
 0x01 - 开启时钟加速模式，此时 DAP_SWJ_Clock 指令将按照设定频率x10向下取整设置 SWD 和 JTAG 输出频率，适用于 Keil MDK 上位机
+
+4. LED 显示模式（LED1 = PB11 蓝色，LED2 = PB12 黄色，高电平点亮）
+可分别为两个 LED 配置 0x01 - 0x09 中任意一种模式，两个 LED 可相同也可不同：
+
+0x01 - DAP RUNNING 状态：RUNNING=1 则亮，=0 则灭
+0x02 - DAP CONNECT 状态：CONNECT=1 则亮，=0 则灭
+0x03 - DAP 状态：RUNNING 与 CONNECT 任一为 1 则以 5Hz（200ms 周期，亮/灭各 100ms）闪烁，两者都为 0 则常亮
+0x04 - 调试器电源状态：上电常亮
+0x05 - 外部参考电源状态：ADC 检测到外部参考电压高于设定值的 90% 时点亮，低于 85% 时熄灭（5% 滞回）
+0x06 - CDC 串口 TX 状态（调试器 UART 向外发数据）：有数据发送时点亮，最低点亮 50ms，持续发送则常亮
+0x07 - CDC 串口 RX 状态（调试器 UART 接收数据）：有数据接收时点亮，最低点亮 50ms，持续接收则常亮
+0x08 - CDC 串口 TX 或 RX 状态：TX 或 RX 任一触发，逻辑同上
+0x09 - 常灭
+
+出厂默认：LED1 = 0x04，LED2 = 0x05。
+
+5. 外部参考电压设定值（单位 mV，范围 1800 - 5000）
+用于 LED 显示模式 0x05 的判定阈值，对应经 x2 还原后的外部参考电压。出厂默认 3300mV。
+
+## 配置持久化
+
+- 设置配置指令（0x02）只修改内存中的配置并立即生效，掉电丢失。
+- 保存配置指令（0x04）将当前配置写入 QSPI NOR flash 持久化。
+- 存储位置：APP 固件区尾部保留的两个 4K 扇区（0x800FE000 与 0x800FF000），
+  不占用 Bootloader 区（0x80000000 - 0x8001FFFF）。
+- 双槽 ping-pong：两份配置带递增的 seq，交替写入两个扇区，保存过程掉电始终保留上一份有效配置。
+- 每个槽结构：magic("PAD0") + CRC32 + version + seq + 配置数据。上电时选取 magic/version/CRC32 校验通过
+  且 seq 最大的槽加载；若两个槽都无效，则恢复出厂默认配置并写回。
+- 常规 APP 升级（J-Link loadfile 或 dfu-util 传输 APP 镜像）不会覆盖这两个扇区；
+  整片 896K 全量 DFU 或 APP 体积增长到尾部的 8K 以内会覆盖，届时需同步调整链接脚本预留空间。
 
 ## WebUI 配置界面
 

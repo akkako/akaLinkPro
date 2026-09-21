@@ -19,8 +19,9 @@
 #define UART_RX_DMA_RESOURCE_INDEX (0U)
 /* Single RX buffer, DMAV2 infinite-loop. The periodic flush timer drains it
  * into g_uartrx, so it only needs to cover the (short) IRQ latency caused by
- * the SWD delay-sampling critical sections, not the whole SWD block command. */
-#define UART_RX_DMA_BUFFER_SIZE (8192U)
+ * the SWD delay-sampling critical sections, not the whole SWD block command.
+ * Sized at 2 * UART_FLUSH_TARGET_BYTES at least, with plenty of margin. */
+#define UART_RX_DMA_BUFFER_SIZE (16384U)
 
 /* Periodic timer that moves received bytes from the circular RX DMA buffer
  * into g_uartrx. Using a timer (instead of relying only on the UART IDLE IRQ
@@ -34,7 +35,7 @@
 #define UART_FLUSH_TIMER HPM_GPTMR0
 #define UART_FLUSH_TIMER_IRQ IRQn_GPTMR0
 #define UART_FLUSH_TIMER_CH (0U)
-#define UART_FLUSH_TARGET_BYTES (512U)
+#define UART_FLUSH_TARGET_BYTES (1024U)
 #define UART_FLUSH_MIN_US (200U)
 #define UART_FLUSH_MAX_US (10000U)
 #define UART_FLUSH_DEFAULT_US (1000U)
@@ -49,11 +50,26 @@
 #define UART2_DRIVE_DTR_RTS (0)
 #endif
 
-/* Software cap for the CDC COM port baud rate. Requests above this value are
- * clamped; requests that cannot be generated exactly are rounded to the
- * closest achievable baud (see uart2_round_baudrate). */
-#ifndef UART2_MAX_BAUDRATE
-#define UART2_MAX_BAUDRATE (9000000U)
+/* UART2 clock / baud configuration.
+ *
+ * The HPM5301 datasheet limits the UART input clock to 80 MHz. Keep that by
+ * default (PLL0CLK0 720 MHz / 9 = 80 MHz, whose hardware max baud is
+ * uart_clk / 8 = 10 Mbps).
+ *
+ * Define UART2_OVERCLOCK=1 to run the UART at 180 MHz (PLL0CLK0 / 4) instead:
+ * that reaches 22.5 Mbps and makes rates like 11.25/15/18 Mbps exactly
+ * representable, but it is OUT OF SPEC and may not be stable on every chip.
+ */
+#ifndef UART2_OVERCLOCK
+#define UART2_OVERCLOCK (0)
+#endif
+
+#if UART2_OVERCLOCK
+#define UART2_CLK_DIV (4U)             /* 720 MHz / 4 = 180 MHz (overclock) */
+#define UART2_MAX_BAUDRATE (22500000U) /* uart_clk / 8 */
+#else
+#define UART2_CLK_DIV (9U)             /* 720 MHz / 9 = 80 MHz (datasheet max) */
+#define UART2_MAX_BAUDRATE (10000000U) /* uart_clk / 8 */
 #endif
 
 /* Number of bytes of the single RX buffer that were already copied into
@@ -357,8 +373,9 @@ void uartx_preinit(void)
 
     uartx_io_init();
 
-    /* 720 MHz PLL0CLK0 / 8 = 90 MHz UART2 clock (PLL0 is always initialised). */
-    clock_set_source_divider(UART_CLK_NAME, clk_src_pll0_clk0, 8);
+    /* UART2 clock from PLL0CLK0 (PLL0 is always initialised).
+     * Default: 720/9 = 80 MHz (datasheet max); UART2_OVERCLOCK: 720/4 = 180 MHz. */
+    clock_set_source_divider(UART_CLK_NAME, clk_src_pll0_clk0, UART2_CLK_DIV);
     clock_add_to_group(UART_CLK_NAME, 0);
     intc_m_enable_irq_with_priority(UART_IRQ, 2);
     uart_clear_rxline_idle_flag(UART_BASE);

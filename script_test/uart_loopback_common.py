@@ -10,13 +10,17 @@ import serial
 #   * requested baud is clamped to UART2_MAX_BAUDRATE (9,000,000)
 #   * if it cannot be generated exactly it is rounded to the closest
 #     achievable baud = uart_clk / (div * osc), osc in {8..30 even}
-UART_CLK = 90000000          # PLL0CLK0(720MHz) / 8
-UART_MAX_BAUDRATE = 9000000
+# Must match the firmware: default is PLL0CLK0(720MHz)/9 = 80MHz (datasheet max)
+# with a 10 Mbps cap. When the firmware is built with UART2_OVERCLOCK=1 use
+# 180000000 / 22500000 (override via env UART_CLK / UART_MAX_BAUD).
+UART_CLK = int(os.environ.get("UART_CLK", "80000000"))
+UART_MAX_BAUDRATE = int(os.environ.get("UART_MAX_BAUD", "10000000"))
 
 PORT = sys.argv[1] if len(sys.argv) > 1 else "COM75"
 BAUDS = [9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600,
-         1000000, 1500000, 2000000, 2500000, 3000000, 4000000,
-         6000000, 8000000, 9000000, 10000000, 11250000]
+         1000000, 1500000, 2000000, 2500000, 3000000, 4000000, 5000000,
+         6000000, 7500000, 9000000, 10000000, 11250000, 12000000,
+         15000000, 18000000, 20000000, 22500000]
 WRITE_CHUNK = 8192
 
 

@@ -42,13 +42,15 @@ python script_test\hold_port.py COM75 8
 ### 串口速率上限与就近取整（HPM5301）
 
 - 驱动器公式：`baud = uart_clk / (div * osc)`，`osc` 为 8~30 的偶数。
-- 硬件上限 = `uart_clk / 8`。当前 UART2 时钟 = `PLL0CLK0(720MHz)/8 = 90MHz` → 硬件上限 11.25 Mbps。
-- **软件再钳到 9 Mbps**（`UART2_MAX_BAUDRATE=9000000`，见 `cdc_interface.c`）。
-- 无法精确生成的波特率会**四舍五入到最近的可达值**（`uart2_round_baudrate()`）：
-  例如 6M→5.625M、8M→7.5M、10M→9M、11.25M→9M。
+- **默认（符合手册）**：UART2 时钟 = `PLL0CLK0(720MHz)/9 = 80MHz`（UART 输入时钟手册上限），
+  硬件/软件上限 = `uart_clk/8 = 10 Mbps`（`UART2_CLK_DIV=9`、`UART2_MAX_BAUDRATE=10000000`）。
+- **超频选项**：`CMakeLists.txt` 里取消注释 `sdk_compile_definitions(-DUART2_OVERCLOCK=1)`，
+  则 `720/4 = 180MHz`、上限 22.5 Mbps，且 11.25/15/18 Mbps 可精确生成。
+  **注意：180MHz 超出手册限制，不保证所有芯片稳定，仅供测试。**
+- 无法精确生成的按**就近取整**（`uart2_round_baudrate()`）。
 - 实际写入的波特率存于 `g_uart2_applied_baud`（可用 J-Link/GDB 读取核对）。
-- 如需更高上限或覆盖更多标准波特率，可同时调大 `UART2_MAX_BAUDRATE` 并降低 UART 时钟分频
-  （如 720/4=180MHz），但需确认不超过 UART 外设数据手册的输入时钟上限。
+- 实测吞吐（默认 80MHz）：10M→~972KB/s（线速效率 99.6%）；>10M 请求被钳到 10M。
+  超频 180MHz：22.5M→~2108KB/s。
 
 ## gdb/ — 在线调试检查脚本（配合 JLink GDB Server）
 
@@ -94,12 +96,18 @@ SWD 压测（`swd/run_benchmark.py`，目标可为 STM32F1，`adapter speed` 20/
 
 实测（SWD 1000 轮 + CDC 9Mbps 连续流）：
 
-| SWD 速度 | SWD 校验 | SWD 写/读 (KiB/s) | CDC 连续流 |
+| SWD 速度 | CDC 速率 | SWD 校验 | CDC 连续流 |
 | --- | --- | --- | --- |
-| 20 MHz | 1000/1000 PASS | ~1450 / ~1360 | 全 OK（每轮 ~7MB） |
-| 36 MHz | 1000/1000 PASS | ~2400 / ~2200 | 全 OK |
-| 45 MHz | 1000/1000 PASS | ~2750 / ~2350 | 全 OK |
-| 60 MHz | 1000/1000 PASS | ~3370 / ~2800 | 全 OK |
+| 20 MHz | 9 Mbps | 1000/1000 PASS | 8/8 OK（每轮 ~7MB） |
+| 20 MHz | 10 Mbps | 1000/1000 PASS | 8/8 OK |
+| 20 MHz | 22.5 Mbps | 1000/1000 PASS | 16/16 OK（2 轮，~230MB） |
+| 36 MHz | 9 Mbps | 1000/1000 PASS | 全 OK |
+| 45 MHz | 9 Mbps | 1000/1000 PASS | 全 OK |
+| 60 MHz | 9 Mbps | 1000/1000 PASS | 全 OK |
+| 60 MHz | 22.5 Mbps | 1000/1000 PASS | 4/4 OK |
+
+说明：SWD 20MHz 的临界区抖动最大；即使 `20MHz SWD + 22.5Mbps CDC`（双向极限）
+两轮 16/16 也全部干净，无掉/重数据。偶发失败需先排查硬件接触。
 
 结论：SWD 20~60MHz 与 CDC 9Mbps **同时满载无掉数据/无重复**。
 （关键修复：给 `g_uartrx` 的 DMA-TC 生产者补齐临界区；并用 GPTMR 定时器驱动 RX flush，

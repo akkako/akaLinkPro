@@ -217,7 +217,13 @@ PA08 = JTDI/UART2_TXD，PA09 = JTDO/UART2_RXD，同一对引脚在两种功能�
   `PORT_JTAG_SETUP()` 调 `uartx_enter_jtag_mode()`。
 - `uartx_enter_jtag_mode()` **必须把 PA08/PA09 的 `FUNC_CTL` 清 0**，否则 UART2 仍占用引脚、JTAG 失效。
 - 数据通路：USB CDC OUT → `g_usbrx` → UART2 TX（DMA）；UART2 RX（DMA）→ `g_uartrx` → CDC IN。
-- 波特率由主机 `SET_LINE_CODING` 决定；UART2 时钟 = PLL0CLK0(720M)/8 = 90MHz。
+- 波特率由主机 `SET_LINE_CODING` 决定。
+- **UART2 时钟（默认 80MHz，符合手册）**：`PLL0CLK0(720M)/9 = 80MHz`，
+  硬件/软件上限 `uart_clk/8 = 10Mbps`；`UART2_CLK_DIV=9`、`UART2_MAX_BAUDRATE=10000000`。
+- `UART2_OVERCLOCK=1` 时改用 `720/4 = 180MHz`（**超出手册限制，不保证所有芯片稳定**），
+  上限 22.5Mbps，且 11.25/15/18Mbps 等可精确生成。
+  通过 `CMakeLists.txt` 里 `sdk_compile_definitions(-DUART2_OVERCLOCK=1)` 打开。
+- 无法精确生成的按就近取整（`uart2_round_baudrate()`）；实际值存于 `g_uart2_applied_baud`。
 
 ### cdc_interface.c 重要实现点（历史坑）
 - `uartx_preinit()` 必须在 `chry_dap_init()` **之后**调用（`DAP_SETUP()` 会把 PA08/09 设为 GPIO），见 `src/main.c`。
@@ -229,11 +235,12 @@ PA08 = JTDI/UART2_TXD，PA09 = JTDO/UART2_RXD，同一对引脚在两种功能�
 - **定时器驱动 flush（关键）**：SWD 的延迟采样会在临界区里关总中断，IDLE/满缓冲中断会被抖动。
   因此用 `GPTMR0` 的 **reload 中断** 周期触发 `uart_flush_timer_isr()`，把 DMA 缓冲里的数据搬进
   `g_uartrx`，不再依赖 UART IDLE 和 buffer-full 两个中断。
-  - 周期**按当前波特率动态设置**：目标每次 flush 约 `UART_FLUSH_TARGET_BYTES`(512) 字节，
-    `interval_us = 512*10*1e6/baud`，限制在 `[200us, 10ms]`；低波特率不会过度打扰 CPU。
+  - 周期**按当前波特率动态设置**：目标每次 flush 约 `UART_FLUSH_TARGET_BYTES`(1024) 字节，
+    `interval_us = 1024*10*1e6/baud`，限制在 `[200us, 10ms]`；低波特率不会过度打扰 CPU。
     `uart_flush_timer_set_baud()` 在 `SET_LINE_CODING` 后按实际波特率调用，
     用 `gptmr_channel_config_update_reload()` 只改 RLD（reload 中断周期随之改变）。
-    实测：9600→10ms，9M→568us。
+    实测：9600→10ms，9M→1.14ms，22.5M→455us。
+  - RX DMA 缓冲 `UART_RX_DMA_BUFFER_SIZE=16384`（≥ 2 个 flush 周期数据 + 余量）。
   - `g_uartrx` 放大到 32KB 以吸收主循环被 SWD 阻塞的时间。
 - **`g_uartrx` 所有读写必须在临界区**：生产者是 DMA TC / 定时器 / IDLE / 主循环轮询，
   消费者是 USB IN 完成回调和主循环；`chry_ringbuffer` 非线程安全。
@@ -244,18 +251,19 @@ PA08 = JTDI/UART2_TXD，PA09 = JTDO/UART2_RXD，同一对引脚在两种功能�
 - DTR/RTS 默认不驱动（`UART2_DRIVE_DTR_RTS=0`），本板无对应网络。
 
 ### 波特率钳制与就近取整
-- 软件上限 `UART2_MAX_BAUDRATE = 9000000`：主机请求 > 9M 一律钳到 9M。
+- 软件上限 `UART2_MAX_BAUDRATE`：默认 `10000000`(10M)，`UART2_OVERCLOCK=1` 时 `22500000`；
+  主机请求超过上限一律钳到上限。
 - `uart2_round_baudrate()` 在 `osc∈{8..30 偶数}`、`div∈[1,0xFFFF]` 中取
   `|uart_clk/(div*osc) - 目标|` 最小的可达波特率（不套用 SDK 的 3% 容差），
-  因此像 6M/10M 这类无法整除的速率会落到最近的可达值（6M→5.625M，10M→9M）。
+  无法整除的速率会落到最近的可达值。
 - 实际写入的波特率存于全局 `g_uart2_applied_baud`（可用 J-Link/GDB 读取核对）。
 
 ### 串口速率上限与回环测试
 - 硬件公式：`baud = uart_clk / (div * osc)`，`osc` 为 8~30 偶数；硬件上限 = `uart_clk / 8`。
-  当前 UART2 时钟 = PLL0CLK0(720MHz)/8 = 90MHz，硬件上限 11.25M，**软件再钳到 9M**。
-- 实测（常见速率，详见 `script_test/uart_loopback_common.py` 输出）：
-  9600~9M 全部 OK；6M→5.625M、8M→7.5M、10M→9M、11.25M→9M（就近取整/钳制）；
-  高速（≥3M）线速效率 ~99.7%。
+- 默认 UART2 时钟 = `PLL0CLK0(720MHz)/9 = 80MHz`（手册上限）→ 上限 **10 Mbps**；
+  `UART2_OVERCLOCK=1` → `720/4 = 180MHz` → 上限 **22.5 Mbps**（超规格）。
+- 实测（默认 80MHz，详见 `script_test/uart_loopback_common.py`）：9600~10M 全部 OK；
+  10M 线速效率 ~99.6%；>10M 的请求被钳到 10M。
 - 回归脚本（PA08/PA09 短接）：
   - `script_test/uart_loopback_common.py`：常见速率 + 请求/实际波特率/误差/吞吐 详细表。
   - `script_test/uart_loopback.py` / `uart_loopback_hs.py`：低/高速压力回环。

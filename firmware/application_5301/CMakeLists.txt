@@ -40,6 +40,11 @@ sdk_ld_options("--specs=nano.specs")
 # CherryUSB config — pick up local usb_config.h
 sdk_compile_definitions(-D__INCLUDE_CHERRYUSB_CONFIG_H__)
 
+# UART2 clock: default 80 MHz (datasheet max), max baud 10 Mbps.
+# Uncomment the line below to overclock UART2 to 180 MHz (OUT OF SPEC) which
+# reaches 22.5 Mbps and makes 11.25/15/18 Mbps exactly representable.
+# sdk_compile_definitions(-DUART2_OVERCLOCK=1)
+
 # Reserve the first 128K of flash for the bootloader when using the DFU layout
 # (flash_dfu => APP linked at 0x80020000). A flash_xip build links at
 # 0x80000000 and must not reserve anything.

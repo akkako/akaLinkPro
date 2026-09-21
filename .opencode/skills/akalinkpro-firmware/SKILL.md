@@ -198,7 +198,42 @@ Exit
 
 ---
 
-## 8. 常见坑（务必遵守）
+## 8. 5V 供电与 UART2 ↔ CDC 串口桥
+
+### 5V 输出
+- **PB13**（`POWER_5V_EN_PIN`）默认配置为 GPIO 输出**高电平**，给电平转换供电。
+- 实现在 `boards/akaLinkPro/pinmux.c` 的 `init_power_pins()`（由 `board_init_gpio_pins()` 调用），
+  可用 `board_set_5v_output(0/1)` 关闭/开启。
+
+### UART2 复用规则（关键）
+PA08 = JTDI/UART2_TXD，PA09 = JTDO/UART2_RXD，同一对引脚在两种功能间切换：
+
+| DAP 状态 | PA08/PA09 | CDC COM 口 |
+| --- | --- | --- |
+| 未连接 / 空闲 / SWD 模式 | UART2 | 可用 |
+| JTAG 模式 | FGPIO (TDI/TDO) | 保留但无数据 |
+
+- 挂接点在 `src/dap/DAP_config.h`：`PORT_SWD_SETUP()`/`PORT_OFF()` 调 `uartx_enter_com_mode()`，
+  `PORT_JTAG_SETUP()` 调 `uartx_enter_jtag_mode()`。
+- `uartx_enter_jtag_mode()` **必须把 PA08/PA09 的 `FUNC_CTL` 清 0**，否则 UART2 仍占用引脚、JTAG 失效。
+- 数据通路：USB CDC OUT → `g_usbrx` → UART2 TX（DMA）；UART2 RX（DMA）→ `g_uartrx` → CDC IN。
+- 波特率由主机 `SET_LINE_CODING` 决定；UART2 时钟 = PLL0CLK0(720M)/8 = 90MHz。
+
+### cdc_interface.c 重要实现点（历史坑）
+- `uartx_preinit()` 必须在 `chry_dap_init()` **之后**调用（`DAP_SETUP()` 会把 PA08/09 设为 GPIO），见 `src/main.c`。
+- 必须先 `dma_mgr_init()`，否则 `dma_mgr_request_resource()` 全部失败、TX/RX DMA 不工作。
+- RX 采用**单缓冲 DMA + idle/TC 重启**（`UART_RX_DMA_BUFFER_SIZE=4096`）。
+  不要改回 3 段 linked-descriptor 环形：软/硬件描述符索引有竞态，且描述符必须 32 字节对齐。
+- `uartx_rx_dma_restart()` 在波特率改变时清空 ringbuffer 并重启 RX。
+- DTR/RTS 默认不驱动（`UART2_DRIVE_DTR_RTS=0`），本板无对应网络。
+
+### 串口回环测试（RXD-TXD 短接）
+把 PA08(TXD) 与 PA09(RXD) 短接后，用 pyserial 循环发送随机数据并比对，
+115200 / 460800 / 921600 / 1M / 2Mbps 均通过。注意 JTAG 模式下 COM 无回显是**正常**的。
+
+---
+
+## 9. 常见坑（务必遵守）
 
 1. **只支持 JTAG**：本 J-Link 走 SWD 无法连接，且 JTAG 必须 `jtagconf -1 -1` 自动探测，否则停在交互提示。
 2. **不要用 `erase` 全片擦除**：J-Link 对本板 QSPI 报 "Only internal flash banks will be erased"，
@@ -211,10 +246,11 @@ Exit
 
 ---
 
-## 9. 修改代码时的自检
+## 10. 修改代码时的自检
 
 1. `firmware\application_5301\build_dfu.bat` 能过。
 2. `firmware\bootloader_dfu\build_xip.bat` 能过。
 3. J-Link 烧录后设备枚举正常（`VID_0D28`）。
 4. VSCode F5 能在 `main` 命中断点。
-5. 不要动 `build.bat` / `program.bat` / `build_zcc.bat` 的既有行为。
+5. 串口回环（RXD-TXD 短接）在 SWD/空闲下能通过，JTAG 下无回显。
+6. 不要动 `build.bat` / `program.bat` / `build_zcc.bat` 的既有行为。

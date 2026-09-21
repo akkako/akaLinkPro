@@ -1,0 +1,8 @@
+device HPM5301xEGx
+si JTAG
+jtagconf -1 -1
+speed 4000
+connect
+erase
+loadfile X:/cproject/Debugger/akaLinkPro/firmware/bootloader_dfu/build/output/akaLinkPro_Boot.hex
+Exit

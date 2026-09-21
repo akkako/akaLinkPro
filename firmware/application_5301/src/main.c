@@ -26,6 +26,10 @@ int main(void)
     intc_set_irq_priority(CONFIG_HPM_USBD_IRQn, 2);
     chry_dap_init(0, CONFIG_HPM_USBD_BASE);
 
+    /* Bring up the UART2 <-> CDC COM port bridge. DAP_SETUP() above parks
+     * PA08/PA09 as GPIO, so this must run afterwards to mux them to UART2. */
+    uartx_preinit();
+
     while (1)
     {
         chry_dap_handle();

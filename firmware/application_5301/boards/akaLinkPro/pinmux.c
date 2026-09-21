@@ -18,6 +18,9 @@
 #include "hpm_gpio_drv.h"
 #include "hpm_gpiom_drv.h"
 
+/* 5V output enable for the level shifter supply (active high). */
+#define POWER_5V_EN_PIN IOC_PAD_PB13
+
 
 static void gpiom_config_pin_to_gpio0(uint16_t gpio_index)
 {
@@ -80,6 +83,38 @@ void init_button_pins(void)
     /* Button */
     HPM_IOC->PAD[IOC_PAD_PA10].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
     HPM_IOC->PAD[IOC_PAD_PA10].PAD_CTL = IOC_PAD_PAD_CTL_HYS_SET(1) | IOC_PAD_PAD_CTL_PE_SET(1) | IOC_PAD_PAD_CTL_PS_SET(0);
+}
+
+/**
+ * @brief Set the 5V output enable pin (PB13, active high).
+ * @param on 1 = enable 5V output, 0 = disable
+ */
+void board_set_5v_output(uint8_t on)
+{
+    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(POWER_5V_EN_PIN), GPIO_GET_PIN_INDEX(POWER_5V_EN_PIN), on ? 1 : 0);
+}
+
+/**
+ * @brief Init power control pin and enable the 5V output by default.
+ * @param None
+ */
+void init_power_pins(void)
+{
+    HPM_IOC->PAD[POWER_5V_EN_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+    HPM_IOC->PAD[POWER_5V_EN_PIN].PAD_CTL =
+        IOC_PAD_PAD_CTL_HYS_SET(0) | // schmitt trigger disable
+        IOC_PAD_PAD_CTL_PRS_SET(0) | // pull resistor 100k
+        IOC_PAD_PAD_CTL_PS_SET(0) |  // pull down
+        IOC_PAD_PAD_CTL_PE_SET(0) |  // pull disable
+        IOC_PAD_PAD_CTL_KE_SET(0) |  // keeper disable
+        IOC_PAD_PAD_CTL_OD_SET(0) |  // open drain disable
+        IOC_PAD_PAD_CTL_SR_SET(1) |  // fast slew rate
+        IOC_PAD_PAD_CTL_SPD_SET(3) | // fastest slew rate
+        IOC_PAD_PAD_CTL_DS_SET(4);   // drive strength 39 ohm(3.3V)
+
+    gpiom_config_pin_to_gpio0(POWER_5V_EN_PIN);
+    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(POWER_5V_EN_PIN), GPIO_GET_PIN_INDEX(POWER_5V_EN_PIN));
+    board_set_5v_output(1);
 }
 
 /**

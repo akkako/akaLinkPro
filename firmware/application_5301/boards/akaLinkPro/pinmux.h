@@ -8,6 +8,8 @@
 #ifndef HPM_PINMUX_H
 #define HPM_PINMUX_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -17,6 +19,8 @@ void init_py_pins_as_pgpio(void);
 void init_uart0_pins(void);
 void init_button_pins(void);
 void init_usb0_pins(void);
+void init_power_pins(void);
+void board_set_5v_output(uint8_t on);
 
 void init_uart3_pins_as_uart(void);
 void init_uart3_pin_as_gpio_low(void);

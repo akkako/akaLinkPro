@@ -1,0 +1,7 @@
+device HPM5301xEGx
+si SWD
+speed 4000
+connect
+mem32 0x80000000 4
+mem32 0xF00E0000 4
+Exit

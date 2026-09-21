@@ -1,0 +1,1 @@
+Get-PnpDevice -PresentOnly | Where-Object { $_.InstanceId -match 'VID_0D28' -or $_.FriendlyName -match 'DAP|CMSIS|akaLink|HPM' } | Select-Object Status,Class,FriendlyName,InstanceId | Format-Table -AutoSize

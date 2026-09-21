@@ -1,0 +1,11 @@
+device HPM5301xEGx
+si JTAG
+jtagconf -1 -1
+speed 4000
+connect
+mem32 0xF4040168 1
+mem32 0xF00D0110 1
+mem32 0xF00D0210 1
+mem32 0xF4040040 1
+mem32 0xF4040048 1
+Exit

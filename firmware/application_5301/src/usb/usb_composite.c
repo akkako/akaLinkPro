@@ -777,6 +777,10 @@ void chry_dap_usb2uart_handle(void)
     uint32_t size;
     uint8_t *buffer;
 
+    /* Pull whatever UART2 has received into the ringbuffer first, so the CDC
+     * IN path below can forward it without waiting for an idle interrupt. */
+    usb2uart_handler();
+
     if (config_uart)
     {
         /* disable irq here */

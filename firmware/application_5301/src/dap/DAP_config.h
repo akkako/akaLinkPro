@@ -31,6 +31,7 @@
 #include "hpm_common.h"
 #include "pinmux.h"
 #include "board.h"
+#include "cdc_interface.h"
 
 //**************************************************************************************************
 /**
@@ -321,6 +322,9 @@ __STATIC_INLINE void PORT_JTAG_SETUP(void)
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTMS_DIR), GPIO_GET_PIN_INDEX(BOARD_PIN_JTMS_DIR), 1); // output
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
+
+    /* JTAG owns PA08(TDI)/PA09(TDO); the CDC COM port is muted. */
+    uartx_enter_jtag_mode();
 }
 
 /** 设置 SWD I/O 引脚：SWCLK、SWDIO 和 nRESET。
@@ -360,6 +364,9 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+
+    /* SWD does not use TDI/TDO: give PA08/PA09 back to UART2. */
+    uartx_enter_com_mode();
 }
 
 /** 禁用 JTAG/SWD I/O 引脚。
@@ -377,6 +384,9 @@ __STATIC_INLINE void PORT_OFF(void)
 
     // gpio_write_pin(PIN_GPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
     // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+
+    /* Debug port released: restore the UART2 pins for the CDC COM port. */
+    uartx_enter_com_mode();
 }
 
 // SWCLK/TCK I/O 引脚 -------------------------------------

@@ -13,6 +13,12 @@ extern "C"
 
     void uartx_preinit(void);
 
+    /* PA08/PA09 -> UART2 (COM mode): DAP in SWD mode, disconnected or idle. */
+    void uartx_enter_com_mode(void);
+
+    /* PA08/PA09 -> JTAG TDI/TDO FGPIO: DAP in JTAG mode. */
+    void uartx_enter_jtag_mode(void);
+
     void usb2uart_handler(void);
 
 #ifdef __cplusplus

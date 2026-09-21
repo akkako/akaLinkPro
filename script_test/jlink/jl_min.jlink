@@ -1,0 +1,7 @@
+device HPM5301xEGx
+si JTAG
+jtagconf -1 -1
+speed 4000
+connect
+Sleep 200
+Exit

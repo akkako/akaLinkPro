@@ -105,6 +105,9 @@ SWD 压测（`swd/run_benchmark.py`，目标可为 STM32F1，`adapter speed` 20/
 （关键修复：给 `g_uartrx` 的 DMA-TC 生产者补齐临界区；并用 GPTMR 定时器驱动 RX flush，
 不依赖 IDLE/满缓冲中断。）
 
+RX flush 定时器周期**按波特率动态调整**（目标每次约 512 字节，clamp 到 200us~10ms）：
+低波特率时降低中断频率。实测 GPTMR RLD：`9600 → 10ms`、`9M → 568us`。
+
 ## 关键结论（回归基线）
 
 - 回环压力测试：115200 / 460800 / 921600 / 1M / 2Mbps **全部通过**。

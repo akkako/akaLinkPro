@@ -25,11 +25,19 @@
 /* Periodic timer that moves received bytes from the circular RX DMA buffer
  * into g_uartrx. Using a timer (instead of relying only on the UART IDLE IRQ
  * and the buffer-full TC IRQ) keeps the data flowing even during a continuous
- * SWD transfer, whose critical sections jitter the other interrupts. */
+ * SWD transfer, whose critical sections jitter the other interrupts.
+ *
+ * The interval is derived from the active baud rate so that a flush handles
+ * roughly UART_FLUSH_TARGET_BYTES bytes. That keeps the ISR overhead low at
+ * low baud rates (where a fixed 500 us timer would wake up far more often than
+ * needed) while still flushing fast enough at high baud rates. */
 #define UART_FLUSH_TIMER HPM_GPTMR0
 #define UART_FLUSH_TIMER_IRQ IRQn_GPTMR0
 #define UART_FLUSH_TIMER_CH (0U)
-#define UART_FLUSH_INTERVAL_US (500U)
+#define UART_FLUSH_TARGET_BYTES (512U)
+#define UART_FLUSH_MIN_US (200U)
+#define UART_FLUSH_MAX_US (10000U)
+#define UART_FLUSH_DEFAULT_US (1000U)
 
 #define UART_TX_DMA HPM_DMA_SRC_UART2_TX
 #define UART_TX_DMA_RESOURCE_INDEX (1U)
@@ -142,16 +150,53 @@ static void uartx_rx_dma_start(void)
     dma_mgr_enable_channel(rx_resource);
 }
 
+/* Timer ticks for a flush interval of `interval_us` at the GPTMR clock. */
+static uint32_t uart_flush_ticks_for_us(uint32_t interval_us)
+{
+    uint64_t ticks = (uint64_t)clock_get_frequency(clock_gptmr0) * interval_us / 1000000ULL;
+    if (ticks == 0U)
+    {
+        ticks = 1U;
+    }
+    return (uint32_t)ticks;
+}
+
+/* Program the flush interval from the active baud rate: aim for roughly
+ * UART_FLUSH_TARGET_BYTES bytes per flush (10 bits/byte for 8-N-1), clamped to
+ * a sane range. Called with the baud rate actually applied to UART2. */
+static void uart_flush_timer_set_baud(uint32_t baud)
+{
+    uint32_t interval_us;
+
+    if (baud == 0U)
+    {
+        interval_us = UART_FLUSH_DEFAULT_US;
+    }
+    else
+    {
+        interval_us = (uint32_t)(((uint64_t)UART_FLUSH_TARGET_BYTES * 10ULL * 1000000ULL) / baud);
+        if (interval_us < UART_FLUSH_MIN_US)
+        {
+            interval_us = UART_FLUSH_MIN_US;
+        }
+        else if (interval_us > UART_FLUSH_MAX_US)
+        {
+            interval_us = UART_FLUSH_MAX_US;
+        }
+    }
+    gptmr_channel_config_update_reload(UART_FLUSH_TIMER, UART_FLUSH_TIMER_CH, uart_flush_ticks_for_us(interval_us));
+}
+
 /* Periodic flush. Runs regardless of line idle / buffer full, so the RX DMA
  * buffer never gets a chance to wrap while the main loop is busy with SWD. */
 SDK_DECLARE_EXT_ISR_M(UART_FLUSH_TIMER_IRQ, uart_flush_timer_isr)
 void uart_flush_timer_isr(void)
 {
-    if (!gptmr_check_status(UART_FLUSH_TIMER, GPTMR_CH_CMP_STAT_MASK(UART_FLUSH_TIMER_CH, 0)))
+    if (!gptmr_check_status(UART_FLUSH_TIMER, GPTMR_CH_RLD_STAT_MASK(UART_FLUSH_TIMER_CH)))
     {
         return;
     }
-    gptmr_clear_status(UART_FLUSH_TIMER, GPTMR_CH_CMP_STAT_MASK(UART_FLUSH_TIMER_CH, 0));
+    gptmr_clear_status(UART_FLUSH_TIMER, GPTMR_CH_RLD_STAT_MASK(UART_FLUSH_TIMER_CH));
 
     if (s_uart2_com_mode)
     {
@@ -164,23 +209,16 @@ void uart_flush_timer_isr(void)
 static void uart_flush_timer_init(void)
 {
     gptmr_channel_config_t cfg;
-    uint32_t freq;
-    uint32_t ticks;
 
     init_gptmr0_clock();
     gptmr_channel_get_default_config(UART_FLUSH_TIMER, &cfg);
-    freq = clock_get_frequency(clock_gptmr0);
-    ticks = freq / (1000000U / UART_FLUSH_INTERVAL_US);
-    if (ticks == 0U)
-    {
-        ticks = 1U;
-    }
     cfg.mode = gptmr_work_mode_no_capture;
-    cfg.reload = ticks;
-    cfg.cmp[0] = ticks;
+    cfg.reload = uart_flush_ticks_for_us(UART_FLUSH_DEFAULT_US);
+    cfg.cmp[0] = 0U;
     cfg.cmp[1] = 0U;
     (void)gptmr_channel_config(UART_FLUSH_TIMER, UART_FLUSH_TIMER_CH, &cfg, false);
-    gptmr_enable_irq(UART_FLUSH_TIMER, GPTMR_CH_CMP_IRQ_MASK(UART_FLUSH_TIMER_CH, 0));
+    /* Interrupt on reload, so changing RLD at runtime changes the period. */
+    gptmr_enable_irq(UART_FLUSH_TIMER, GPTMR_CH_RLD_IRQ_MASK(UART_FLUSH_TIMER_CH));
     gptmr_channel_reset_count(UART_FLUSH_TIMER, UART_FLUSH_TIMER_CH);
     gptmr_start_counter(UART_FLUSH_TIMER, UART_FLUSH_TIMER_CH);
     intc_m_enable_irq_with_priority(UART_FLUSH_TIMER_IRQ, 1);
@@ -430,6 +468,9 @@ void chry_dap_usb2uart_uart_config_callback(struct cdc_line_coding *line_coding)
     uart_clear_rxline_idle_flag(UART_BASE);
     uart_reset_rx_fifo(UART_BASE);
     uart_reset_tx_fifo(UART_BASE);
+
+    /* Scale the flush timer period with the baud rate. */
+    uart_flush_timer_set_baud(applied);
 
     uartx_rx_dma_restart();
 }

@@ -227,8 +227,14 @@ PA08 = JTDI/UART2_TXD，PA09 = JTDO/UART2_RXD，同一对引脚在两种功能�
   - 写入位置用 DMA 的 live `CHCTRL.DSTADDR - buf_base`；小于读位置时按“尾部 + 头部”两段 flush。
   - `en_infiniteloop` 要求 `linked_ptr == 0`，仅 DMAV2 支持。
 - **定时器驱动 flush（关键）**：SWD 的延迟采样会在临界区里关总中断，IDLE/满缓冲中断会被抖动。
-  因此用 `GPTMR0` 每 500us 触发 `uart_flush_timer_isr()`，把 DMA 缓冲里的数据搬进 `g_uartrx`，
-  不再依赖 UART IDLE 和 buffer-full 两个中断。`g_uartrx` 放大到 32KB 以吸收主循环被 SWD 阻塞的时间。
+  因此用 `GPTMR0` 的 **reload 中断** 周期触发 `uart_flush_timer_isr()`，把 DMA 缓冲里的数据搬进
+  `g_uartrx`，不再依赖 UART IDLE 和 buffer-full 两个中断。
+  - 周期**按当前波特率动态设置**：目标每次 flush 约 `UART_FLUSH_TARGET_BYTES`(512) 字节，
+    `interval_us = 512*10*1e6/baud`，限制在 `[200us, 10ms]`；低波特率不会过度打扰 CPU。
+    `uart_flush_timer_set_baud()` 在 `SET_LINE_CODING` 后按实际波特率调用，
+    用 `gptmr_channel_config_update_reload()` 只改 RLD（reload 中断周期随之改变）。
+    实测：9600→10ms，9M→568us。
+  - `g_uartrx` 放大到 32KB 以吸收主循环被 SWD 阻塞的时间。
 - **`g_uartrx` 所有读写必须在临界区**：生产者是 DMA TC / 定时器 / IDLE / 主循环轮询，
   消费者是 USB IN 完成回调和主循环；`chry_ringbuffer` 非线程安全。
   历史上漏掉 DMA TC 回调的临界区会导致 ring 索引错乱、CDC 多发字节（掉/重数据）。

@@ -222,14 +222,50 @@ PA08 = JTDI/UART2_TXD，PA09 = JTDO/UART2_RXD，同一对引脚在两种功能�
 ### cdc_interface.c 重要实现点（历史坑）
 - `uartx_preinit()` 必须在 `chry_dap_init()` **之后**调用（`DAP_SETUP()` 会把 PA08/09 设为 GPIO），见 `src/main.c`。
 - 必须先 `dma_mgr_init()`，否则 `dma_mgr_request_resource()` 全部失败、TX/RX DMA 不工作。
-- RX 采用**单缓冲 DMA + idle/TC 重启**（`UART_RX_DMA_BUFFER_SIZE=4096`）。
-  不要改回 3 段 linked-descriptor 环形：软/硬件描述符索引有竞态，且描述符必须 32 字节对齐。
-- `uartx_rx_dma_restart()` 在波特率改变时清空 ringbuffer 并重启 RX。
+- RX 采用 **DMAV2 infinite-loop 圆形缓冲**（`en_infiniteloop=true`，`UART_RX_DMA_BUFFER_SIZE=8192`）：
+  硬件自动回卷，软件不做 disable/restart。
+  - 写入位置用 DMA 的 live `CHCTRL.DSTADDR - buf_base`；小于读位置时按“尾部 + 头部”两段 flush。
+  - `en_infiniteloop` 要求 `linked_ptr == 0`，仅 DMAV2 支持。
+- **定时器驱动 flush（关键）**：SWD 的延迟采样会在临界区里关总中断，IDLE/满缓冲中断会被抖动。
+  因此用 `GPTMR0` 每 500us 触发 `uart_flush_timer_isr()`，把 DMA 缓冲里的数据搬进 `g_uartrx`，
+  不再依赖 UART IDLE 和 buffer-full 两个中断。`g_uartrx` 放大到 32KB 以吸收主循环被 SWD 阻塞的时间。
+- **`g_uartrx` 所有读写必须在临界区**：生产者是 DMA TC / 定时器 / IDLE / 主循环轮询，
+  消费者是 USB IN 完成回调和主循环；`chry_ringbuffer` 非线程安全。
+  历史上漏掉 DMA TC 回调的临界区会导致 ring 索引错乱、CDC 多发字节（掉/重数据）。
+- `uartx_rx_dma_restart()` 仅在波特率改变时清空 ringbuffer 并重启 RX。
+- `PORT_SWD_SETUP()` **不要**再配置 TDI/TDO（PA08/09）：SWD 不用它们，反复 `DAP_Connect`
+  重新配置会把 UART2 引脚打断造成丢字节。由 `uartx_enter_com_mode()` 负责保持为 UART2。
 - DTR/RTS 默认不驱动（`UART2_DRIVE_DTR_RTS=0`），本板无对应网络。
 
-### 串口回环测试（RXD-TXD 短接）
-把 PA08(TXD) 与 PA09(RXD) 短接后，用 pyserial 循环发送随机数据并比对，
-115200 / 460800 / 921600 / 1M / 2Mbps 均通过。注意 JTAG 模式下 COM 无回显是**正常**的。
+### 波特率钳制与就近取整
+- 软件上限 `UART2_MAX_BAUDRATE = 9000000`：主机请求 > 9M 一律钳到 9M。
+- `uart2_round_baudrate()` 在 `osc∈{8..30 偶数}`、`div∈[1,0xFFFF]` 中取
+  `|uart_clk/(div*osc) - 目标|` 最小的可达波特率（不套用 SDK 的 3% 容差），
+  因此像 6M/10M 这类无法整除的速率会落到最近的可达值（6M→5.625M，10M→9M）。
+- 实际写入的波特率存于全局 `g_uart2_applied_baud`（可用 J-Link/GDB 读取核对）。
+
+### 串口速率上限与回环测试
+- 硬件公式：`baud = uart_clk / (div * osc)`，`osc` 为 8~30 偶数；硬件上限 = `uart_clk / 8`。
+  当前 UART2 时钟 = PLL0CLK0(720MHz)/8 = 90MHz，硬件上限 11.25M，**软件再钳到 9M**。
+- 实测（常见速率，详见 `script_test/uart_loopback_common.py` 输出）：
+  9600~9M 全部 OK；6M→5.625M、8M→7.5M、10M→9M、11.25M→9M（就近取整/钳制）；
+  高速（≥3M）线速效率 ~99.7%。
+- 回归脚本（PA08/PA09 短接）：
+  - `script_test/uart_loopback_common.py`：常见速率 + 请求/实际波特率/误差/吞吐 详细表。
+  - `script_test/uart_loopback.py` / `uart_loopback_hs.py`：低/高速压力回环。
+  - `script_test/test_modeswitch.py`：JTAG/SWD/空闲 引脚复用切换。
+
+### CDC + SWD 同时满载测试
+用 `script_test/swd/run_benchmark.py <kHz> <rounds>`（基于 `benchmark_readback.tcl`）做 SWD 读写校验，
+同时用 `script_test/uart_stress_stream.py COM75 9000000 <秒>` 连续灌 CDC 数据做回环比对。
+SWD 目标可为 STM32F1 等；本板 SWD 实跑 20/36/45/60MHz。
+
+实测结论（SWD 1000 轮 + CDC 9Mbps 连续流，全部 OK，无掉数据）：
+- 20MHz / 36MHz / 45MHz / 60MHz SWD 均 1000/1000 PASS。
+- CDC 每轮约 7~10MB 连续回环，`rx==sent`、无重复/丢失。
+- SWD 写/读吞吐：20M≈1.5/1.4，45M≈2.8/2.3，60M≈3.4/2.8 MiB/s（取决于目标）。
+- 要突破 9M 上限需同时调大 `UART2_MAX_BAUDRATE` 并提高 UART 时钟
+  （如 720/4=180MHz），且必须确认不超过 UART 外设数据手册的输入时钟上限（当前 SDK 未给出）。
 
 ---
 

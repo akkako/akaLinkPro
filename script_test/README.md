@@ -17,20 +17,38 @@ COM 端口号在不同机器上会变化，脚本支持通过参数传入，默�
 | 文件 | 用途 |
 | --- | --- |
 | `uart_loopback.py` | 串口回环压力测试：逐字节回环 + 大块随机数据流，覆盖 115200~2Mbps |
+| `uart_loopback_hs.py` | 高速回环测试：2Mbps~11.25Mbps，含吞吐量与线速效率统计 |
+| `uart_loopback_common.py` | 常见速率回环详表：请求/实际波特率、误差、耗时、吞吐、线速效率 |
 | `diag_loopback.py` | 单次大流量回环并定位首个错误位置/零区块，用于诊断 DMA 边界问题 |
 | `test_modeswitch.py` | 通过 CMSIS-DAP 发 `DAP_Connect`(JTAG/SWD)/`DAP_Disconnect`，验证引脚复用切换 |
+| `uart_stress_loop.py` | 定时长回环压测（发一块读一块），统计 errors/late/最大延迟，可区分丢失与延迟 |
+| `uart_stress_stream.py` | 连续流回环压测（读线程 + 不丢包比对），用于与 SWD 并发时做满负荷验证 |
 | `list_usb.ps1` | 列出 `VID_0D28` 相关 USB 设备与 CDC 端口（状态检查） |
 | `hold_port.py` | 打开串口并保持若干秒，便于用 J-Link/GDB 在线检查运行状态 |
+| `swd/run_benchmark.py` | 生成指定 `adapter speed`/`iterations` 的 OpenOCD SWD 读写校验并运行 |
 
 ### 运行示例
 
 ```bat
 python script_test\uart_loopback.py COM75
+python script_test\uart_loopback_hs.py COM75 262144
+python script_test\uart_loopback_common.py COM75
 python script_test\diag_loopback.py COM75 115200 32768
 python script_test\test_modeswitch.py COM75
 powershell -ExecutionPolicy Bypass -File script_test\list_usb.ps1
 python script_test\hold_port.py COM75 8
 ```
+
+### 串口速率上限与就近取整（HPM5301）
+
+- 驱动器公式：`baud = uart_clk / (div * osc)`，`osc` 为 8~30 的偶数。
+- 硬件上限 = `uart_clk / 8`。当前 UART2 时钟 = `PLL0CLK0(720MHz)/8 = 90MHz` → 硬件上限 11.25 Mbps。
+- **软件再钳到 9 Mbps**（`UART2_MAX_BAUDRATE=9000000`，见 `cdc_interface.c`）。
+- 无法精确生成的波特率会**四舍五入到最近的可达值**（`uart2_round_baudrate()`）：
+  例如 6M→5.625M、8M→7.5M、10M→9M、11.25M→9M。
+- 实际写入的波特率存于 `g_uart2_applied_baud`（可用 J-Link/GDB 读取核对）。
+- 如需更高上限或覆盖更多标准波特率，可同时调大 `UART2_MAX_BAUDRATE` 并降低 UART 时钟分频
+  （如 720/4=180MHz），但需确认不超过 UART 外设数据手册的输入时钟上限。
 
 ## gdb/ — 在线调试检查脚本（配合 JLink GDB Server）
 
@@ -69,8 +87,30 @@ riscv32-unknown-elf-gdb -batch -x script_test\gdb\<script>.gdb ^
 | `jl_load.jlink` | `erase` + `loadfile` 示例（路径需按需修改） |
 | `jl_flashinfo.jlink` / `jl_help.jlink` / `jl_test.jlink` / `jl_test2.jlink` | 早期调试片段 |
 
+## CDC + SWD 同时满载
+
+SWD 压测（`swd/run_benchmark.py`，目标可为 STM32F1，`adapter speed` 20/36/45/60MHz）
+与 CDC 连续流回环（`uart_stress_stream.py COM75 9000000 <秒>`）同时运行。
+
+实测（SWD 1000 轮 + CDC 9Mbps 连续流）：
+
+| SWD 速度 | SWD 校验 | SWD 写/读 (KiB/s) | CDC 连续流 |
+| --- | --- | --- | --- |
+| 20 MHz | 1000/1000 PASS | ~1450 / ~1360 | 全 OK（每轮 ~7MB） |
+| 36 MHz | 1000/1000 PASS | ~2400 / ~2200 | 全 OK |
+| 45 MHz | 1000/1000 PASS | ~2750 / ~2350 | 全 OK |
+| 60 MHz | 1000/1000 PASS | ~3370 / ~2800 | 全 OK |
+
+结论：SWD 20~60MHz 与 CDC 9Mbps **同时满载无掉数据/无重复**。
+（关键修复：给 `g_uartrx` 的 DMA-TC 生产者补齐临界区；并用 GPTMR 定时器驱动 RX flush，
+不依赖 IDLE/满缓冲中断。）
+
 ## 关键结论（回归基线）
 
 - 回环压力测试：115200 / 460800 / 921600 / 1M / 2Mbps **全部通过**。
+- 常见速率（`uart_loopback_common.py`）：9600~9M **全部通过**；
+  6M→5.625M、8M→7.5M、10M→9M、11.25M→9M（9M 软件上限 + 就近取整）；高速线速效率 ~99.7%。
+- 高速回环（1MB×多次，稳定）：2M~9M **全部通过**，线速效率 ~100%。
 - 模式切换：空闲回环 OK → JTAG 下 COM 无回显（正常）→ SWD 恢复 OK → Disconnect 恢复 OK。
 - 引脚状态：PB13 `FUNC_CTL=0` 且输出高（5V_EN 开）；空闲/SWD 下 PA08/PA09 `FUNC_CTL=2`(UART2)。
+- RX 采用 **DMAV2 infinite-loop 圆形缓冲**（无 disable/restart），消除了重启边界上的重复字节。

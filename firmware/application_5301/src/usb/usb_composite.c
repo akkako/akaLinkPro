@@ -531,6 +531,10 @@ void usbd_cdc_acm_bulk_in(uint8_t busid, uint8_t ep, uint32_t nbytes)
     uint32_t size;
     uint8_t *buffer;
 
+    /* g_uartrx is produced by the UART RX flush ISRs, so keep the consumer
+     * side in a critical section to avoid corrupting the ring indices. */
+    uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
+
     chry_ringbuffer_linear_read_done(&g_uartrx, nbytes);
     if ((nbytes % DAP_PACKET_SIZE) == 0 && nbytes)
     {
@@ -549,6 +553,8 @@ void usbd_cdc_acm_bulk_in(uint8_t busid, uint8_t ep, uint32_t nbytes)
             usbtx_idle_flag = 1;
         }
     }
+
+    restore_global_irq(level);
 }
 
 struct usbd_endpoint dap_out_ep = {
@@ -807,6 +813,7 @@ void chry_dap_usb2uart_handle(void)
     /* uartrx to usb tx */
     if (usbtx_idle_flag)
     {
+        uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
         if (chry_ringbuffer_get_used(&g_uartrx))
         {
             usbtx_idle_flag = 0;
@@ -814,6 +821,7 @@ void chry_dap_usb2uart_handle(void)
             buffer = chry_ringbuffer_linear_read_setup(&g_uartrx, &size);
             usbd_ep_start_write(0, CDC_IN_EP, buffer, size);
         }
+        restore_global_irq(level);
     }
 
     /* usbrx to uart tx */

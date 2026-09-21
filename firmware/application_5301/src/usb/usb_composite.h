@@ -52,7 +52,10 @@
 #define HID_PACKET_SIZE 64
 #endif
 
-#define CONFIG_UARTRX_RINGBUF_SIZE (8 * 1024)
+/* g_uartrx holds UART2 RX data until the main loop forwards it to the USB CDC
+ * IN endpoint. It must absorb the interval during which the main loop is busy
+ * with a long CMSIS-DAP/SWD block command (~0.9 KB/ms at 9 Mbps). */
+#define CONFIG_UARTRX_RINGBUF_SIZE (32 * 1024)
 #define CONFIG_USBRX_RINGBUF_SIZE  (8 * 1024)
 
 #ifndef CONFIG_CHERRYDAP_USE_CUSTOM_HID

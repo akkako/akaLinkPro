@@ -342,8 +342,12 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
 
     gpiom_config_pin_to_gpio0(BOARD_PIN_nRESET);
     gpiom_config_pin_to_gpio0(BOARD_PIN_JTRST);
-    gpiom_config_pin_to_gpio0(BOARD_PIN_JTDO);
-    gpiom_config_pin_to_gpio0(BOARD_PIN_JTDI);
+    /* NOTE: SWD does not use TDI/TDO. PA08/PA09 are kept as UART2 for the CDC
+     * COM port; do NOT reconfigure them here. Re-poking them on every
+     * DAP_Connect() injects glitches into the running UART2 and loses data
+     * (and then uartx_enter_com_mode() would have to flush the RX FIFO). */
+    // gpiom_config_pin_to_gpio0(BOARD_PIN_JTDO);
+    // gpiom_config_pin_to_gpio0(BOARD_PIN_JTDI);
 
     // 设置输入输出模式
     gpio_set_pin_output(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK));
@@ -353,8 +357,8 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
 
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET));
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST));
-    gpio_set_pin_input(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
-    gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
+    // gpio_set_pin_input(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDO), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDO));
+    // gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI));
 
     // 设置默认输出电平
     gpio_write_pin(HPM_FGPIO, GPIO_GET_PORT_INDEX(BOARD_PIN_JTCK), GPIO_GET_PIN_INDEX(BOARD_PIN_JTCK), 1);
@@ -363,9 +367,10 @@ __STATIC_INLINE void PORT_SWD_SETUP(void)
 
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_nRESET), GPIO_GET_PIN_INDEX(BOARD_PIN_nRESET), 0);
     gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTRST), GPIO_GET_PIN_INDEX(BOARD_PIN_JTRST), 1);
-    gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
+    // gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(BOARD_PIN_JTDI), GPIO_GET_PIN_INDEX(BOARD_PIN_JTDI), 1);
 
-    /* SWD does not use TDI/TDO: give PA08/PA09 back to UART2. */
+    /* Make sure PA08/PA09 are on UART2 (no-op if already, and no FIFO flush in
+     * that case). */
     uartx_enter_com_mode();
 }
 

@@ -3,9 +3,11 @@
 #include <hpm_gpio_drv.h>
 #include <hpm_gpiom_drv.h>
 #include "board.h"
+#include "clock.h"
 #include "hpm_uart_drv.h"
 #include "hpm_debug_console.h"
 #include "hpm_dma_mgr.h"
+#include "hpm_gptmr_drv.h"
 #include "hpm_sysctl_drv.h"
 #include "usb_composite.h"
 #include "cdc_interface.h"
@@ -15,10 +17,19 @@
 #define UART_CLK_NAME clock_uart2
 #define UART_RX_DMA HPM_DMA_SRC_UART2_RX
 #define UART_RX_DMA_RESOURCE_INDEX (0U)
-/* Single RX buffer, restarted on idle/TC. Keeps the "current write position"
- * unambiguous (a linked-descriptor ring has a race between the hardware and
- * the software descriptor index). */
-#define UART_RX_DMA_BUFFER_SIZE (4096U)
+/* Single RX buffer, DMAV2 infinite-loop. The periodic flush timer drains it
+ * into g_uartrx, so it only needs to cover the (short) IRQ latency caused by
+ * the SWD delay-sampling critical sections, not the whole SWD block command. */
+#define UART_RX_DMA_BUFFER_SIZE (8192U)
+
+/* Periodic timer that moves received bytes from the circular RX DMA buffer
+ * into g_uartrx. Using a timer (instead of relying only on the UART IDLE IRQ
+ * and the buffer-full TC IRQ) keeps the data flowing even during a continuous
+ * SWD transfer, whose critical sections jitter the other interrupts. */
+#define UART_FLUSH_TIMER HPM_GPTMR0
+#define UART_FLUSH_TIMER_IRQ IRQn_GPTMR0
+#define UART_FLUSH_TIMER_CH (0U)
+#define UART_FLUSH_INTERVAL_US (500U)
 
 #define UART_TX_DMA HPM_DMA_SRC_UART2_TX
 #define UART_TX_DMA_RESOURCE_INDEX (1U)
@@ -28,6 +39,13 @@
  * drive them by default. Set to 1 if a future board uses DTR/RTS. */
 #ifndef UART2_DRIVE_DTR_RTS
 #define UART2_DRIVE_DTR_RTS (0)
+#endif
+
+/* Software cap for the CDC COM port baud rate. Requests above this value are
+ * clamped; requests that cannot be generated exactly are rounded to the
+ * closest achievable baud (see uart2_round_baudrate). */
+#ifndef UART2_MAX_BAUDRATE
+#define UART2_MAX_BAUDRATE (9000000U)
 #endif
 
 /* Number of bytes of the single RX buffer that were already copied into
@@ -40,6 +58,8 @@ uint8_t uart_rx_buf[UART_RX_DMA_BUFFER_SIZE];
 
 static dma_resource_t dma_resource_pools[2];
 volatile uint32_t g_uart_tx_transfer_length = 0;
+/* Last baud rate actually programmed into UART2 (after clamping/rounding). */
+volatile uint32_t g_uart2_applied_baud = 0;
 
 static hpm_stat_t board_uart_dma_config(void);
 static void uartx_mux_to_uart(void);
@@ -48,31 +68,65 @@ static void uartx_rx_dma_start(void);
 static uint32_t PIN_UART_DTR = 0;
 static uint32_t PIN_UART_RTS = 0;
 
-/* Copy the bytes received so far in the RX buffer into the ringbuffer.
- * Must be called with interrupts disabled (or from an ISR). */
-static void uartx_rx_flush_locked(void)
+/* Read position (in bytes) inside the current lap of the circular RX buffer.
+ * The RX channel runs in DMAV2 infinite-loop mode, so the hardware reloads the
+ * transfer size on every wrap and dma_get_remaining_transfer_size() always
+ * refers to the current lap (no software restart involved). */
+static uint32_t uartx_rx_written(void)
 {
     dma_resource_t *rx_resource = &dma_resource_pools[UART_RX_DMA_RESOURCE_INDEX];
     if (rx_resource->base == NULL)
     {
-        return;
+        return 0;
     }
-    uint32_t remaining = dma_get_remaining_transfer_size(rx_resource->base, rx_resource->channel);
-
-    if (remaining > UART_RX_DMA_BUFFER_SIZE)
+    /* Live DMA destination pointer (wraps at the end of the circular buffer).
+     * More reliable than the transfer-size counter, which can hold the
+     * previous lap's value for a few cycles around a wrap. */
+    uint32_t base = core_local_mem_to_sys_address(BOARD_RUNNING_CORE, (uint32_t)uart_rx_buf);
+    uint32_t cur = rx_resource->base->CHCTRL[rx_resource->channel].DSTADDR;
+    if ((cur < base) || (cur > (base + UART_RX_DMA_BUFFER_SIZE)))
     {
-        return;
+        return 0;
     }
-
-    uint32_t received = UART_RX_DMA_BUFFER_SIZE - remaining;
-    if (received > rb_write_pos)
-    {
-        chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[rb_write_pos], received - rb_write_pos);
-        rb_write_pos = received;
-    }
+    return cur - base;
 }
 
-/* (Re)start the single-buffer RX DMA from the beginning of uart_rx_buf.
+/* Copy the bytes received so far in the circular RX buffer into the ringbuffer.
+ * The RX DMA runs in infinite-loop mode (DMAV2), so it wraps around by itself
+ * and we never need to disable/restart it while streaming. `rb_write_pos` is
+ * the read position inside the current lap; when the hardware write pointer is
+ * behind it, a wrap has happened and the tail + head are copied in two parts.
+ * Must be called with interrupts disabled (or from an ISR). */
+static void uartx_rx_flush_locked(void)
+{
+    uint32_t written = uartx_rx_written();
+
+    if (written == rb_write_pos)
+    {
+        return;
+    }
+
+    if (written > rb_write_pos)
+    {
+        chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[rb_write_pos], written - rb_write_pos);
+    }
+    else
+    {
+        /* Wrapped: copy the tail then the head. */
+        if (rb_write_pos < UART_RX_DMA_BUFFER_SIZE)
+        {
+            chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[rb_write_pos],
+                                  UART_RX_DMA_BUFFER_SIZE - rb_write_pos);
+        }
+        if (written > 0)
+        {
+            chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[0], written);
+        }
+    }
+    rb_write_pos = written;
+}
+
+/* (Re)start the circular RX DMA from the beginning of uart_rx_buf.
  * Must be called with interrupts disabled (or from an ISR). */
 static void uartx_rx_dma_start(void)
 {
@@ -88,19 +142,48 @@ static void uartx_rx_dma_start(void)
     dma_mgr_enable_channel(rx_resource);
 }
 
-/* Flush the bytes received so far and restart the RX DMA. Used when the line
- * goes idle and when a full buffer has been received. */
-static void uartx_rx_flush_and_restart(void)
+/* Periodic flush. Runs regardless of line idle / buffer full, so the RX DMA
+ * buffer never gets a chance to wrap while the main loop is busy with SWD. */
+SDK_DECLARE_EXT_ISR_M(UART_FLUSH_TIMER_IRQ, uart_flush_timer_isr)
+void uart_flush_timer_isr(void)
 {
-    dma_resource_t *rx_resource = &dma_resource_pools[UART_RX_DMA_RESOURCE_INDEX];
-    if (rx_resource->base == NULL)
+    if (!gptmr_check_status(UART_FLUSH_TIMER, GPTMR_CH_CMP_STAT_MASK(UART_FLUSH_TIMER_CH, 0)))
     {
         return;
     }
-    /* Stop first so no byte can slip in between the flush and the restart. */
-    dma_mgr_disable_channel(rx_resource);
-    uartx_rx_flush_locked();
-    uartx_rx_dma_start();
+    gptmr_clear_status(UART_FLUSH_TIMER, GPTMR_CH_CMP_STAT_MASK(UART_FLUSH_TIMER_CH, 0));
+
+    if (s_uart2_com_mode)
+    {
+        uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
+        uartx_rx_flush_locked();
+        restore_global_irq(level);
+    }
+}
+
+static void uart_flush_timer_init(void)
+{
+    gptmr_channel_config_t cfg;
+    uint32_t freq;
+    uint32_t ticks;
+
+    init_gptmr0_clock();
+    gptmr_channel_get_default_config(UART_FLUSH_TIMER, &cfg);
+    freq = clock_get_frequency(clock_gptmr0);
+    ticks = freq / (1000000U / UART_FLUSH_INTERVAL_US);
+    if (ticks == 0U)
+    {
+        ticks = 1U;
+    }
+    cfg.mode = gptmr_work_mode_no_capture;
+    cfg.reload = ticks;
+    cfg.cmp[0] = ticks;
+    cfg.cmp[1] = 0U;
+    (void)gptmr_channel_config(UART_FLUSH_TIMER, UART_FLUSH_TIMER_CH, &cfg, false);
+    gptmr_enable_irq(UART_FLUSH_TIMER, GPTMR_CH_CMP_IRQ_MASK(UART_FLUSH_TIMER_CH, 0));
+    gptmr_channel_reset_count(UART_FLUSH_TIMER, UART_FLUSH_TIMER_CH);
+    gptmr_start_counter(UART_FLUSH_TIMER, UART_FLUSH_TIMER_CH);
+    intc_m_enable_irq_with_priority(UART_FLUSH_TIMER_IRQ, 1);
 }
 
 static void dma_channel_tc_callback(DMA_Type *ptr, uint32_t channel, void *user_data)
@@ -112,8 +195,11 @@ static void dma_channel_tc_callback(DMA_Type *ptr, uint32_t channel, void *user_
 
     if (rx_resource->channel == channel)
     {
-        /* RX buffer full: flush everything and restart from the buffer start. */
-        uartx_rx_flush_and_restart();
+        /* A full lap of the circular buffer completed: flush it. The DMA keeps
+         * running (infinite loop), so no restart is required. */
+        uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
+        uartx_rx_flush_locked();
+        restore_global_irq(level);
     }
     else if (tx_resource->channel == channel)
     {
@@ -130,9 +216,9 @@ void uart_isr(void)
     uart_clear_rxline_idle_flag(UART_BASE);
 
     /* Flush the partial buffer on an idle line so low-rate traffic does not
-     * have to wait for the buffer to fill up, then restart the RX DMA. */
+     * have to wait for a full lap. */
     uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
-    uartx_rx_flush_and_restart();
+    uartx_rx_flush_locked();
     restore_global_irq(level);
 }
 
@@ -164,12 +250,19 @@ static void uartx_mux_to_uart(void)
 void uartx_enter_com_mode(void)
 {
     uint32_t level = disable_global_irq(CSR_MSTATUS_MIE_MASK);
-    /* Always re-mux: the JTAG/SWD setup code may have switched the pads to
-     * GPIO even while the software flag was already set. */
+    /* Always re-mux: PORT_SWD_SETUP() parks the pads as GPIO first, even when
+     * the software flag already says COM mode. Re-selecting the same UART2
+     * function is a no-op and must not touch the FIFOs, otherwise every
+     * DAP_Connect() during an SWD session would discard the up-to-16 bytes
+     * sitting in the UART RX FIFO. Only a real JTAG -> COM transition needs
+     * the FIFOs cleared. */
     uartx_mux_to_uart();
-    uart_reset_rx_fifo(UART_BASE);
-    uart_reset_tx_fifo(UART_BASE);
-    s_uart2_com_mode = 1;
+    if (!s_uart2_com_mode)
+    {
+        uart_reset_rx_fifo(UART_BASE);
+        uart_reset_tx_fifo(UART_BASE);
+        s_uart2_com_mode = 1;
+    }
     restore_global_irq(level);
 }
 
@@ -235,6 +328,7 @@ void uartx_preinit(void)
     {
         return;
     }
+    uart_flush_timer_init();
 }
 
 /* Drop stale data and restart the RX DMA from the buffer start. */
@@ -256,17 +350,76 @@ static void uartx_rx_dma_restart(void)
     restore_global_irq(level);
 }
 
+/* Pick the achievable UART2 baud (src_freq / (div * osc), osc in 8..30 even,
+ * div in 1..0xFFFF) that is closest to `baud`, clamped to UART2_MAX_BAUDRATE.
+ * Unlike the SDK helper this never gives up on the 3% tolerance: it returns the
+ * nearest representable rate so the COM port still works for e.g. 6M / 10M. */
+static uint32_t uart2_round_baudrate(uint32_t src_freq, uint32_t baud)
+{
+    uint32_t best = 0;
+    uint64_t best_err = (uint64_t)-1;
+
+    if (baud > UART2_MAX_BAUDRATE)
+    {
+        baud = UART2_MAX_BAUDRATE;
+    }
+    if ((src_freq == 0) || (baud == 0))
+    {
+        return 0;
+    }
+
+    for (uint32_t osc = 8; osc <= 30; osc += 2)
+    {
+        uint64_t denom = (uint64_t)baud * osc;
+        uint64_t div = ((uint64_t)src_freq + denom / 2) / denom; /* rounded */
+        if (div < 1)
+        {
+            div = 1;
+        }
+        if (div > 0xFFFFU)
+        {
+            continue;
+        }
+        uint64_t actual = (uint64_t)src_freq / (div * osc);
+        if ((actual == 0) || (actual > UART2_MAX_BAUDRATE))
+        {
+            continue;
+        }
+        uint64_t err = (actual > baud) ? (actual - baud) : (baud - actual);
+        if (err < best_err)
+        {
+            best_err = err;
+            best = (uint32_t)actual;
+        }
+    }
+    return best;
+}
+
 void chry_dap_usb2uart_uart_config_callback(struct cdc_line_coding *line_coding)
 {
     uart_config_t config = {0};
     uart_default_config(UART_BASE, &config);
-    config.baudrate = line_coding->dwDTERate;
+    config.src_freq_in_hz = clock_get_frequency(UART_CLK_NAME);
+
+    uint32_t requested = line_coding->dwDTERate;
+    uint32_t applied = uart2_round_baudrate(config.src_freq_in_hz, requested);
+    if (applied == 0)
+    {
+        applied = (requested > UART2_MAX_BAUDRATE) ? UART2_MAX_BAUDRATE : requested;
+    }
+    g_uart2_applied_baud = applied;
+    if (applied != requested)
+    {
+        printf("uart2 baud: req %lu -> %lu (max %lu)\r\n",
+               (unsigned long)requested, (unsigned long)applied, (unsigned long)UART2_MAX_BAUDRATE);
+    }
+    config.baudrate = applied;
+
     config.parity = line_coding->bParityType;
     config.word_length = line_coding->bDataBits - 5;
     config.num_of_stop_bits = line_coding->bCharFormat;
     config.fifo_enable = true;
     config.dma_enable = true;
-    config.src_freq_in_hz = clock_get_frequency(UART_CLK_NAME);
     config.rx_fifo_level = uart_rx_fifo_trg_not_empty; /* this config should not change */
     config.tx_fifo_level = uart_tx_fifo_trg_not_full;
     config.rxidle_config.detect_enable = true;
@@ -318,6 +471,7 @@ static hpm_stat_t board_uart_dma_config(void)
         chg_config.dmamux_src = UART_RX_DMA;
         chg_config.linked_ptr = (uint32_t)NULL;
         chg_config.interrupt_mask = 0; /* terminal-count interrupt enabled */
+        chg_config.en_infiniteloop = true; /* DMAV2 circular buffer */
         dma_mgr_setup_channel(resource, &chg_config);
         dma_mgr_install_chn_tc_callback(resource, dma_channel_tc_callback, NULL);
         dma_mgr_enable_chn_irq(resource, DMA_MGR_INTERRUPT_MASK_TC);
@@ -336,6 +490,7 @@ static hpm_stat_t board_uart_dma_config(void)
         chg_config.en_dmamux = true;
         chg_config.dmamux_src = UART_TX_DMA;
         chg_config.linked_ptr = (uint32_t)NULL;
+        chg_config.en_infiniteloop = false;
         dma_mgr_setup_channel(resource, &chg_config);
         dma_mgr_install_chn_tc_callback(resource, dma_channel_tc_callback, NULL);
         dma_mgr_enable_chn_irq(resource, DMA_MGR_INTERRUPT_MASK_TC);

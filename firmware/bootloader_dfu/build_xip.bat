@@ -14,4 +14,5 @@
 @cmake --build ./build_xip
 
 @echo.
-@echo [build_xip] Bootloader image: build_xip\output\akaLinkPro_Boot.hex / .bin (linked at 0x80000000)
+@echo [build_xip] Bootloader image (flash this): build_xip\output\akaLinkPro_Boot_pack.hex (linked at 0x80000000, info block @0x8001F000)
+@echo [build_xip] raw (no info block): build_xip\output\akaLinkPro_Boot.hex / .bin

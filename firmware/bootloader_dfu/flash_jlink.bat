@@ -18,7 +18,8 @@ setlocal
 )
 
 @set "PROJ=%~dp0"
-@set "HEX=%PROJ%build_xip\output\akaLinkPro_Boot.hex"
+@REM Use the packed image: it carries the bootloader info block @0x8001F000.
+@set "HEX=%PROJ%build_xip\output\akaLinkPro_Boot_pack.hex"
 
 @REM --- 1. Build bootloader ------------------------------------------------------
 call "%PROJ%build_xip.bat"

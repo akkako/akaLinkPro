@@ -22,4 +22,5 @@
 @cmake --build ./build_dfu
 
 @echo.
-@echo [build_dfu] APP image: build_dfu\output\akaLinkPro_App.hex / .bin (linked at 0x80020000)
+@echo [build_dfu] APP image (flash this): build_dfu\output\akaLinkPro_App_pack.hex / _pack.bin (linked at 0x80020000, entry 0x80020100)
+@echo [build_dfu] raw (no header): build_dfu\output\akaLinkPro_App.hex / .bin

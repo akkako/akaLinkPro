@@ -25,6 +25,13 @@ set(CONFIG_USB_DEVICE_MSC 1)
 # The APP only needs DFU runtime (usbd_core), not DFU mode (hpm_dfu_port.c).
 # dap_main.c handles DFU DETACH/GETSTATUS/GETSTATE manually as a runtime iface.
 
+# Custom linker script for the APP (DFU) layout: it reserves the first 256 bytes
+# of the APP region for the integrity/version header so the code entry moves to
+# 0x80020100 (signature stays at 0x80020000). Must be set before find_package.
+if(NOT HPM_BUILD_TYPE STREQUAL "flash_xip")
+    set(CUSTOM_GCC_LINKER_FILE ${CMAKE_CURRENT_SOURCE_DIR}/linker/flash_dfu_app.ld)
+endif()
+
 find_package(hpm-sdk REQUIRED HINTS $ENV{HPM_SDK_BASE})
 project(akaLinkPro_App)
 
@@ -111,3 +118,27 @@ add_custom_command(OUTPUT ${HEX}
     COMMENT "Generating ${APP_NAME}.hex"
 )
 add_custom_target(hex_artifacts ALL DEPENDS ${HEX})
+
+# ---------------------------------------------------------------------------
+# Post-build pack: inject the APP integrity/version header (length, CRC32,
+# version, build time, description) into the raw .bin and produce the packed
+# .bin (dfu-util) and .hex (J-Link).
+# ---------------------------------------------------------------------------
+find_package(Python3 COMPONENTS Interpreter)
+if(NOT Python3_EXECUTABLE)
+    set(Python3_EXECUTABLE "$ENV{HPM_SDK_BASE}/../tools/python3/python.exe")
+endif()
+
+set(FW_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
+set(APP_RAW_BIN ${CMAKE_BINARY_DIR}/output/${APP_NAME}.bin)
+set(APP_PACK_BIN ${CMAKE_BINARY_DIR}/output/${APP_NAME}_pack.bin)
+set(APP_PACK_HEX ${CMAKE_BINARY_DIR}/output/${APP_NAME}_pack.hex)
+
+add_custom_command(TARGET ${APP_ELF_NAME} POST_BUILD
+    COMMAND ${Python3_EXECUTABLE} ${FW_ROOT}/tools/pack.py app
+            --bin ${APP_RAW_BIN}
+            --out-bin ${APP_PACK_BIN}
+            --out-hex ${APP_PACK_HEX}
+            --version-json ${FW_ROOT}/version.json
+    COMMENT "Packing APP image (header + CRC32 + version info)"
+)

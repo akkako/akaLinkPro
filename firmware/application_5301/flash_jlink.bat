@@ -20,7 +20,8 @@ setlocal
 )
 
 @set "PROJ=%~dp0"
-@set "HEX=%PROJ%build_dfu\output\akaLinkPro_App.hex"
+@REM Use the packed image: it carries the APP integrity/version header.
+@set "HEX=%PROJ%build_dfu\output\akaLinkPro_App_pack.hex"
 
 @REM --- 1. Build app image -------------------------------------------------------
 call "%PROJ%build_dfu.bat"

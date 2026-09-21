@@ -268,14 +268,22 @@ Byte[0x03-0x3F] = Command data（可选）
 ## 配置持久化
 
 - 设置配置指令（0x02）只修改内存中的配置并立即生效，掉电丢失。
-- 保存配置指令（0x04）将当前配置写入 QSPI NOR flash 持久化。
-- 存储位置：APP 固件区尾部保留的两个 4K 扇区（0x800FE000 与 0x800FF000），
-  不占用 Bootloader 区（0x80000000 - 0x8001FFFF）。
-- 双槽 ping-pong：两份配置带递增的 seq，交替写入两个扇区，保存过程掉电始终保留上一份有效配置。
-- 每个槽结构：magic("PAD0") + CRC32 + version + seq + 配置数据。上电时选取 magic/version/CRC32 校验通过
-  且 seq 最大的槽加载；若两个槽都无效，则恢复出厂默认配置并写回。
-- 常规 APP 升级（J-Link loadfile 或 dfu-util 传输 APP 镜像）不会覆盖这两个扇区；
-  整片 896K 全量 DFU 或 APP 体积增长到尾部的 8K 以内会覆盖，届时需同步调整链接脚本预留空间。
+- 保存配置指令（0x04）通过 **EasyFlash（ENV, NG 模式）** 写入 QSPI NOR flash，
+  具备磨损平衡与掉电保护。
+- 存储位置：APP 固件区尾部保留的两个 4K 扇区（`0x800FE000` 与 `0x800FF000`），
+  不占用 Bootloader 区（`0x80000000` - `0x8001FFFF`）。
+- ENV key 为 `"cfg"`，value 为整个 `api_param_t`；上电自动加载，校验失败则写回出厂默认。
+- 常规 APP 升级（J-Link 或 dfu-util）不会覆盖该区域。
+- 详见 `Flash_Memory_Map.md` 与 `Firmware_Integrity_Plan.md`。
+
+## 固件元数据（版本 / CRC）
+
+- 版本、编译时间、描述、硬件版本等由构建后 `firmware/tools/pack.py` 注入：
+  - **APP**：`0x80020000` 起 256 B 头（签名 + 长度 + CRC32 + 版本 + 编译时间 + 描述），代码入口 `0x80020100`；
+  - **Bootloader**：`0x8001F000` 起 256 B 信息块（版本 + 编译时间 + 硬件版本 + 生产日期）。
+- 版本单一来源：`firmware/version.json`；编译时间取打包时刻。
+- Bootloader 启动时校验 APP 头（签名 + 长度 + CRC32），失败则停留在 DFU 模式。
+- 指令 `0x12`–`0x17` 即从上述固定地址读取返回。
 
 ## WebUI 配置界面
 

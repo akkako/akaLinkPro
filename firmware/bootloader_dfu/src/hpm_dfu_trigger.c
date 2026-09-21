@@ -20,6 +20,68 @@
 #define DFU_TRIGGER_MAGIC      (0x55464455UL)
 #define DFU_TRIGGER_BGPR_INDEX (0U)
 
+/* APP image header (see application_5301/Firmware_Integrity_Plan.md).
+ * 0x80020000 : 4 B DFU signature (BOARD_DFU_SIGNATURE)
+ * +0x04      : app code length
+ * +0x08      : app code CRC32 (seed 0x0D000721)
+ * +0x0C      : header format version
+ * +0x100     : app code / entry point */
+#define APP_HEADER_SIZE        (0x100U)
+#define APP_BASE               (USBD_DFU_APP_DEFAULT_ADD)
+#define APP_CODE               (APP_BASE + APP_HEADER_SIZE)
+#define APP_CODE_MAX           (BOARD_FLASH_BASE_ADDRESS + BOARD_DFU_WRITABLE_SIZE - APP_CODE)
+#define APP_HEADER_VERSION     (1U)
+#define APP_CRC_SEED           (0x0D000721UL)
+
+/* CRC32 with a configurable seed (matches firmware/tools/pack.py). */
+static uint32_t app_crc32(uint32_t crc, const uint8_t *buf, uint32_t len)
+{
+    crc ^= 0xFFFFFFFFUL;
+    while (len-- != 0U)
+    {
+        crc ^= *buf++;
+        for (uint8_t i = 0; i < 8U; i++)
+        {
+            if ((crc & 1U) != 0U)
+            {
+                crc = (crc >> 1) ^ 0xEDB88320UL;
+            }
+            else
+            {
+                crc >>= 1;
+            }
+        }
+    }
+    return ~crc;
+}
+
+/* Verify the APP header (signature + length + CRC32). */
+static bool app_image_valid(void)
+{
+    const volatile uint32_t *hdr = (const volatile uint32_t *)APP_BASE;
+    uint32_t len;
+    uint32_t crc;
+    uint32_t aligned_start;
+    uint32_t aligned_end;
+
+    if (hdr[0] != BOARD_DFU_SIGNATURE)
+    {
+        return false;
+    }
+    len = hdr[1];
+    crc = hdr[2];
+    if ((len == 0U) || (len > APP_CODE_MAX) || (hdr[3] != APP_HEADER_VERSION))
+    {
+        return false;
+    }
+
+    aligned_start = HPM_L1C_CACHELINE_ALIGN_DOWN(APP_CODE);
+    aligned_end = HPM_L1C_CACHELINE_ALIGN_UP(APP_CODE + len);
+    l1c_dc_invalidate(aligned_start, aligned_end - aligned_start);
+
+    return (app_crc32(APP_CRC_SEED, (const uint8_t *)APP_CODE, len) == crc);
+}
+
 /*---------------------------------------------------------------
  * Retention register trigger (BGPR / PDGO)
  *-------------------------------------------------------------*/
@@ -68,10 +130,10 @@ void hpm_dfu_reboot_to_dfu(void)
  *-------------------------------------------------------------*/
 void hpm_dfu_jump_to_app(void)
 {
-    uint32_t entry = USBD_DFU_APP_DEFAULT_ADD + 4;
+    uint32_t entry = APP_CODE;
 
     printf("[BOOT] Jumping to application at 0x%08lx\r\n",
-                (unsigned long)USBD_DFU_APP_DEFAULT_ADD);
+                (unsigned long)APP_CODE);
     disable_global_irq(CSR_MSTATUS_MIE_MASK);
     fencei();
     l1c_dc_disable();
@@ -96,8 +158,8 @@ void hpm_dfu_check_bootloader_request(void)
         printf("[BOOT] DFU trigger from APP, staying in bootloader\r\n");
         return;
     }
-    if (*(volatile uint32_t *)USBD_DFU_APP_DEFAULT_ADD == BOARD_DFU_SIGNATURE) {
-        printf("[BOOT] Valid APP, jumping...\r\n");
+    if (app_image_valid()) {
+        printf("[BOOT] Valid APP (signature + length + CRC32), jumping...\r\n");
         extern void boot_port_board_deinit(void);
         boot_port_board_deinit();
         hpm_dfu_jump_to_app();

@@ -91,3 +91,27 @@ add_custom_command(OUTPUT ${HEX}
     COMMENT "Generating ${APP_NAME}.hex"
 )
 add_custom_target(artifacts ALL DEPENDS ${HEX})
+
+# ---------------------------------------------------------------------------
+# Post-build pack: append the bootloader info block (version, build time,
+# hardware version, production date) at 0x8001F000 to the linker hex.
+# ---------------------------------------------------------------------------
+find_package(Python3 COMPONENTS Interpreter)
+if(NOT Python3_EXECUTABLE)
+    set(Python3_EXECUTABLE "$ENV{HPM_SDK_BASE}/../tools/python3/python.exe")
+endif()
+
+set(FW_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/..)
+set(APP_BIN ${CMAKE_BINARY_DIR}/output/${APP_NAME}.bin)
+set(BL_PACK_HEX ${CMAKE_BINARY_DIR}/output/${APP_NAME}_pack.hex)
+
+add_custom_command(OUTPUT ${BL_PACK_HEX}
+    COMMAND ${Python3_EXECUTABLE} ${FW_ROOT}/tools/pack.py boot
+            --hex ${HEX}
+            --code-bin ${APP_BIN}
+            --out-hex ${BL_PACK_HEX}
+            --version-json ${FW_ROOT}/version.json
+    DEPENDS ${HEX} ${FW_ROOT}/tools/pack.py ${FW_ROOT}/version.json
+    COMMENT "Packing bootloader image (info block @0x8001F000)"
+)
+add_custom_target(pack_artifacts ALL DEPENDS ${BL_PACK_HEX})

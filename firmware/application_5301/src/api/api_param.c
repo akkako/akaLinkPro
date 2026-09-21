@@ -9,18 +9,21 @@
 #include "hpm_ppor_drv.h"
 #include "easyflash.h"
 
-#define BOOTLOADER_START_ADDR (0x00000000)
-#define BOOTLOADER_VER_STR_ADDR "1.0"
-#define BOOTLOADER_TS_STR_ADDR "2026-08-06 08:22:34"
+/* Firmware metadata injected at build time by firmware/tools/pack.py.
+ * See Firmware_Integrity_Plan.md for the layout. */
+#define APP_HEADER_BASE (0x80020000UL)
+#define APPLICATION_CODE_LENGTH_ADDR (APP_HEADER_BASE + 0x04)
+#define APPLICATION_CODE_CRC32_ADDR (APP_HEADER_BASE + 0x08)
+#define APPLICATION_VER_STR_ADDR ((const char *)(APP_HEADER_BASE + 0x10))
+#define APPLICATION_TS_STR_ADDR ((const char *)(APP_HEADER_BASE + 0x18))
+#define APPLICATION_DESC_STR_ADDR ((const char *)(APP_HEADER_BASE + 0x2C))
 
-#define HARDWARE_VER_STR_ADDR "A.0"
-#define HARDWARE_PROD_TS_STR_ADDR "2026-08-06"
-
-#define APPLICATION_CODE_LENGTH_ADDR (0x00004000)
-#define APPLICATION_CODE_CRC32_ADDR (0x00004004)
-#define APPLICATION_VER_STR_ADDR "0.1"
-#define APPLICATION_TS_STR_ADDR "2026-08-06 11:32:45"
-#define APPLICATION_DESC_STR_ADDR "akaLinkPro CMSIS-DAP"
+#define BOOTLOADER_START_ADDR (0x80000000UL)
+#define BL_INFO_BASE (0x8001F000UL)
+#define BOOTLOADER_VER_STR_ADDR ((const char *)(BL_INFO_BASE + 0x10))
+#define BOOTLOADER_TS_STR_ADDR ((const char *)(BL_INFO_BASE + 0x18))
+#define HARDWARE_VER_STR_ADDR ((const char *)(BL_INFO_BASE + 0x2C))
+#define HARDWARE_PROD_TS_STR_ADDR ((const char *)(BL_INFO_BASE + 0x34))
 
 #define CMD_NOT_SUPPORT (0x00)
 #define CMD_GET_CONFIG (0x01)

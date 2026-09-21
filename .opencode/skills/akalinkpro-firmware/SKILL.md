@@ -26,26 +26,31 @@ description: akaLinkPro (HPM5301 CMSIS-DAP) firmware build, flash and debug guid
 
 ```
 firmware/
+  version.json                      版本/描述/硬件信息唯一来源（pack 读取）
+  tools/pack.py                     构建后注入 APP 头(长度/CRC32/版本/时间/描述) 与 BL 信息块
   application_5301/                 主固件 (CMSIS-DAP)
-    CMakeLists.txt                  链接 flash_dfu.ld，预留 0x20000 给 bootloader；会生成 .hex
-    build.bat                       原 DFU 构建 -> ./build，末尾执行 dfu-util
+    CMakeLists.txt                  自定义链接脚本 linker/flash_dfu_app.ld；POST_BUILD 调用 pack.py
+    linker/flash_dfu_app.ld         预留 256B APP 头，入口 0x80020100（CUSTOM_GCC_LINKER_FILE）
+    build.bat                       原 DFU 构建 -> ./build，末尾 dfu-util（用 _pack.bin）
     build_zcc.bat                   ZCC 工具链 DFU 构建
-    build_dfu.bat           [新增]  构建到 ./build_dfu（不调用 dfu-util，生成 .hex）
-    program.bat                     仅执行 dfu-util
-    flash_jlink.bat         [新增]  build_dfu + JLink 烧录 APP 区（0x80020000）
-    gdb_server.bat          [新增]  启动 JLinkGDBServerCL（VSCode 调试用）
-    .vscode/               [新增]  tasks.json / launch.json（GDB 调试，git 忽略）
+    build_dfu.bat                   构建到 ./build_dfu（不调用 dfu-util）
+    program.bat                     仅执行 dfu-util（用 _pack.bin）
+    flash_jlink.bat                 build_dfu + JLink 烧录 APP（用 _pack.hex）
+    gdb_server.bat                  启动 JLinkGDBServerCL（VSCode 调试用）
+    Flash_Memory_Map.md             Flash 布局（含元数据/ EasyFlash）
+    Firmware_Integrity_Plan.md      完整性校验+版本嵌入方案与自检
+    Custom HID Protocol.md          HID 协议（配置/元数据）
     boards/akaLinkPro/              board.c/h, clock.c/h, pinmux.c/h, akaLinkPro.yaml
-    src/                            main.c, usb/, dap/, api/, dfu/
+    src/  main.c, usb/, dap/, api/, led/, drv/, easyflash/, dfu/
   bootloader_dfu/                   DFU Bootloader
-    CMakeLists.txt                  链接 flash_xip.ld，128K flash
-    build.bat                       原 flash_xip 构建 -> ./build
-    build_xip.bat           [新增]  构建到 ./build_xip（JLink 流程专用）
-    flash_jlink.bat         [新增]  build_xip + JLink 烧录 bootloader（0x80000000）
-    src/                            main.c, dfu_desc.c, hpm_dfu_trigger.c, boot_port_board_hpm.c
+    CMakeLists.txt                  链接 flash_xip.ld，128K flash；POST_BUILD 调用 pack.py
+    build.bat / build_xip.bat       ./build / ./build_xip（JLink 流程）
+    flash_jlink.bat                 build_xip + JLink 烧录 bootloader（用 _pack.hex）
+    src/  main.c, dfu_desc.c, hpm_dfu_trigger.c, boot_port_board_hpm.c, dfu_flash_port.c
 ```
 
 构建产物目录 `build` / `build_xip` / `build_dfu` 均已在 `.gitignore` 中忽略。
+每次构建后生成 **打包镜像** `*_pack.hex` / `*_pack.bin`（含元数据），烧录请用打包镜像。
 
 ---
 
@@ -55,15 +60,23 @@ HPM5301，外挂 1MB QSPI NOR，XIP 基址 `0x80000000`。
 
 | 区域 | 地址 | 链接脚本 | 说明 |
 | --- | --- | --- | --- |
-| Bootloader | `0x80000000 - 0x8001FFFF` (128K) | `flash_xip.ld` | 含 `nor_cfg_option`@0x400、`boot_header`@0x1000、`.start`@0x3000 |
-| Application | `0x80020000 - 0x800FFFFF` | `flash_dfu.ld` | `.start` 首 4 字节为 DFU 签名 |
+| Bootloader 代码 | `0x80000000 - 0x8001EFFF` | `flash_xip.ld` | 含 `nor_cfg_option`@0x400、`boot_header`@0x1000、`.start`@0x3000 |
+| Bootloader 信息块 | `0x8001F000 - 0x8001F0FF` (256B) | — | `pack.py` 写入：BL 版本/编译时间/硬件版本/生产日期 |
+| APP 头 | `0x80020000 - 0x800200FF` (256B) | `flash_dfu_app.ld` | 签名 + 长度 + CRC32 + 版本/编译时间/描述 |
+| APP 代码 | `0x80020100 - 0x800FDFFF` | `flash_dfu_app.ld` | **入口 `0x80020100`** |
+| EasyFlash ENV | `0x800FE000 - 0x800FFFFF` (8K) | — | 配置持久化（2×4K 扇区，EasyFlash） |
 | ILM | `0x00000000` (128K) | — | 向量表 / `.fast` |
 | DLM | `0x00080300` | — | data / bss / heap / stack |
 | AHB_SRAM | `0xF0400000` (32K) | — | `.ahb_sram` |
 
-- DFU 签名：`0x80020000` 处必须为 `0x48504D21`（`"HPM!"`，`BOARD_DFU_SIGNATURE`）。
-- Bootloader 在 `hpm_dfu_check_bootloader_request()` 中检查该签名，有效则跳到 `0x80020004`。
-- **APP 必须链接在 `0x80020000`**（bootloader 之后）。放到 0x80000000 会覆盖 bootloader 或启动失败。
+- DFU 签名：`0x80020000` 必须为 `0x48504D21`（`"HPM!"`，`BOARD_DFU_SIGNATURE`）。
+- Bootloader 在 `hpm_dfu_check_bootloader_request()` 中校验 **签名 + 长度 + CRC32**（`app_image_valid()`），
+  成功跳到 `0x80020100`，**失败则停留 DFU 模式**。
+- **APP 用自定义链接脚本** `application_5301/linker/flash_dfu_app.ld`（经 `CUSTOM_GCC_LINKER_FILE`），
+  在 `.dfu_signature` 后 `. = ALIGN(0x100)` 预留 APP 头；APP 不再直接链接到 `flash_dfu.ld`。
+- 头/信息块由 `firmware/tools/pack.py` 注入，版本源 `firmware/version.json`；编译时间取打包时刻。
+- 详见 `application_5301/Flash_Memory_Map.md`、`application_5301/Firmware_Integrity_Plan.md`。
+- DFU 引导程序自身只能 J-Link 烧录（不升级自身）。
 
 ---
 
@@ -90,12 +103,16 @@ GDB：`...\toolchains\...\bin\riscv32-unknown-elf-gdb.exe`
 :: Bootloader (flash_xip @0x80000000) -> build_xip\
 firmware\bootloader_dfu\build_xip.bat
 
-:: App (flash_dfu @0x80020000) -> build_dfu\   (生成 .hex 与 .bin)
+:: App (flash_dfu @0x80020000) -> build_dfu\   (生成 .hex/.bin 与打包 img)
 firmware\application_5301\build_dfu.bat
 ```
 
-原有流程保持不变：
-- `bootloader_dfu\build.bat` / `application_5301\build.bat`（`./build`，末尾 dfu-util）
+构建后处理：两个工程都会在链接后调用 `firmware/tools/pack.py` 生成**打包镜像**：
+- App：`build_dfu\output\akaLinkPro_App_pack.bin`（dfu-util）/ `_pack.hex`（J-Link）
+- Boot：`build_xip\output\akaLinkPro_Boot_pack.hex`（含 `0x8001F000` 信息块）
+
+其它入口：
+- `bootloader_dfu\build.bat` / `application_5301\build.bat`（`./build`，末尾 dfu-util，用 `_pack.bin`）
 - `application_5301\build_zcc.bat`（ZCC 工具链）
 
 ---
@@ -113,6 +130,8 @@ firmware\application_5301\flash_jlink.bat
 ```
 
 两个脚本都会：构建 -> 生成临时 `.jlink` 命令 -> 调用 `JLink.exe -NoGui 1 -ExitOnError 1` -> reset & go。
+脚本内 `loadfile` 指向**打包镜像**（`*_pack.hex`）：APP 头 / Bootloader 信息块已包含其中；
+烧未打包的 `.hex` 会因缺少元数据导致 Bootloader 校验失败而停留在 DFU。
 
 J-Link 命令模板（直接改 `flash_jlink.bat` 时遵循）：
 
@@ -136,10 +155,12 @@ Exit
 
 ```bat
 firmware\application_5301\build.bat
-:: 等价于 cmake 构建 + dfu-util -a 0 -E 1 -s 0x80020000:leave -D build\output\akaLinkPro_App.bin
+:: 等价于 cmake 构建 + dfu-util -a 0 -E 1 -s 0x80020000:leave -D build\output\akaLinkPro_App_pack.bin
 ```
 
 APP 自带 DFU runtime 接口，`dfu-util` 会先发 `DFU_DETACH` 触发重启进入 bootloader，再传输。
+**必须用 `_pack.bin`**（含 256B APP 头 + CRC32）；传输完成后 Bootloader 会校验并跳转。
+Bootloader 自身不能用 DFU 升级（仅 J-Link）。
 
 ---
 
@@ -199,8 +220,10 @@ si JTAG
 jtagconf -1 -1
 speed 4000
 connect
-mem8 0x80020000 4      // 应为 21 4D 50 48  ("HPM!")
-mem32 0x80000000 4
+mem8 0x80020000 64     // APP 头：21 4D 50 48 + 长度 + CRC32 + 版本 + 时间 + 描述
+mem8 0x80020100 8      // APP 入口代码（_start）
+mem8 0x8001F000 64     // Bootloader 信息块："BLI1" + BL 版本 + 时间 + 硬件版本 + 生产日期
+mem8 0x800FE000 16     // EasyFlash 扇区头，含 "EF40" (45 46 34 30)
 Exit
 ```
 
@@ -297,18 +320,25 @@ SWD 目标可为 STM32F1 等；本板 SWD 实跑 20/36/45/60MHz。
 2. **不要用 `erase` 全片擦除**：J-Link 对本板 QSPI 报 "Only internal flash banks will be erased"，
    `exec EnableEraseAllFlashBanks` + `erase` 会**卡住**。只用 `loadfile`，它会自动擦写到的扇区。
 3. **必须加 `-NoGui 1 -ExitOnError 1`**：否则可能弹窗阻塞脚本；脚本内用 `Sleep` 加延时。
-4. **APP 地址固定 `0x80020000`**：靠 bootloader 跳转；不要用 flash_xip 放到 `0x80000000`。
-5. `.vscode/` 被 `.gitignore` 忽略，配置改了不会进 git。
-6. `application_5301/CMakeLists.txt` 已把 `_dfu_bl_length=0x20000` 限定在非 `flash_xip` 构建，
-   并新增 `.hex` 生成；改链接脚本时注意别破坏这两点。
+4. **必须用打包镜像烧录**（`*_pack.hex` / `*_pack.bin`）：App 头/BL 信息块由 `pack.py` 注入，
+   直接烧未打包镜像会被 Bootloader CRC 校验拒绝并停留 DFU。
+5. **APP 基址 `0x80020000`、入口 `0x80020100`**：靠 bootloader 跳转；不要用 flash_xip 放到 `0x80000000`；
+   改入口/头需同步改 bootloader 的 `app_image_valid()` 与 `hpm_dfu_jump_to_app()`。
+6. `.vscode/` 被 `.gitignore` 忽略，配置改了不会进 git。
+7. `application_5301/CMakeLists.txt`：`_dfu_bl_length=0x20000` + `_flash_size=0xFE000`（尾部 8K EasyFlash）
+   仅用于非 `flash_xip`；并用 `CUSTOM_GCC_LINKER_FILE=linker/flash_dfu_app.ld`。改链接脚本时别破坏这些。
+8. **DFU 保护**：Bootloader 的 `dfu_flash_port.c` 把擦写限制在 `< 0x800FE000`，DfuSe 描述也扣除了尾部 8K；
+   不要用整片全量 DFU 覆盖 EasyFlash 区（Bootloader 也会拒绝越界擦写）。
 
 ---
 
 ## 10. 修改代码时的自检
 
-1. `firmware\application_5301\build_dfu.bat` 能过。
-2. `firmware\bootloader_dfu\build_xip.bat` 能过。
-3. J-Link 烧录后设备枚举正常（`VID_0D28`）。
+1. `firmware\application_5301\build_dfu.bat` 与 `firmware\bootloader_dfu\build_xip.bat` 能过，
+   且输出 `[pack app]` / `[pack boot]`（含 ver/len/crc/time）。
+2. 烧录**打包镜像**后设备枚举正常（APP：`VID_0D28 PID_0204`；校验失败停留：`PID_0205` DFU）。
+3. 破坏 APP 头后复位应停留 Bootloader（完整性保护生效）。
 4. VSCode F5 能在 `main` 命中断点。
 5. 串口回环（RXD-TXD 短接）在 SWD/空闲下能通过，JTAG 下无回显。
-6. 不要动 `build.bat` / `program.bat` / `build_zcc.bat` 的既有行为。
+6. HID `0x12`–`0x17` 返回 `version.json` 中配置的版本/时间。
+7. `build.bat` / `program.bat` 已刻意改为使用 `_pack.bin`；`build_zcc.bat` 行为未改，勿破坏。

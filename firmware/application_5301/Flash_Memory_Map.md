@@ -10,14 +10,15 @@ NOR 扇区（sector）大小：**4 KB (0x1000)**，共 256 个扇区（扇区号
 
 | 区域 | 起始地址 | 结束地址 | 大小 | 扇区号 | 说明 |
 | --- | --- | --- | --- | --- | --- |
-| Bootloader | `0x80000000` | `0x8001FFFF` | 128 KB | 0 – 31 | DFU 引导程序，**不可被 APP / 参数区占用** |
-| APP 固件 | `0x80020000` | `0x800FDFFF` | 888 KB | 32 – 253 | 应用程序链接区（`flash_dfu.ld`） |
-| 参数区 Slot0 | `0x800FE000` | `0x800FEFFF` | 4 KB | 254 | 配置持久化主/备槽之一 |
-| 参数区 Slot1 | `0x800FF000` | `0x800FFFFF` | 4 KB | 255 | 配置持久化主/备槽之一 |
+| Bootloader 代码 | `0x80000000` | `0x8001EFFF` | < 124 KB | 0 – 30 | DFU 引导程序（实际 ~40 KB） |
+| Bootloader 信息块 | `0x8001F000` | `0x8001F0FF` | 256 B | 31 | 版本/编译时间/硬件版本/生产日期 |
+| APP 头 | `0x80020000` | `0x800200FF` | 256 B | 32 | DFU 签名 + 长度 + CRC32 + 版本/时间/描述 |
+| APP 代码 | `0x80020100` | `0x800FDFFF` | ~895 KB | 32 – 253 | 应用程序链接区，入口 `0x80020100` |
+| EasyFlash ENV 区 | `0x800FE000` | `0x800FFFFF` | 8 KB | 254 – 255 | 配置持久化（见 §4） |
 
-- APP 入口：`0x80020000`，首 4 字节为 DFU 签名 `0x48504D21`（"HPM!"）。
-- Bootloader 跳转到 `0x80020004`。
-- 参数区相对 1 MB 顶端向下计算，属于「APP 区尾部」，与 Bootloader 区无关。
+- APP 头首 4 字节为 DFU 签名 `0x48504D21`（"HPM!"），代码入口 `0x80020100`。
+- Bootloader 校验通过后跳转到 `0x80020100`。
+- 元数据由构建后 `firmware/tools/pack.py` 注入，详见 §3.2 / §4.5。
 
 ## 2. Bootloader 区（`0x80000000` – `0x8001FFFF`）
 
@@ -32,17 +33,44 @@ NOR 扇区（sector）大小：**4 KB (0x1000)**，共 256 个扇区（扇区号
 
 | 地址 | 内容 | 说明 |
 | --- | --- | --- |
-| `0x80020000` | `.start`（DFU 签名） | 4 字节签名 `21 4D 50 48` |
-| `0x80020004` | 向量/代码/只读数据 | 实际占用约 66 KB（随版本变化） |
-| `0x80020000` + `__fw_size__` | APP 结束 | 链接脚本 ASSERT 保证不超过区尾 |
-| 区尾 `0x800FDFFF` | APP 区上界（含） | 预留 8 KB 参数区在其后 |
+| `0x80020000`–`0x800200FF` | **APP 头** | 见 §3.1；由 `pack.py` 注入 |
+| `0x80020100` | 代码入口 `_start` | 实际占用约 80 KB（随版本变化） |
+| 区尾 `0x800FDFFF` | APP 区上界（含） | 其后为 8 KB EasyFlash 区 |
 
-APP 区大小由 `flash_dfu.ld` 计算：
-`APP_LENGTH = _flash_size − _dfu_bl_length`
-其中 `_dfu_bl_length = 0x20000`（128 KB），`_flash_size = 0xFE000`（见 §5）。
+APP 区使用**自定义链接脚本** `linker/flash_dfu_app.ld`（经 `CUSTOM_GCC_LINKER_FILE` 指定），
+在 `.dfu_signature` 之后 `. = ALIGN(0x100)` 预留 APP 头，使入口落到 `0x80020100`。
+区大小仍为 `APP_LENGTH = _flash_size − _dfu_bl_length = 0xFE000 − 0x20000 = 0xDE000`。
 
-> 当前 APP 实际仅约 66 KB，因此 `0x80030000` – `0x800FDFFF` 在空间上是空闲的，
-> 但按链接约束仍属于 APP 区，APP 增大时会被使用。自定义数据区应放在**区尾**并同步缩小 `_flash_size`。
+### 3.1 APP 头结构（256 B @ `0x80020000`）
+
+| 偏移 | 长度 | 字段 | 来源 |
+| --- | --- | --- | --- |
+| `0x00` | 4 | DFU 签名 `0x48504D21` | 链接器（保持） |
+| `0x04` | 4 | 代码长度 `app_code_len` | `pack.py` |
+| `0x08` | 4 | 代码 CRC32（种子 `0x0D000721`） | `pack.py` |
+| `0x0C` | 4 | 头格式版本 = 1 | `pack.py` |
+| `0x10` | 8 | 固件版本串 | `version.json: app_fw_ver` |
+| `0x18` | 20 | 固件编译时间 `YYYY/MM/DD HH:MM:SS` | 打包时刻 |
+| `0x2C` | 24 | 固件描述 | `version.json: app_desc` |
+| `0x44` | 0xBC | 保留 | — |
+
+## 3.2 Bootloader 信息块（256 B @ `0x8001F000`）
+
+| 偏移 | 长度 | 字段 | 来源 |
+| --- | --- | --- | --- |
+| `0x00` | 4 | magic `"BLI1"` (`0x31494C42`) | `pack.py` |
+| `0x04` | 4 | Bootloader 代码长度 | `pack.py` |
+| `0x08` | 4 | Bootloader CRC32（预留，未校验） | — |
+| `0x0C` | 4 | 格式版本 = 1 | `pack.py` |
+| `0x10` | 8 | Bootloader 版本串 | `version.json: bl_ver` |
+| `0x18` | 20 | Bootloader 编译时间 | 打包时刻 |
+| `0x2C` | 8 | 硬件版本串 | `version.json: hw_ver` |
+| `0x34` | 20 | 硬件生产日期 | `version.json: hw_prod_date` |
+
+### 3.3 版本信息源
+
+统一配置于 `firmware/version.json`（`app_fw_ver` / `app_desc` / `bl_ver` / `hw_ver` / `hw_prod_date`），
+由 app 与 bootloader 的 `pack.py`（`firmware/tools/pack.py`）在构建后写入；编译时间取打包时刻。
 
 ## 4. 参数存储区（`0x800FE000` – `0x800FFFFF`，EasyFlash）
 
@@ -77,6 +105,10 @@ APP 区大小由 `flash_dfu.ld` 计算：
 | --- | --- | --- |
 | `application_5301/CMakeLists.txt` | APP 链接 `_flash_size`（决定 APP 区上界） | `0xFE000`（= 1 MB − 8 KB） |
 | `application_5301/CMakeLists.txt` | Bootloader 预留 `_dfu_bl_length` | `0x20000` |
+| `application_5301/CMakeLists.txt` | APP 自定义链接脚本 `CUSTOM_GCC_LINKER_FILE` | `linker/flash_dfu_app.ld` |
+| `application_5301/CMakeLists.txt` | APP POST_BUILD 打包（写入 APP 头） | `tools/pack.py app` |
+| `bootloader_dfu/CMakeLists.txt` | Bootloader POST_BUILD 打包（写入信息块） | `tools/pack.py boot` |
+| `firmware/version.json` | 版本/描述/硬件信息唯一来源 | 见 §3.3 |
 | `application_5301/boards/akaLinkPro/board.h` | 尾部保留大小 `BOARD_PARAM_RESERVED_SIZE` | `0x2000`（8 KB） |
 | `application_5301/src/easyflash/inc/ef_cfg.h` | `EF_START_ADDR` / `ENV_AREA_SIZE`（= 尾部保留区） | 由 `BOARD_*` 推出 |
 | `bootloader_dfu/boards/akaLinkPro/board.h` | `BOARD_DFU_WRITABLE_SIZE` | `BOARD_FLASH_SIZE − 0x2000` |
@@ -89,7 +121,7 @@ EasyFlash ENV 区地址：
 
 ## 6. 新增自定义数据区的方法
 
-在 **flash 顶端**从参数区继续向下预留（保持 Bootloader 区不动），并同步缩小 APP 区。
+在 **flash 顶端**从 EasyFlash 区继续向下预留（保持 Bootloader 区不动），并同步缩小 APP 区。
 
 ### 6.1 示例：新增 2 个扇区（8 KB）自定义数据区
 
@@ -99,8 +131,7 @@ EasyFlash ENV 区地址：
 | --- | --- | --- | --- |
 | APP 固件 | `0x80020000` – `0x800FBFFF` | 32 – 251 | 880 KB |
 | 自定义数据区（示例） | `0x800FC000` – `0x800FDFFF` | 252 – 253 | 8 KB |
-| 参数区 Slot0 | `0x800FE000` – `0x800FEFFF` | 254 | 4 KB |
-| 参数区 Slot1 | `0x800FF000` – `0x800FFFFF` | 255 | 4 KB |
+| EasyFlash ENV 区 | `0x800FE000` – `0x800FFFFF` | 254 – 255 | 8 KB |
 
 此时尾部总保留 `TAIL = 4 × 0x1000 = 0x4000`：APP `_flash_size = 0x100000 − 0x4000 = 0xFC000`。
 
@@ -133,8 +164,9 @@ si JTAG
 jtagconf -1 -1
 speed 4000
 connect
-mem8  0x80020000,4      // 应为 21 4D 50 48 ("HPM!")
-mem32 0x80000000,1
+mem8  0x80020000,64     // APP 头：21 4D 50 48 + len + CRC32 + "0.1" + 时间 + 描述
+mem8  0x80020100,8      // APP 入口代码（_start）
+mem8  0x8001F000,64     // Bootloader 信息块："BLI1" + "1.0" + 时间 + "A.0" + 生产日期
 mem8  0x800FE000,16     // EasyFlash 扇区头，含 "EF40" (45 46 34 30)
 mem8  0x800FE010,16     // ENV 节点头 "KV40" (4B 56 34 30) + key "cfg"
 mem8  0x800FF000,16     // 第二个 ENV 扇区（GC 备用，通常为空）

@@ -14,6 +14,14 @@ description: akaLinkPro (HPM5301 CMSIS-DAP) firmware build, flash and debug guid
 
 ---
 
+## 0. 其他 skill 索引
+
+除了阅读本 skill 外，还应该阅读以下skill：
+
+```
+	jlink/SKILL.md
+```
+
 ## 1. 目录结构
 
 ```

@@ -16,6 +16,7 @@
 #include "hpm_dfu_trigger.h"
 #include "api_param.h"
 #include "usb_composite.h"
+#include "led_state.h"
 
 int main(void)
 {
@@ -29,6 +30,9 @@ int main(void)
     /* Bring up the UART2 <-> CDC COM port bridge. DAP_SETUP() above parks
      * PA08/PA09 as GPIO, so this must run afterwards to mux them to UART2. */
     uartx_preinit();
+
+    /* Status LEDs, external reference ADC and the periodic LED tick. */
+    led_state_init();
 
     while (1)
     {

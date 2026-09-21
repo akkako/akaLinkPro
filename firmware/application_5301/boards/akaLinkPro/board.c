@@ -245,6 +245,9 @@ void board_init_gpio_pins(void)
     init_uart3_pin_as_gpio_low();
     /* Enable the 5V level-shifter supply by default (PB13 high). */
     init_power_pins();
+    /* Status LEDs (PB11/PB12) and external reference ADC pin (PB10). */
+    init_led_pins();
+    init_adc_vref_pin();
     gpio_set_pin_input(BOARD_APP_GPIO_CTRL, BOARD_APP_GPIO_INDEX, BOARD_APP_GPIO_PIN);
 }
 

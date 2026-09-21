@@ -6,9 +6,11 @@
 typedef struct _appiparam_t {
     uint32_t magic_number;
     uint8_t output_mode;     // 0 - SWD+VCOM, 1 - SWD+JTAG
-    uint8_t swd_sim_mode;    // 0 - SPI, 1 - GPIO
     uint8_t usb5v_out_mode;  // 0 - Disable, 1 - Enable
     uint8_t clock_accel_mode;// 0 - Disable, 1 - Enable
+    uint8_t led1_mode;       // LED1 (PB11) display mode, 1-9, see led_state.h
+    uint8_t led2_mode;       // LED2 (PB12) display mode, 1-9, see led_state.h
+    uint16_t vref_mv;        // External reference threshold for mode 5, 1800-5000 mV
 } api_param_t;
 
 extern api_param_t g_param;

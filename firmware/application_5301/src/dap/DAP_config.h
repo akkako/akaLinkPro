@@ -32,6 +32,7 @@
 #include "pinmux.h"
 #include "board.h"
 #include "cdc_interface.h"
+#include "led_state.h"
 
 //**************************************************************************************************
 /**
@@ -575,14 +576,14 @@ CMSIS-DAP 硬件可提供指示 CMSIS-DAP 调试探针单元状态的 LED。
            - 1：连接 LED 亮：调试器已连接到 CMSIS-DAP 调试探针单元。
            - 0：连接 LED 灭：调试器未连接到 CMSIS-DAP 调试探针单元。
 */
-__STATIC_INLINE void LED_CONNECTED_OUT(uint32_t bit) {}
+__STATIC_INLINE void LED_CONNECTED_OUT(uint32_t bit) { led_state_set_dap_connected(bit ? 1U : 0U); }
 
 /** 调试探针单元：设置目标运行 LED 的状态。
 \param bit 目标运行 LED 的状态。
            - 1：目标运行 LED 亮：目标中的程序执行已启动。
            - 0：目标运行 LED 灭：目标中的程序执行已停止。
 */
-__STATIC_INLINE void LED_RUNNING_OUT(uint32_t bit) {}
+__STATIC_INLINE void LED_RUNNING_OUT(uint32_t bit) { led_state_set_dap_running(bit ? 1U : 0U); }
 
 ///@}
 

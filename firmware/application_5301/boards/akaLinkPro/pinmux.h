@@ -21,6 +21,8 @@ void init_button_pins(void);
 void init_usb0_pins(void);
 void init_power_pins(void);
 void board_set_5v_output(uint8_t on);
+void init_led_pins(void);
+void init_adc_vref_pin(void);
 
 void init_uart3_pins_as_uart(void);
 void init_uart3_pin_as_gpio_low(void);

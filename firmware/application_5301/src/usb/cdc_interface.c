@@ -11,6 +11,7 @@
 #include "hpm_sysctl_drv.h"
 #include "usb_composite.h"
 #include "cdc_interface.h"
+#include "led_state.h"
 
 #define UART_BASE HPM_UART2
 #define UART_IRQ IRQn_UART2
@@ -124,6 +125,7 @@ static uint32_t uartx_rx_written(void)
 static void uartx_rx_flush_locked(void)
 {
     uint32_t written = uartx_rx_written();
+    uint32_t copied = 0;
 
     if (written == rb_write_pos)
     {
@@ -132,22 +134,26 @@ static void uartx_rx_flush_locked(void)
 
     if (written > rb_write_pos)
     {
-        chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[rb_write_pos], written - rb_write_pos);
+        copied = written - rb_write_pos;
+        chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[rb_write_pos], copied);
     }
     else
     {
         /* Wrapped: copy the tail then the head. */
         if (rb_write_pos < UART_RX_DMA_BUFFER_SIZE)
         {
-            chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[rb_write_pos],
-                                  UART_RX_DMA_BUFFER_SIZE - rb_write_pos);
+            uint32_t len = UART_RX_DMA_BUFFER_SIZE - rb_write_pos;
+            chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[rb_write_pos], len);
+            copied += len;
         }
         if (written > 0)
         {
             chry_ringbuffer_write(&g_uartrx, &uart_rx_buf[0], written);
+            copied += written;
         }
     }
     rb_write_pos = written;
+    led_state_notify_uart_rx(copied);
 }
 
 /* (Re)start the circular RX DMA from the beginning of uart_rx_buf.
@@ -501,6 +507,7 @@ void chry_dap_usb2uart_uart_send_bydma(uint8_t *data, uint16_t len)
         return;
     }
     g_uart_tx_transfer_length = len;
+    led_state_notify_uart_tx(len);
     buf_addr = core_local_mem_to_sys_address(HPM_CORE0, (uint32_t)data);
     dma_mgr_set_chn_src_addr(tx_resource, buf_addr);
     dma_mgr_set_chn_transize(tx_resource, len);

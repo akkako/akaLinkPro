@@ -21,6 +21,13 @@
 /* 5V output enable for the level shifter supply (active high). */
 #define POWER_5V_EN_PIN IOC_PAD_PB13
 
+/* Status LEDs (active high). */
+#define LED1_PIN IOC_PAD_PB11
+#define LED2_PIN IOC_PAD_PB12
+
+/* External reference voltage sense (10k/10k divider), ADC0.2. */
+#define ADC_VREF_PIN IOC_PAD_PB10
+
 
 static void gpiom_config_pin_to_gpio0(uint16_t gpio_index)
 {
@@ -115,6 +122,43 @@ void init_power_pins(void)
     gpiom_config_pin_to_gpio0(POWER_5V_EN_PIN);
     gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(POWER_5V_EN_PIN), GPIO_GET_PIN_INDEX(POWER_5V_EN_PIN));
     board_set_5v_output(1);
+}
+
+/**
+ * @brief Init the status LED pins as push-pull GPIO outputs, both off.
+ * @param None
+ */
+void init_led_pins(void)
+{
+    const uint16_t leds[2] = {LED1_PIN, LED2_PIN};
+
+    for (uint32_t i = 0; i < 2; i++)
+    {
+        HPM_IOC->PAD[leds[i]].FUNC_CTL = IOC_PAD_FUNC_CTL_ALT_SELECT_SET(0);
+        HPM_IOC->PAD[leds[i]].PAD_CTL =
+            IOC_PAD_PAD_CTL_HYS_SET(0) | // schmitt trigger disable
+            IOC_PAD_PAD_CTL_PRS_SET(0) | // pull resistor 100k
+            IOC_PAD_PAD_CTL_PS_SET(0) |  // pull down
+            IOC_PAD_PAD_CTL_PE_SET(0) |  // pull disable
+            IOC_PAD_PAD_CTL_KE_SET(0) |  // keeper disable
+            IOC_PAD_PAD_CTL_OD_SET(0) |  // open drain disable
+            IOC_PAD_PAD_CTL_SR_SET(1) |  // fast slew rate
+            IOC_PAD_PAD_CTL_SPD_SET(3) | // fastest slew rate
+            IOC_PAD_PAD_CTL_DS_SET(4);   // drive strength 39 ohm(3.3V)
+
+        gpiom_config_pin_to_gpio0(leds[i]);
+        gpio_set_pin_output(HPM_GPIO0, GPIO_GET_PORT_INDEX(leds[i]), GPIO_GET_PIN_INDEX(leds[i]));
+        gpio_write_pin(HPM_GPIO0, GPIO_GET_PORT_INDEX(leds[i]), GPIO_GET_PIN_INDEX(leds[i]), 0);
+    }
+}
+
+/**
+ * @brief Init the external reference sense pin as ADC analog input.
+ * @param None
+ */
+void init_adc_vref_pin(void)
+{
+    HPM_IOC->PAD[ADC_VREF_PIN].FUNC_CTL = IOC_PAD_FUNC_CTL_ANALOG_MASK;
 }
 
 /**

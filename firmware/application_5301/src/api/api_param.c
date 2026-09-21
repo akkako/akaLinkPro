@@ -1,5 +1,6 @@
 #include "api_param.h"
 #include "usb_composite.h"
+#include "led_state.h"
 #include <string.h>
 
 // #define FLASH_PAGE_SIZE (256)
@@ -44,9 +45,11 @@ void api_param_load(void)
         // default value
         g_param.magic_number = 0x0D000721;
         g_param.output_mode = 0;
-        g_param.swd_sim_mode = 0;
         g_param.usb5v_out_mode = 0;
         g_param.clock_accel_mode = 0;
+        g_param.led1_mode = LED_MODE_POWER;  /* LED1: debugger power, always on */
+        g_param.led2_mode = LED_MODE_VREF;   /* LED2: external reference detection */
+        g_param.vref_mv = 3300;
         api_param_save();
     }
     else
@@ -83,18 +86,16 @@ void api_param_proc_hid(uint8_t *req_hid, uint8_t *res_hid)
     switch (cmd)
     {
     case CMD_GET_CONFIG:
-        res_hid[1] = 0x05;
+        res_hid[1] = 0x04;
         res_hid[2] = CMD_GET_CONFIG;
         res_hid[3] = g_param.output_mode;
-        res_hid[4] = g_param.swd_sim_mode;
-        res_hid[5] = g_param.usb5v_out_mode;
-        res_hid[6] = g_param.clock_accel_mode;
+        res_hid[4] = g_param.usb5v_out_mode;
+        res_hid[5] = g_param.clock_accel_mode;
         break;
     case CMD_SET_CONFIG:
         g_param.output_mode = req_hid[3] ? 0x01 : 0x00;
-        g_param.swd_sim_mode = req_hid[4] ? 0x01 : 0x00;
-        g_param.usb5v_out_mode = req_hid[5] ? 0x01 : 0x00;
-        g_param.clock_accel_mode = req_hid[6] ? 0x01 : 0x00;
+        g_param.usb5v_out_mode = req_hid[4] ? 0x01 : 0x00;
+        g_param.clock_accel_mode = req_hid[5] ? 0x01 : 0x00;
         res_hid[1] = 1;
         res_hid[2] = CMD_SET_CONFIG;
         break;

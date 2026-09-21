@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 #include "board.h"
 #include "clock.h"
 #include "hpm_gpio_drv.h"

@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * USB MSC class callbacks backed by the virtual FAT volume (vfat.c).
  */

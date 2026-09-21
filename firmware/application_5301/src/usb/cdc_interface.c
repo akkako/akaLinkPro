@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 #include <stdio.h>
 #include <hpm_gpiom_soc_drv.h>
 #include <hpm_gpio_drv.h>

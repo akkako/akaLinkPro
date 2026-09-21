@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 #include "usb_composite.h"
 
 #if CONFIG_CHERRYDAP_USE_MSC

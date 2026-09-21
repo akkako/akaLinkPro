@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * Virtual FAT16 volume exposed as a USB MSC U-disk by the bootloader.
  *

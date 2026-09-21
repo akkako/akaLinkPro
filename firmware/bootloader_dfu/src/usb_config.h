@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * CherryUSB Configuration for akaLinkPro Bootloader
  * Matches CDC demo pattern + HS support

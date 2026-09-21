@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 #include "usb_composite.h"
 #include "hpm_dfu_trigger.h"
 #include "hpm_otp_drv.h"

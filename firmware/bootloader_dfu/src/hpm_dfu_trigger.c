@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * HPM DFU Boot Port — trigger, jump, and bootloader entry logic.
  * Adapted from hpm_sdk samples/cherryusb/device/dfu/common/hpm_dfu_trigger.c

@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * HPM DFU Trigger - retention register based DFU entry
  * Allows APP to request bootloader mode across reset via BGPR/PDGO magic.

@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 #include "api_param.h"
 #include "usb_composite.h"
 #include "led_state.h"

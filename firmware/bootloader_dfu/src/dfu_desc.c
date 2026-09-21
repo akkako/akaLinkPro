@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * DFU USB descriptors for HPM DFU Bootloader
  * DfuSe protocol path: uses SDK hpm_dfu_port.c for flash callbacks.

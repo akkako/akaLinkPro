@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * Virtual FAT16 volume for the bootloader U-disk (see vfat.h).
  */

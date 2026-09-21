@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 #ifndef DAP_MAIN_H
 #define DAP_MAIN_H
 

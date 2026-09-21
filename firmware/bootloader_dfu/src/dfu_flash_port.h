@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 /*
  * Shared low-level flash access for the bootloader (ROM API wrapper).
  * Used by both the DFU port and the virtual-FAT MSC upgrade path.

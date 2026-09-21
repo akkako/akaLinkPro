@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright (c) 2026 akaInstruments */
+
 #ifndef __LED_STATE_H__
 #define __LED_STATE_H__
 

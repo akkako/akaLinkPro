@@ -60,8 +60,8 @@
 #define CDC_INTF_STRING_INDEX 0x00
 
 #define WEBUSB_URL_STRINGS \
-    'a', 'k', 'k', 'a', 'k', 'o', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/', 'a', 'k', 'a', 'L', 'i', 'n', 'k', 'C', 'o', 'm', 'p', 'a', 'c', 't',
-// https://akkako.github.io/akaLinkCompact/
+    'a', 'k', 'k', 'a', 'k', 'o', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/', 'a', 'k', 'a', 'L', 'i', 'n', 'k', 'P', 'r', 'o',
+// https://akkako.github.io/akaLinkPro/
 
 // clang-format off
 __ALIGN_BEGIN const uint8_t USBD_WinUSBDescriptorSetDescriptor[] = {

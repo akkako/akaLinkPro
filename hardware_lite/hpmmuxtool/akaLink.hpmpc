@@ -1,0 +1,168 @@
+{
+  "clientKey": "8de7bfc9fa4cc349c5ecd0b4319a296a",
+  "secretKey": "881409cc7c19f49dd2549b7dbbf616ca",
+  "content": {
+    "pid": "bd440b97-a56e-43db-a7df-cc12be81cf7a",
+    "info": {
+      "projectName": "akaLink.hpmpc",
+      "sdkName": "1.12.0",
+      "socName": "HPM5301",
+      "packageName": "QFN48",
+      "createTime": 1786937711420,
+      "updateTime": 1786946728023
+    },
+    "pinmux": {
+      "functions": {
+        "init_pins": {
+          "selectPins": {
+            "PA25": {
+              "signal": "USBPHY.A.USB_DM",
+              "padCtls": {}
+            },
+            "PA24": {
+              "signal": "USBPHY.A.USB_DP",
+              "padCtls": {}
+            },
+            "PA06": {
+              "signal": "JTAG.A.TCK",
+              "padCtls": {}
+            },
+            "PA05": {
+              "signal": "JTAG.A.TDI",
+              "padCtls": {}
+            },
+            "PA04": {
+              "signal": "JTAG.A.TDO",
+              "padCtls": {}
+            },
+            "PA07": {
+              "signal": "JTAG.A.TMS",
+              "padCtls": {}
+            },
+            "PA08": {
+              "signal": "UART2.A.TXD",
+              "padCtls": {}
+            },
+            "PA09": {
+              "signal": "UART2.A.RXD",
+              "padCtls": {}
+            },
+            "PB15": {
+              "signal": "UART3.B.TXD",
+              "padCtls": {}
+            },
+            "PB14": {
+              "signal": "UART3.B.RXD",
+              "padCtls": {}
+            },
+            "PB13": {
+              "signal": "GPIO.A.B[13]",
+              "padCtls": {}
+            },
+            "PB12": {
+              "signal": "GPIO.A.B[12]",
+              "padCtls": {}
+            },
+            "PB11": {
+              "signal": "ADC0.A.IN3",
+              "padCtls": {}
+            },
+            "PB08": {
+              "signal": "GPIO.A.B[08]",
+              "padCtls": {}
+            },
+            "PB09": {
+              "signal": "GPIO.A.B[09]",
+              "padCtls": {}
+            },
+            "PB10": {
+              "signal": "GPIO.A.B[10]",
+              "padCtls": {}
+            },
+            "PA10": {
+              "signal": "GPIO.A.A[10]",
+              "padCtls": {}
+            },
+            "PA01": {
+              "signal": "UART0.A.RXD",
+              "padCtls": {}
+            },
+            "PA00": {
+              "signal": "UART0.A.TXD",
+              "padCtls": {}
+            }
+          },
+          "managers": {
+            "gpiom": {
+              "PB13": {
+                "direction": "1",
+                "gpioController": "1",
+                "gpioControllerHide": "[\"2\"]",
+                "outputLevel": "0",
+                "registerLock": "0"
+              },
+              "PB12": {
+                "direction": "1",
+                "gpioController": "1",
+                "gpioControllerHide": "[\"2\"]",
+                "outputLevel": "0",
+                "registerLock": "0"
+              },
+              "PB08": {
+                "direction": "0",
+                "gpioController": "1",
+                "interrupt": "0",
+                "gpioControllerHide": "[\"2\"]",
+                "registerLock": "0"
+              },
+              "PB09": {
+                "direction": "0",
+                "gpioController": "1",
+                "interrupt": "0",
+                "gpioControllerHide": "[\"2\"]",
+                "registerLock": "0"
+              },
+              "PB10": {
+                "direction": "0",
+                "gpioController": "1",
+                "interrupt": "0",
+                "gpioControllerHide": "[\"2\"]",
+                "registerLock": "0"
+              },
+              "PA10": {
+                "direction": "0",
+                "gpioController": "1",
+                "interrupt": "0",
+                "gpioControllerHide": "[\"2\"]",
+                "registerLock": "0"
+              }
+            }
+          }
+        }
+      },
+      "sorter": []
+    },
+    "clock": {
+      "functions": {
+        "init_clocks": {
+          "selectClocks": {
+            "srcClocks": [
+              "osc32k",
+              "osc24m",
+              "clk0_pll0",
+              "clk1_pll0",
+              "clk2_pll0",
+              "clk0_pll1",
+              "clk1_pll1",
+              "clk2_pll1",
+              "clk3_pll1"
+            ],
+            "funcClocks": []
+          },
+          "enableClocks": {}
+        }
+      },
+      "sorter": []
+    }
+  }
+}
